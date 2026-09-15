@@ -1,0 +1,5 @@
+#!/bin/sh
+# PostgreSQL 18 client for the OLTP backup; stdout is the archive stream.
+# Pass the password through the environment, never as a command-line value.
+exec docker run --rm --pull=never --network=host \
+  --env PGPASSWORD postgres:18.4 pg_dump "$@"

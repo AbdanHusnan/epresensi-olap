@@ -25,3 +25,8 @@ Thumbs.db
 
 # PostgreSQL local data
 postgres-data/
+
+# Generated development datasets and database recovery backups
+data/*.jsonl.gz
+data/*.partial
+backups/

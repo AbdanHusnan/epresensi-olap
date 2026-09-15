@@ -1,0 +1,30 @@
+{
+  "artifact": "data/dummy-jatim-82000-202608.jsonl.gz",
+  "sha256": "9e994aaf5221ee819b434dd4815ab9f46f7c7decfa69bf920e1cff1d4afd4983",
+  "size_bytes": 42068383,
+  "validated": true,
+  "source_rows": {
+    "m_departemen": 25,
+    "m_pegawai": 82000,
+    "m_user": 82000,
+    "m_shift": 100,
+    "m_jadwal": 125,
+    "m_tipe_ijin": 1,
+    "m_jenis_ijin": 3,
+    "m_hari_libur": 2,
+    "t_libur_shift": 0,
+    "t_perizinan": 155800,
+    "t_checkinout": 2492800
+  },
+  "working_days": 19,
+  "category_counts": {
+    "WFO_TEPAT_WAKTU": 934800,
+    "IZIN": 155800,
+    "WFO_TERLAMBAT": 155800,
+    "WFH": 155800,
+    "TIDAK_ABSEN": 155800
+  },
+  "department_day_groups_validated": 475,
+  "expected_fact_kehadiran_rows": 2542000,
+  "database_imported": false
+}
