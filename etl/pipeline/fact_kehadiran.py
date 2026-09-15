@@ -52,6 +52,13 @@ from etl.control.run_log import (
     finish_run_failed,
 )
 
+from etl.pipeline.fact_perizinan.pipeline import (
+    prepare_fact_perizinan,
+)
+
+from etl.transform.fact_kehadiran.leave import (
+    attach_daily_leave_coverage,
+)
 
 def run_fact_kehadiran_pipeline(
     start_date,
@@ -107,6 +114,21 @@ def run_fact_kehadiran_pipeline(
         )
 
         # ==========================================
+        # VALID DAILY LEAVE COVERAGE
+        # ==========================================
+
+        _, daily_leave_rows = prepare_fact_perizinan(
+            oltp_conn,
+            olap_conn,
+        )
+
+        daily_leave_rows = [
+            row
+            for row in daily_leave_rows
+            if start_date <= row["tanggal"] <= end_date
+        ]
+
+        # ==========================================
         # EXPECTED EMPLOYEE-DAY
         # ==========================================
 
@@ -149,7 +171,16 @@ def run_fact_kehadiran_pipeline(
             employee_day_rows,
             attendance_daily_rows,
         )
+        
+        # ==========================================
+        # VALID LEAVE INTEGRATION
+        # ==========================================
 
+        fact_rows = attach_daily_leave_coverage(
+            fact_rows,
+            daily_leave_rows,
+        )
+        
         # ==========================================
         # BUSINESS RULE
         # ==========================================

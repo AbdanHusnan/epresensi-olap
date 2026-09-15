@@ -31,23 +31,29 @@ def apply_expected_workday_rule(employee_day_rows):
 
 def apply_attendance_status_rule(rows):
     """
-    Menentukan status kehadiran tahap pertama.
+    Menentukan final daily attendance classification.
 
-    Rule sementara sebelum integrasi perizinan:
+    Precedence big-case:
 
-    1. jumlah_event > 0
+    1. Ada actual attendance
        -> HADIR
 
-    2. jumlah_event = 0
-       dan is_expected_workday = False
+    2. Tidak ada attendance
+       dan bukan expected workday
        -> NON_WORKING_DAY
 
-    3. jumlah_event = 0
-       dan is_expected_workday = True
-       -> NULL
+    3. Tidak ada attendance
+       dan expected workday
+       dan memiliki valid leave
+       -> IZIN
 
-    Kondisi ketiga belum boleh disebut TIDAK_ABSEN
-    karena masih mungkin memiliki izin valid.
+    4. Tidak ada attendance
+       dan expected workday
+       dan tidak memiliki valid leave
+       -> TIDAK_ABSEN
+
+    Temporary rule:
+    Actual attendance menang atas approved leave.
     """
 
     result = []
@@ -60,20 +66,51 @@ def apply_attendance_status_rule(rows):
             "is_expected_workday"
         ]
 
-        # Placeholder sampai t_perizinan dikonfigurasi.
-        row["has_valid_leave"] = False
-        row["perizinan_id"] = None
+        # Leave integration seharusnya sudah
+        # mengisi kedua field ini.
+        # Default dipertahankan untuk compatibility.
+        row.setdefault(
+            "has_valid_leave",
+            False,
+        )
 
+        row.setdefault(
+            "perizinan_id",
+            None,
+        )
+
+        has_valid_leave = row[
+            "has_valid_leave"
+        ]
+
+        # -----------------------------------------
+        # 1. Actual attendance selalu menang
+        # -----------------------------------------
         if jumlah_event > 0:
             row["status_kehadiran"] = "HADIR"
 
+        # -----------------------------------------
+        # 2. Bukan expected workday
+        # -----------------------------------------
         elif not is_expected_workday:
             row["status_kehadiran"] = (
                 "NON_WORKING_DAY"
             )
 
+        # -----------------------------------------
+        # 3. Expected workday + valid leave
+        # -----------------------------------------
+        elif has_valid_leave:
+            row["status_kehadiran"] = "IZIN"
+
+        # -----------------------------------------
+        # 4. Expected workday tanpa attendance
+        #    dan tanpa valid leave
+        # -----------------------------------------
         else:
-            row["status_kehadiran"] = None
+            row["status_kehadiran"] = (
+                "TIDAK_ABSEN"
+            )
 
         result.append(row)
 
