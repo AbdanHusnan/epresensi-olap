@@ -13,6 +13,8 @@ from etl.connectors.olap import get_olap_connection
 from etl.dummy.generate import write_dataset
 from etl.dummy.seed import SOURCE_TABLES, reset_source
 from etl.pipeline.initial_load import RESET_TABLES, run_initial_load
+from etl.pipeline.master import run_master_pipeline
+from etl.control.locking import acquire_pipeline_lock
 
 
 class ScopedCursor:
@@ -118,9 +120,44 @@ class PostgresInitialLoadTests(unittest.TestCase):
                         run_initial_load(source, target, start, end, apply=True)
                 target.execute('ROLLBACK TO SAVEPOINT before_failed_reload')
                 self.assertEqual(target.execute('SELECT count(*) FROM fact_kehadiran').fetchone()[0], 615)
+                self.check_master(source, target, start, end)
         finally:
             # Never commit: this also removes all test schemas and their objects.
             source_raw.rollback()
             target_raw.rollback()
             source_raw.close()
             target_raw.close()
+
+    def check_master(self, source, target, start, end):
+        def snapshot():
+            return {table: target.execute(
+                f"SELECT coalesce(jsonb_agg(r ORDER BY r::text), '[]'::jsonb) FROM "
+                f"(SELECT to_jsonb(t) - 'etl_loaded_at' AS r FROM {table} t) q"
+            ).fetchone()[0] for table in (*RESET_TABLES, 'etl_control.pipeline_state')}
+
+        before = snapshot()
+        target.execute('SAVEPOINT before_failed_master')
+        def fail_after_checkpoints(*args):
+            self.assertEqual(target.execute('SELECT count(*) FROM etl_control.pipeline_state').fetchone()[0], 2)
+            raise RuntimeError('injected after checkpoints')
+        with patch('etl.pipeline.master.prepare_replacement', side_effect=fail_after_checkpoints):
+            with self.assertRaisesRegex(RuntimeError, 'fact_kehadiran:.*injected after checkpoints'):
+                run_master_pipeline(source, target, start_date=start, end_date=end, apply=True)
+        target.execute('ROLLBACK TO SAVEPOINT before_failed_master')
+        self.assertEqual(snapshot(), before)
+
+        # Rebuild missing employee-days, including people without attendance events.
+        target.execute('DELETE FROM fact_kehadiran WHERE tanggal = %s', (end,))
+        run_master_pipeline(source, target, start_date=start, end_date=end, apply=True)
+        self.assertEqual(target.execute('SELECT count(*) FROM fact_kehadiran').fetchone()[0], 615)
+        first = snapshot()
+        run_master_pipeline(source, target, start_date=start, end_date=end, apply=True)
+        self.assertEqual(snapshot(), first)
+        # The initial-load transaction holds the same key used by master/incremental.
+        other = get_olap_connection()
+        try:
+            with self.assertRaisesRegex(RuntimeError, 'Another master'):
+                acquire_pipeline_lock(other)
+        finally:
+            other.rollback()
+            other.close()

@@ -33,3 +33,9 @@ review the scope in the runbook before using it.
 
 Existing standalone pipelines live in `etl/pipeline/`. Their upserts update or
 insert records but do not remove obsolete records from an earlier dataset.
+
+## Phase 10 — Master orchestration
+
+See [the master runbook](docs/master-orchestration.md) for ordered dimension/fact
+loading, atomic checkpoints and rollback, reruns, and the daily scheduler.
+Preview: `.venv/bin/python -m etl.pipeline.master --recent-days 2`.

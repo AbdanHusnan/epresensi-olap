@@ -1,0 +1,15 @@
+[Unit]
+Description=OLAP Phase 10 daily master orchestration
+StartLimitIntervalSec=3600
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/piramida/OLAP
+ExecStart=/home/piramida/OLAP/.venv/bin/python -u -m etl.pipeline.master --recent-days 2 --reconcile --apply
+TimeoutStartSec=infinity
+Restart=on-failure
+RestartSec=60
+UMask=0077
+StandardOutput=journal
+StandardError=journal

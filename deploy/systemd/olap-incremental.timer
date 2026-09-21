@@ -1,0 +1,11 @@
+[Unit]
+Description=Run OLAP incremental ETL every five minutes
+
+[Timer]
+OnCalendar=*-*-* *:00/5:00
+AccuracySec=1s
+Persistent=false
+Unit=olap-incremental.service
+
+[Install]
+WantedBy=timers.target

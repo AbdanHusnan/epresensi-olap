@@ -1,0 +1,11 @@
+[Unit]
+Description=Run OLAP master daily at 00:17 Asia/Jakarta
+
+[Timer]
+OnCalendar=*-*-* 00:17:00 Asia/Jakarta
+Persistent=true
+AccuracySec=1s
+Unit=olap-master.service
+
+[Install]
+WantedBy=timers.target

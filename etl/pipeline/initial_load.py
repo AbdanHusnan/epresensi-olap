@@ -11,6 +11,7 @@ from psycopg import sql
 from etl.connectors.oltp import get_oltp_connection
 from etl.connectors.olap import get_olap_connection
 from etl.control.run_log import start_run, finish_run_success
+from etl.control.locking import acquire_pipeline_lock
 from etl.dummy.database import backup_database, confirm_database, table_counts
 from etl.dummy.seed import copy_rows
 from etl.pipeline.initial_load_preflight import check_requirements
@@ -128,6 +129,7 @@ def prepare_replacement(source, start_date, end_date, references=None):
 
 def replace_warehouse(conn, rows):
     """Caller commits once; any error rolls back the reset and every loader."""
+    acquire_pipeline_lock(conn, transaction=True)
     conn.execute("SET LOCAL lock_timeout = '10s'")
     conn.execute('SET LOCAL search_path TO public')
     # No CASCADE: newly introduced dependent tables must be reviewed explicitly.
@@ -162,6 +164,7 @@ def run_initial_load(source, target, start_date, end_date, apply=False, referenc
                 raise ValueError('m_user references unknown employees')
             user_count += len(batch)
     if apply:
+        acquire_pipeline_lock(target, transaction=True)
         target.execute("SET LOCAL lock_timeout = '10s'")
         target.execute('SET LOCAL search_path TO public')
         target.execute(sql.SQL('TRUNCATE {}').format(sql.SQL(', ').join(
@@ -219,6 +222,7 @@ def main():
         source.execute('SET LOCAL search_path TO public')
         if not args.apply:
             target.execute('SET TRANSACTION READ ONLY')
+        acquire_pipeline_lock(target, transaction=True)
         readiness = check_requirements(source, target, args.start_date, args.end_date)
         print(json.dumps({'preflight': readiness}, indent=2))
         if not readiness['ready']:

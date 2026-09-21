@@ -1,0 +1,11 @@
+[Unit]
+Description=OLAP incremental attendance and leave ETL
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/piramida/OLAP
+ExecStart=/home/piramida/OLAP/.venv/bin/python -u -m etl.pipeline.incremental --apply
+TimeoutStartSec=infinity
+UMask=0077
+StandardOutput=journal
+StandardError=journal
