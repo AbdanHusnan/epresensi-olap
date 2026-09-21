@@ -1,10 +1,13 @@
 [Unit]
-Description=Run OLAP incremental ETL every five minutes
+Description=Run OLAP incremental ETL twice daily in Asia/Jakarta
 
 [Timer]
-OnCalendar=*-*-* *:00/5:00
+# Default cutoffs: after morning check-in and after the final evening check-out.
+# Override these values with a user systemd drop-in; see deploy/systemd/README.md.
+OnCalendar=*-*-* 10:30:00 Asia/Jakarta
+OnCalendar=*-*-* 01:00:00 Asia/Jakarta
 AccuracySec=1s
-Persistent=false
+Persistent=true
 Unit=olap-incremental.service
 
 [Install]

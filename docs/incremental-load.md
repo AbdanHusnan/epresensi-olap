@@ -15,10 +15,13 @@ Run from the repository root with the existing `.venv` and `.env`:
 ```
 
 No database writes occur during preview. The implementation does not modify OLTP.
-Use `--batch-size` (default 1000 employees per date) and `--overlap-minutes`
-(default 5). Delta records and affected keys remain in memory; recomputation is
-batched, but writes remain one OLAP transaction. A large first replay requires
-capacity planning. Existing loaders issue per-row attendance upserts.
+Use `--chunk-size` (default 1000 source delta rows), `--batch-size` (default
+1000 employees per date during recomputation), and `--overlap-minutes` (default
+5). The source high watermarks are captured once; permission chunks are applied
+before attendance chunks. Delta chunks and recomputation batches remain bounded
+in memory, while facts, both checkpoints, and SUCCESS remain one OLAP
+transaction. A large first replay still requires capacity planning. Existing
+loaders issue per-row attendance upserts.
 
 ## Processing contract
 

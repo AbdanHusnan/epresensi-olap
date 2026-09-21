@@ -101,7 +101,7 @@ class RecomputeTests(unittest.TestCase):
 class PipelineTests(unittest.TestCase):
     def mocks(self, stack, states=None):
         defaults = dict(get_pipeline_state=None, high_watermarks=(20, STAMP),
-            checkinout_changes=[], perizinan_changes=[], prepare_permissions=[],
+            iter_checkinout_changes=[], iter_perizinan_changes=[], prepare_permissions=[],
             fetch_rows=[], iter_recomputed_employee_days=[], load_fact_perizinan=0,
             load_fact_kehadiran=(0, 0), upsert_pipeline_state=None)
         mocks = {name: stack.enter_context(patch.object(pipeline, name, return_value=value))
@@ -119,8 +119,8 @@ class PipelineTests(unittest.TestCase):
             mocks = self.mocks(stack)
             report = pipeline.run_incremental_fact_pipeline(MagicMock(), MagicMock())
             self.assertTrue(report['bootstrap'])
-            self.assertEqual(mocks['checkinout_changes'].call_args.args[1:], (0, 20))
-            self.assertIsNone(mocks['perizinan_changes'].call_args.args[1])
+            self.assertEqual(mocks['iter_checkinout_changes'].call_args.args[1:], (0, 20, 1000))
+            self.assertIsNone(mocks['iter_perizinan_changes'].call_args.args[1])
             for name in ('load_fact_perizinan', 'load_fact_kehadiran', 'upsert_pipeline_state'):
                 mocks[name].assert_not_called()
 
@@ -129,8 +129,8 @@ class PipelineTests(unittest.TestCase):
             mocks = self.mocks(stack, self.states())
             target = MagicMock()
             pipeline.run_incremental_fact_pipeline(MagicMock(), target, apply=True)
-            self.assertEqual(mocks['checkinout_changes'].call_args.args[1:], (10, 20))
-            self.assertEqual(mocks['perizinan_changes'].call_args.args[1], STAMP - timedelta(minutes=5))
+            self.assertEqual(mocks['iter_checkinout_changes'].call_args.args[1:], (10, 20, 1000))
+            self.assertEqual(mocks['iter_perizinan_changes'].call_args.args[1], STAMP - timedelta(minutes=5))
             self.assertEqual(mocks['upsert_pipeline_state'].call_args_list[0].kwargs['last_watermark_id'], 20)
             target.commit.assert_not_called()
 
@@ -138,12 +138,13 @@ class PipelineTests(unittest.TestCase):
         with ExitStack() as stack:
             mocks = self.mocks(stack, self.states())
             pipeline.run_incremental_fact_pipeline(MagicMock(), MagicMock(), reconcile=True)
-            self.assertEqual(mocks['checkinout_changes'].call_args.args[1], 0)
-            self.assertIsNone(mocks['perizinan_changes'].call_args.args[1])
+            self.assertEqual(mocks['iter_checkinout_changes'].call_args.args[1], 0)
+            self.assertIsNone(mocks['iter_perizinan_changes'].call_args.args[1])
 
     def test_failure_does_not_advance_checkpoints(self):
         with ExitStack() as stack:
             mocks = self.mocks(stack)
+            mocks['iter_checkinout_changes'].return_value = [[dict(pegawai_id=1, tanggal=DAY)]]
             mocks['iter_recomputed_employee_days'].side_effect = ValueError('invalid facts')
             with self.assertRaisesRegex(ValueError, 'invalid facts'):
                 pipeline.run_incremental_fact_pipeline(MagicMock(), MagicMock(), apply=True)
@@ -175,5 +176,30 @@ class PipelineTests(unittest.TestCase):
                 mocks['upsert_pipeline_state'].assert_not_called()
 
 
+
+class ChunkExtractionTests(unittest.TestCase):
+    def test_checkinout_uses_keyset_chunks(self):
+        rows = [
+            [dict(id=11, pegawai_id=1, tanggal=DAY)],
+            [dict(id=12, pegawai_id=2, tanggal=DAY)],
+            [],
+        ]
+        with patch('etl.extract.incremental.fetch_rows', side_effect=rows) as fetched:
+            actual = list(pipeline.iter_checkinout_changes(MagicMock(), 10, 20, 1))
+        self.assertEqual([[row['id'] for row in batch] for batch in actual], [[11], [12]])
+        self.assertEqual(fetched.call_args_list[0].args[2], (10, 20, 1))
+        self.assertEqual(fetched.call_args_list[1].args[2], (11, 20, 1))
+
+    def test_permission_chunks_keep_timestamp_ties(self):
+        stamp = datetime(2026, 9, 1, 9)
+        rows = [
+            [dict(id=3, created_at=stamp, updated_at=None)],
+            [dict(id=4, created_at=stamp, updated_at=None)],
+            [], [],
+        ]
+        with patch('etl.extract.incremental.fetch_rows', side_effect=rows) as fetched:
+            actual = list(pipeline.iter_perizinan_changes(MagicMock(), stamp, stamp, 1))
+        self.assertEqual([[row['id'] for row in batch] for batch in actual], [[3], [4]])
+        self.assertEqual(fetched.call_args_list[1].args[2][-3:-1], (stamp, 3))
 if __name__ == '__main__':
     unittest.main()

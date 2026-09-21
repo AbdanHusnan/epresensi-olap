@@ -1,5 +1,6 @@
 """Affected-key planning and bounded employee-day recomputation, without writes."""
 
+
 from collections import defaultdict
 from datetime import timedelta
 
@@ -26,10 +27,17 @@ from etl.transform.fact_kehadiran.rules import (
 from etl.transform.fact_kehadiran.leave import attach_daily_leave_coverage
 
 
-def prepare_permissions(source_rows, target):
+
+def prepare_permissions(source_rows, target, *, pegawai_reference=None,
+                        jenis_izin_reference=None):
+    """Build permission facts, optionally reusing bounded-run dimension references."""
+    pegawai_reference = (pegawai_reference if pegawai_reference is not None
+                          else extract_pegawai_reference(target))
+    jenis_izin_reference = (jenis_izin_reference if jenis_izin_reference is not None
+                            else extract_jenis_izin_reference(target))
     rows = resolve_perizinan_dimensions_rows(
         apply_approval_rules(normalize_perizinan_rows(source_rows)),
-        extract_pegawai_reference(target), extract_jenis_izin_reference(target),
+        pegawai_reference, jenis_izin_reference,
     )
     facts = build_fact_perizinan_rows(rows)
     validate_fact_perizinan_rows(facts)
