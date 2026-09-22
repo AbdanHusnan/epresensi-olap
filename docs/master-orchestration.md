@@ -93,7 +93,7 @@ frequency. `--batch-size` controls incremental recomputation only.
 ## Scheduler and verification
 
 See [systemd instructions](../deploy/systemd/README.md). The supplied master unit
-runs daily at 00:17 Asia/Jakarta with bounded retries and journald logging.
+runs daily at 01:30 Asia/Jakarta with bounded retries and journald logging.
 Installing/enabling it is a deployment action; adding these files does not start
 ETL or change the existing timer. External failure notifications belong to Phase 11.
 

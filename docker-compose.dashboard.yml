@@ -1,0 +1,57 @@
+name: epresensi-dashboard
+x-superset: &superset
+  image: epresensi-superset:6.1.0
+  build:
+    context: ./deploy/superset
+  env_file: .env.dashboard
+  environment:
+    SUPERSET_CONFIG_PATH: /app/dashboard/superset_config.py
+  volumes:
+    - ./deploy/superset:/app/dashboard:ro
+  networks:
+    - default
+    - olap
+services:
+  superset-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: superset
+      POSTGRES_USER: superset
+      POSTGRES_PASSWORD: ${SUPERSET_METADATA_PASSWORD:?Use --env-file .env.dashboard}
+    volumes:
+      - superset_metadata:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U superset -d superset']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  superset-init:
+    <<: *superset
+    restart: 'no'
+    command: ['/bin/sh', '-ec', 'superset db upgrade && superset init && python /app/dashboard/bootstrap.py']
+    depends_on:
+      superset-db:
+        condition: service_healthy
+  superset:
+    <<: *superset
+    container_name: epresensi-dashboard-superset
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:8090:8088'
+    command: ['/app/.venv/bin/gunicorn', '--bind', '0.0.0.0:8088', '--workers', '2', '--threads', '4', '--timeout', '120', 'superset.app:create_app()']
+    depends_on:
+      superset-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [CMD, /app/.venv/bin/python, -c, 'import urllib.request; urllib.request.urlopen("http://127.0.0.1:8088/health", timeout=5)']
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+networks:
+  olap:
+    external: true
+    name: olap_default
+volumes:
+  superset_metadata:

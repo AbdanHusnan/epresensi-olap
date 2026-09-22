@@ -30,3 +30,6 @@ postgres-data/
 data/*.jsonl.gz
 data/*.partial
 backups/
+
+# Web app environment template (contains no secrets)
+!attendance-dashboard/.env.example

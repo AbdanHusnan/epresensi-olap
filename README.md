@@ -39,3 +39,14 @@ insert records but do not remove obsolete records from an earlier dataset.
 See [the master runbook](docs/master-orchestration.md) for ordered dimension/fact
 loading, atomic checkpoints and rollback, reruns, and the daily scheduler.
 Preview: `.venv/bin/python -m etl.pipeline.master --recent-days 2`.
+
+## Dashboard analytics / Superset
+
+Instance Superset khusus proyek, akun OLAP read-only, dua dataset dan empat KPI:
+lihat [panduan koneksi dashboard](deploy/superset/README.md).
+Target KPI dibiarkan kosong sampai kebijakan bisnis tersedia.
+
+## Web app dashboard
+
+Kerangka Next.js berada di [attendance-dashboard](attendance-dashboard/README.md).
+Jalankan `npm run dev` dari folder tersebut untuk pratinjau lokal pada port 3002.
