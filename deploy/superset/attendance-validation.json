@@ -1,0 +1,170 @@
+[
+  {
+    "scenario": "all_august",
+    "chart_id": 8,
+    "name": "Attendance \u00b7 Attendance Rate (%)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "all_august",
+    "chart_id": 9,
+    "name": "Attendance \u00b7 On-Time Rate (%)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "all_august",
+    "chart_id": 10,
+    "name": "Attendance Rate Trend",
+    "rows": 31,
+    "status": "PASS"
+  },
+  {
+    "scenario": "all_august",
+    "chart_id": 11,
+    "name": "On-Time Rate Trend",
+    "rows": 31,
+    "status": "PASS"
+  },
+  {
+    "scenario": "all_august",
+    "chart_id": 12,
+    "name": "Status Kehadiran",
+    "rows": 3,
+    "status": "PASS"
+  },
+  {
+    "scenario": "all_august",
+    "chart_id": 13,
+    "name": "Attendance \u00b7 WFO vs WFH",
+    "rows": 2,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_august",
+    "chart_id": 8,
+    "name": "Attendance \u00b7 Attendance Rate (%)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_august",
+    "chart_id": 9,
+    "name": "Attendance \u00b7 On-Time Rate (%)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_august",
+    "chart_id": 10,
+    "name": "Attendance Rate Trend",
+    "rows": 31,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_august",
+    "chart_id": 11,
+    "name": "On-Time Rate Trend",
+    "rows": 31,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_august",
+    "chart_id": 12,
+    "name": "Status Kehadiran",
+    "rows": 3,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_august",
+    "chart_id": 13,
+    "name": "Attendance \u00b7 WFO vs WFH",
+    "rows": 2,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_one_day",
+    "chart_id": 8,
+    "name": "Attendance \u00b7 Attendance Rate (%)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_one_day",
+    "chart_id": 9,
+    "name": "Attendance \u00b7 On-Time Rate (%)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_one_day",
+    "chart_id": 10,
+    "name": "Attendance Rate Trend",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_one_day",
+    "chart_id": 11,
+    "name": "On-Time Rate Trend",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_one_day",
+    "chart_id": 12,
+    "name": "Status Kehadiran",
+    "rows": 3,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_one_day",
+    "chart_id": 13,
+    "name": "Attendance \u00b7 WFO vs WFH",
+    "rows": 2,
+    "status": "PASS"
+  },
+  {
+    "scenario": "empty",
+    "chart_id": 8,
+    "name": "Attendance \u00b7 Attendance Rate (%)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "empty",
+    "chart_id": 9,
+    "name": "Attendance \u00b7 On-Time Rate (%)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "empty",
+    "chart_id": 10,
+    "name": "Attendance Rate Trend",
+    "rows": 0,
+    "status": "PASS"
+  },
+  {
+    "scenario": "empty",
+    "chart_id": 11,
+    "name": "On-Time Rate Trend",
+    "rows": 0,
+    "status": "PASS"
+  },
+  {
+    "scenario": "empty",
+    "chart_id": 12,
+    "name": "Status Kehadiran",
+    "rows": 0,
+    "status": "PASS"
+  },
+  {
+    "scenario": "empty",
+    "chart_id": 13,
+    "name": "Attendance \u00b7 WFO vs WFH",
+    "rows": 0,
+    "status": "PASS"
+  }
+]

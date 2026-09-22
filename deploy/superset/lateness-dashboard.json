@@ -1,0 +1,276 @@
+{
+  "id": 4,
+  "slug": "lateness-absence",
+  "charts": [
+    [
+      16,
+      "Lateness \u00b7 Average Lateness (menit)"
+    ],
+    [
+      17,
+      "Lateness \u00b7 Absence Rate (%)"
+    ],
+    [
+      18,
+      "Lateness Trend (menit)"
+    ],
+    [
+      19,
+      "Absence Rate Trend (%)"
+    ],
+    [
+      20,
+      "Lateness Distribution"
+    ]
+  ],
+  "position": {
+    "DASHBOARD_VERSION_KEY": "v2",
+    "ROOT_ID": {
+      "id": "ROOT_ID",
+      "type": "ROOT",
+      "children": [
+        "GRID_ID"
+      ]
+    },
+    "GRID_ID": {
+      "id": "GRID_ID",
+      "type": "GRID",
+      "children": [
+        "ROW-LATENESS-0",
+        "ROW-LATENESS-1",
+        "ROW-LATENESS-2",
+        "ROW-LATENESS-3"
+      ],
+      "parents": [
+        "ROOT_ID"
+      ]
+    },
+    "HEADER_ID": {
+      "id": "HEADER_ID",
+      "type": "HEADER",
+      "meta": {
+        "text": "Lateness & Absence"
+      }
+    },
+    "ROW-LATENESS-0": {
+      "id": "ROW-LATENESS-0",
+      "type": "ROW",
+      "children": [
+        "MARKDOWN-LATENESS"
+      ],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID"
+      ],
+      "meta": {
+        "background": "BACKGROUND_TRANSPARENT"
+      }
+    },
+    "MARKDOWN-LATENESS": {
+      "id": "MARKDOWN-LATENESS",
+      "type": "MARKDOWN",
+      "children": [],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID",
+        "ROW-LATENESS-0"
+      ],
+      "meta": {
+        "width": 12,
+        "height": 20,
+        "code": "**Keterlambatan & Ketidakhadiran** \u00b7 Data dummy Agustus 2026\n\nRata-rata keterlambatan dihitung pada pegawai-hari terlambat; ketidakhadiran tidak mencakup izin. Distribusi memakai jumlah pegawai-hari. Target dan variance belum ditetapkan. Hari tanpa evaluasi KPI tetap kosong.",
+        "initialCode": "",
+        "background": "BACKGROUND_TRANSPARENT"
+      }
+    },
+    "ROW-LATENESS-1": {
+      "id": "ROW-LATENESS-1",
+      "type": "ROW",
+      "children": [
+        "CHART-16",
+        "CHART-17"
+      ],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID"
+      ],
+      "meta": {
+        "background": "BACKGROUND_TRANSPARENT"
+      }
+    },
+    "CHART-16": {
+      "id": "CHART-16",
+      "type": "CHART",
+      "children": [],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID",
+        "ROW-LATENESS-1"
+      ],
+      "meta": {
+        "chartId": 16,
+        "sliceName": "Lateness \u00b7 Average Lateness (menit)",
+        "width": 6,
+        "height": 30
+      }
+    },
+    "CHART-17": {
+      "id": "CHART-17",
+      "type": "CHART",
+      "children": [],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID",
+        "ROW-LATENESS-1"
+      ],
+      "meta": {
+        "chartId": 17,
+        "sliceName": "Lateness \u00b7 Absence Rate (%)",
+        "width": 6,
+        "height": 30
+      }
+    },
+    "ROW-LATENESS-2": {
+      "id": "ROW-LATENESS-2",
+      "type": "ROW",
+      "children": [
+        "CHART-18",
+        "CHART-20"
+      ],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID"
+      ],
+      "meta": {
+        "background": "BACKGROUND_TRANSPARENT"
+      }
+    },
+    "CHART-18": {
+      "id": "CHART-18",
+      "type": "CHART",
+      "children": [],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID",
+        "ROW-LATENESS-2"
+      ],
+      "meta": {
+        "chartId": 18,
+        "sliceName": "Lateness Trend (menit)",
+        "width": 6,
+        "height": 48
+      }
+    },
+    "CHART-20": {
+      "id": "CHART-20",
+      "type": "CHART",
+      "children": [],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID",
+        "ROW-LATENESS-2"
+      ],
+      "meta": {
+        "chartId": 20,
+        "sliceName": "Lateness Distribution",
+        "width": 6,
+        "height": 48
+      }
+    },
+    "ROW-LATENESS-3": {
+      "id": "ROW-LATENESS-3",
+      "type": "ROW",
+      "children": [
+        "CHART-19"
+      ],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID"
+      ],
+      "meta": {
+        "background": "BACKGROUND_TRANSPARENT"
+      }
+    },
+    "CHART-19": {
+      "id": "CHART-19",
+      "type": "CHART",
+      "children": [],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID",
+        "ROW-LATENESS-3"
+      ],
+      "meta": {
+        "chartId": 19,
+        "sliceName": "Absence Rate Trend (%)",
+        "width": 12,
+        "height": 48
+      }
+    }
+  },
+  "metadata": {
+    "native_filter_configuration": [
+      {
+        "id": "NATIVE_FILTER-233c8ce1-8c1c-4dcc-96d0-75867e005a81",
+        "name": "Periode",
+        "filterType": "filter_time",
+        "type": "NATIVE_FILTER",
+        "scope": {
+          "rootPath": [
+            "ROOT_ID"
+          ],
+          "excluded": []
+        },
+        "controlValues": {
+          "enableEmptyFilter": false
+        },
+        "defaultDataMask": {
+          "extraFormData": {
+            "time_range": "2026-08-01 : 2026-09-01"
+          },
+          "filterState": {
+            "value": "2026-08-01 : 2026-09-01"
+          }
+        }
+      },
+      {
+        "id": "NATIVE_FILTER-87ed55ad-044d-48d3-9146-70a00862254f",
+        "name": "Departemen",
+        "filterType": "filter_select",
+        "type": "NATIVE_FILTER",
+        "targets": [
+          {
+            "datasetId": 2,
+            "column": {
+              "name": "nama_departemen"
+            }
+          }
+        ],
+        "scope": {
+          "rootPath": [
+            "ROOT_ID"
+          ],
+          "excluded": []
+        },
+        "controlValues": {
+          "enableEmptyFilter": false,
+          "defaultToFirstItem": false,
+          "creatable": false,
+          "multiSelect": true,
+          "searchAllOptions": false,
+          "inverseSelection": false
+        },
+        "defaultDataMask": {
+          "extraFormData": {},
+          "filterState": {},
+          "ownState": {}
+        },
+        "cascadeParentIds": []
+      }
+    ],
+    "cross_filters_enabled": false,
+    "refresh_frequency": 0,
+    "default_filters": "{}",
+    "color_scheme": "supersetColors"
+  }
+}

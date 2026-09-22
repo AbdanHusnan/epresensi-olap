@@ -107,3 +107,55 @@ Verifikasi API Superset juga berhasil untuk kedua dataset: empat KPI Agustus
 sama dengan hasil SQL OLAP. Filter departemen diuji, dan rentang kosong
 menghasilkan KPI NULL, bukan nol. Provisioner berhasil dijalankan ulang tanpa
 mengganti password atau mengubah data fact.
+
+## Dashboard Attendance — 22 September 2026
+
+Dashboard draft **Attendance** telah dibuat pada
+`http://127.0.0.1:8090/superset/dashboard/attendance-analysis/`.
+Enam chart terpisah dari Overview: Attendance Rate, On-Time Rate, dua tren
+harian, Status Kehadiran dan WFO vs WFH. Default periode Agustus 2026;
+filter tanggal/departemen mencakup semua chart. Marker tren aktif; nilai NULL
+pada hari tanpa evaluasi tetap dipertahankan. Target/variance belum ditetapkan.
+
+Definisi tersimpan dalam `attendance-charts.json` dan `attendance-dashboard.json`.
+File tersebut adalah snapshot instance ini (ID lokal), bukan bundle import lintas
+instance. Validasi query tersimpan di `attendance-validation.json`; pengujian API
+menggunakan periode penuh, satu departemen, satu hari kerja dan periode kosong.
+Layout diverifikasi melalui metadata; rendering visual browser belum diverifikasi.
+SSO dan embedding Next.js tetap belum diaktifkan.
+
+## Dashboard Department Performance — 22 September 2026
+
+Dashboard draft **Department Performance** tersedia di
+`http://127.0.0.1:8090/superset/dashboard/department-performance/`.
+Konten: bar horizontal Attendance Rate by Department untuk 25 departemen dan tabel
+perbandingan Attendance Rate, On-Time Rate, Absence Rate, Average Lateness.
+Default Agustus 2026; hanya filter Periode, tanpa filter departemen atau cross-filter.
+Persentase memakai metrik SUM/SUM, rata-rata keterlambatan memakai hari terlambat;
+target/variance belum ditetapkan. Kesamaan persentase pada data dummy tidak dianggap
+peringkat kinerja. Tabel memiliki pencarian dan 25 baris per halaman.
+
+Snapshot lokal: `department-charts.json`, `department-dashboard.json`.
+Rekonsiliasi terhadap fact OLAP: `department-validation.json`, mencakup bulan penuh,
+satu hari kerja, hari nonkerja (KPI NULL) dan periode kosong.
+Metadata layout dan filter diperiksa; rendering visual browser belum diverifikasi.
+
+## Dashboard Lateness & Absence — 22 September 2026
+
+Dashboard draft terakhir tersedia di
+`http://127.0.0.1:8090/superset/dashboard/lateness-absence/`.
+Lima chart: Average Lateness, Absence Rate, Lateness Trend, Lateness Distribution,
+dan Absence Rate Trend. Filter Periode dan Departemen mencakup semuanya;
+default Agustus 2026, seluruh departemen. Target/variance tetap belum ditetapkan.
+
+Distribusi memakai SUM(late_days) pada dataset detail, hanya keterlambatan terukur
+pada expected workday. Bucket <1, 1–15, 16–30, 31–60, >60 menit diberi prefix angka
+untuk pengurutan. Bucket tanpa data tidak ditampilkan. Rata-rata menggunakan total
+menit / jumlah hari terlambat; hari tanpa evaluasi tetap NULL. Marker tren aktif.
+
+Snapshot: `lateness-charts.json`, `lateness-dashboard.json`.
+Rekonsiliasi terhadap fact OLAP: `lateness-validation.json`, untuk seluruh Agustus,
+satu departemen, satu hari kerja, hari nonkerja dan periode kosong.
+Layout/filter diverifikasi melalui metadata; rendering browser belum diverifikasi.
+Keempat dashboard Superset kini tersedia; integrasi SSO/embedding Next.js masih
+merupakan tahap terpisah dan belum diaktifkan.

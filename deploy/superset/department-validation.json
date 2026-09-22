@@ -1,0 +1,74 @@
+[
+  {
+    "start": "2026-08-01",
+    "end_exclusive": "2026-09-01",
+    "chart_id": 14,
+    "chart": "Attendance Rate by Department",
+    "rows": 25,
+    "reference_departments": 25,
+    "status": "PASS"
+  },
+  {
+    "start": "2026-08-01",
+    "end_exclusive": "2026-09-01",
+    "chart_id": 15,
+    "chart": "Perbandingan KPI Departemen",
+    "rows": 25,
+    "reference_departments": 25,
+    "status": "PASS"
+  },
+  {
+    "start": "2026-08-03",
+    "end_exclusive": "2026-08-04",
+    "chart_id": 14,
+    "chart": "Attendance Rate by Department",
+    "rows": 25,
+    "reference_departments": 25,
+    "status": "PASS"
+  },
+  {
+    "start": "2026-08-03",
+    "end_exclusive": "2026-08-04",
+    "chart_id": 15,
+    "chart": "Perbandingan KPI Departemen",
+    "rows": 25,
+    "reference_departments": 25,
+    "status": "PASS"
+  },
+  {
+    "start": "2026-08-02",
+    "end_exclusive": "2026-08-03",
+    "chart_id": 14,
+    "chart": "Attendance Rate by Department",
+    "rows": 25,
+    "reference_departments": 25,
+    "status": "PASS"
+  },
+  {
+    "start": "2026-08-02",
+    "end_exclusive": "2026-08-03",
+    "chart_id": 15,
+    "chart": "Perbandingan KPI Departemen",
+    "rows": 25,
+    "reference_departments": 25,
+    "status": "PASS"
+  },
+  {
+    "start": "2026-07-01",
+    "end_exclusive": "2026-08-01",
+    "chart_id": 14,
+    "chart": "Attendance Rate by Department",
+    "rows": 0,
+    "reference_departments": 0,
+    "status": "PASS"
+  },
+  {
+    "start": "2026-07-01",
+    "end_exclusive": "2026-08-01",
+    "chart_id": 15,
+    "chart": "Perbandingan KPI Departemen",
+    "rows": 0,
+    "reference_departments": 0,
+    "status": "PASS"
+  }
+]

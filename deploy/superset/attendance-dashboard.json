@@ -1,0 +1,303 @@
+{
+  "id": 2,
+  "slug": "attendance-analysis",
+  "charts": [
+    [
+      8,
+      "Attendance \u00b7 Attendance Rate (%)"
+    ],
+    [
+      9,
+      "Attendance \u00b7 On-Time Rate (%)"
+    ],
+    [
+      10,
+      "Attendance Rate Trend"
+    ],
+    [
+      11,
+      "On-Time Rate Trend"
+    ],
+    [
+      12,
+      "Status Kehadiran"
+    ],
+    [
+      13,
+      "Attendance \u00b7 WFO vs WFH"
+    ]
+  ],
+  "position": {
+    "DASHBOARD_VERSION_KEY": "v2",
+    "ROOT_ID": {
+      "id": "ROOT_ID",
+      "type": "ROOT",
+      "children": [
+        "GRID_ID"
+      ]
+    },
+    "GRID_ID": {
+      "id": "GRID_ID",
+      "type": "GRID",
+      "children": [
+        "ROW-INTRO",
+        "ROW-ATTENDANCE-0",
+        "ROW-ATTENDANCE-1",
+        "ROW-ATTENDANCE-2"
+      ],
+      "parents": [
+        "ROOT_ID"
+      ]
+    },
+    "HEADER_ID": {
+      "id": "HEADER_ID",
+      "type": "HEADER",
+      "meta": {
+        "text": "Attendance"
+      }
+    },
+    "ROW-INTRO": {
+      "id": "ROW-INTRO",
+      "type": "ROW",
+      "children": [
+        "MARKDOWN-INTRO"
+      ],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID"
+      ],
+      "meta": {
+        "background": "BACKGROUND_TRANSPARENT"
+      }
+    },
+    "MARKDOWN-INTRO": {
+      "id": "MARKDOWN-INTRO",
+      "type": "MARKDOWN",
+      "children": [],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID",
+        "ROW-INTRO"
+      ],
+      "meta": {
+        "width": 12,
+        "height": 16,
+        "code": "**Analisis Kehadiran** \u00b7 Data dummy Agustus 2026\n\nTarget dan variance belum ditetapkan. Komposisi dihitung dalam pegawai-hari. Jeda tren menunjukkan tanggal tanpa evaluasi KPI.",
+        "initialCode": "",
+        "background": "BACKGROUND_TRANSPARENT"
+      }
+    },
+    "ROW-ATTENDANCE-0": {
+      "id": "ROW-ATTENDANCE-0",
+      "type": "ROW",
+      "children": [
+        "CHART-8",
+        "CHART-9"
+      ],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID"
+      ],
+      "meta": {
+        "background": "BACKGROUND_TRANSPARENT"
+      }
+    },
+    "CHART-8": {
+      "id": "CHART-8",
+      "type": "CHART",
+      "children": [],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID",
+        "ROW-ATTENDANCE-0"
+      ],
+      "meta": {
+        "chartId": 8,
+        "sliceName": "Attendance \u00b7 Attendance Rate (%)",
+        "width": 6,
+        "height": 30
+      }
+    },
+    "CHART-9": {
+      "id": "CHART-9",
+      "type": "CHART",
+      "children": [],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID",
+        "ROW-ATTENDANCE-0"
+      ],
+      "meta": {
+        "chartId": 9,
+        "sliceName": "Attendance \u00b7 On-Time Rate (%)",
+        "width": 6,
+        "height": 30
+      }
+    },
+    "ROW-ATTENDANCE-1": {
+      "id": "ROW-ATTENDANCE-1",
+      "type": "ROW",
+      "children": [
+        "CHART-10",
+        "CHART-11"
+      ],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID"
+      ],
+      "meta": {
+        "background": "BACKGROUND_TRANSPARENT"
+      }
+    },
+    "CHART-10": {
+      "id": "CHART-10",
+      "type": "CHART",
+      "children": [],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID",
+        "ROW-ATTENDANCE-1"
+      ],
+      "meta": {
+        "chartId": 10,
+        "sliceName": "Attendance Rate Trend",
+        "width": 6,
+        "height": 48
+      }
+    },
+    "CHART-11": {
+      "id": "CHART-11",
+      "type": "CHART",
+      "children": [],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID",
+        "ROW-ATTENDANCE-1"
+      ],
+      "meta": {
+        "chartId": 11,
+        "sliceName": "On-Time Rate Trend",
+        "width": 6,
+        "height": 48
+      }
+    },
+    "ROW-ATTENDANCE-2": {
+      "id": "ROW-ATTENDANCE-2",
+      "type": "ROW",
+      "children": [
+        "CHART-12",
+        "CHART-13"
+      ],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID"
+      ],
+      "meta": {
+        "background": "BACKGROUND_TRANSPARENT"
+      }
+    },
+    "CHART-12": {
+      "id": "CHART-12",
+      "type": "CHART",
+      "children": [],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID",
+        "ROW-ATTENDANCE-2"
+      ],
+      "meta": {
+        "chartId": 12,
+        "sliceName": "Status Kehadiran",
+        "width": 6,
+        "height": 48
+      }
+    },
+    "CHART-13": {
+      "id": "CHART-13",
+      "type": "CHART",
+      "children": [],
+      "parents": [
+        "ROOT_ID",
+        "GRID_ID",
+        "ROW-ATTENDANCE-2"
+      ],
+      "meta": {
+        "chartId": 13,
+        "sliceName": "Attendance \u00b7 WFO vs WFH",
+        "width": 6,
+        "height": 48
+      }
+    }
+  },
+  "metadata": {
+    "native_filter_configuration": [
+      {
+        "id": "NATIVE_FILTER-f893e9d0-0c85-4eb9-8b92-d52d710db329",
+        "name": "Periode",
+        "filterType": "filter_time",
+        "type": "NATIVE_FILTER",
+        "scope": {
+          "rootPath": [
+            "ROOT_ID"
+          ],
+          "excluded": []
+        },
+        "controlValues": {
+          "enableEmptyFilter": false
+        },
+        "defaultDataMask": {
+          "extraFormData": {
+            "time_range": "2026-08-01 : 2026-09-01"
+          },
+          "filterState": {
+            "value": "2026-08-01 : 2026-09-01"
+          }
+        }
+      },
+      {
+        "id": "NATIVE_FILTER-59b94e0a-ce28-4a12-a321-078c47a049d6",
+        "name": "Departemen",
+        "filterType": "filter_select",
+        "type": "NATIVE_FILTER",
+        "targets": [
+          {
+            "datasetId": 2,
+            "column": {
+              "name": "nama_departemen"
+            }
+          }
+        ],
+        "scope": {
+          "rootPath": [
+            "ROOT_ID"
+          ],
+          "excluded": []
+        },
+        "controlValues": {
+          "enableEmptyFilter": false,
+          "defaultToFirstItem": false,
+          "creatable": false,
+          "multiSelect": true,
+          "searchAllOptions": false,
+          "inverseSelection": false
+        },
+        "defaultDataMask": {
+          "extraFormData": {},
+          "filterState": {},
+          "ownState": {}
+        },
+        "cascadeParentIds": []
+      }
+    ],
+    "cross_filters_enabled": false,
+    "refresh_frequency": 0,
+    "label_colors": {
+      "HADIR": "#1FA8C9",
+      "IZIN": "#454E7C",
+      "TIDAK_ABSEN": "#5AC189",
+      "WFO": "#1FA8C9",
+      "WFH": "#454E7C"
+    },
+    "default_filters": "{}"
+  }
+}

@@ -1,0 +1,177 @@
+[
+  {
+    "scenario": "all_august",
+    "chart_id": 16,
+    "name": "Lateness \u00b7 Average Lateness (menit)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "all_august",
+    "chart_id": 17,
+    "name": "Lateness \u00b7 Absence Rate (%)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "all_august",
+    "chart_id": 18,
+    "name": "Lateness Trend (menit)",
+    "rows": 31,
+    "status": "PASS"
+  },
+  {
+    "scenario": "all_august",
+    "chart_id": 19,
+    "name": "Absence Rate Trend (%)",
+    "rows": 31,
+    "status": "PASS"
+  },
+  {
+    "scenario": "all_august",
+    "chart_id": 20,
+    "name": "Lateness Distribution",
+    "rows": 3,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_august",
+    "chart_id": 16,
+    "name": "Lateness \u00b7 Average Lateness (menit)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_august",
+    "chart_id": 17,
+    "name": "Lateness \u00b7 Absence Rate (%)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_august",
+    "chart_id": 18,
+    "name": "Lateness Trend (menit)",
+    "rows": 31,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_august",
+    "chart_id": 19,
+    "name": "Absence Rate Trend (%)",
+    "rows": 31,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_august",
+    "chart_id": 20,
+    "name": "Lateness Distribution",
+    "rows": 3,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_day",
+    "chart_id": 16,
+    "name": "Lateness \u00b7 Average Lateness (menit)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_day",
+    "chart_id": 17,
+    "name": "Lateness \u00b7 Absence Rate (%)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_day",
+    "chart_id": 18,
+    "name": "Lateness Trend (menit)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_day",
+    "chart_id": 19,
+    "name": "Absence Rate Trend (%)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "social_day",
+    "chart_id": 20,
+    "name": "Lateness Distribution",
+    "rows": 3,
+    "status": "PASS"
+  },
+  {
+    "scenario": "nonworking",
+    "chart_id": 16,
+    "name": "Lateness \u00b7 Average Lateness (menit)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "nonworking",
+    "chart_id": 17,
+    "name": "Lateness \u00b7 Absence Rate (%)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "nonworking",
+    "chart_id": 18,
+    "name": "Lateness Trend (menit)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "nonworking",
+    "chart_id": 19,
+    "name": "Absence Rate Trend (%)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "nonworking",
+    "chart_id": 20,
+    "name": "Lateness Distribution",
+    "rows": 0,
+    "status": "PASS"
+  },
+  {
+    "scenario": "empty",
+    "chart_id": 16,
+    "name": "Lateness \u00b7 Average Lateness (menit)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "empty",
+    "chart_id": 17,
+    "name": "Lateness \u00b7 Absence Rate (%)",
+    "rows": 1,
+    "status": "PASS"
+  },
+  {
+    "scenario": "empty",
+    "chart_id": 18,
+    "name": "Lateness Trend (menit)",
+    "rows": 0,
+    "status": "PASS"
+  },
+  {
+    "scenario": "empty",
+    "chart_id": 19,
+    "name": "Absence Rate Trend (%)",
+    "rows": 0,
+    "status": "PASS"
+  },
+  {
+    "scenario": "empty",
+    "chart_id": 20,
+    "name": "Lateness Distribution",
+    "rows": 0,
+    "status": "PASS"
+  }
+]
