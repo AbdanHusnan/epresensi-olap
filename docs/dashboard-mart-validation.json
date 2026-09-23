@@ -1,0 +1,297 @@
+{
+  "datasets": {
+    "department": 3,
+    "composition": 4,
+    "lateness": 5,
+    "filter": 6
+  },
+  "queries": [
+    {
+      "dashboard": "overview",
+      "chart_id": null,
+      "phase": "initial",
+      "rows": 25,
+      "equal": true
+    },
+    {
+      "dashboard": "overview",
+      "chart_id": 7,
+      "phase": "initial",
+      "rows": 2,
+      "equal": true
+    },
+    {
+      "dashboard": "overview",
+      "chart_id": 1,
+      "phase": "initial",
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "dashboard": "overview",
+      "chart_id": 2,
+      "phase": "initial",
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "dashboard": "overview",
+      "chart_id": 3,
+      "phase": "initial",
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "dashboard": "overview",
+      "chart_id": 6,
+      "phase": "initial",
+      "rows": 3,
+      "equal": true
+    },
+    {
+      "dashboard": "overview",
+      "chart_id": 5,
+      "phase": "initial",
+      "rows": 33,
+      "equal": true
+    },
+    {
+      "dashboard": "overview",
+      "chart_id": 4,
+      "phase": "initial",
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "dashboard": "overview",
+      "chart_id": 3,
+      "phase": "filter",
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "dashboard": "overview",
+      "chart_id": 7,
+      "phase": "filter",
+      "rows": 2,
+      "equal": true
+    },
+    {
+      "dashboard": "overview",
+      "chart_id": 1,
+      "phase": "filter",
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "dashboard": "overview",
+      "chart_id": 2,
+      "phase": "filter",
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "dashboard": "overview",
+      "chart_id": 5,
+      "phase": "filter",
+      "rows": 33,
+      "equal": true
+    },
+    {
+      "dashboard": "overview",
+      "chart_id": 6,
+      "phase": "filter",
+      "rows": 3,
+      "equal": true
+    },
+    {
+      "dashboard": "overview",
+      "chart_id": 4,
+      "phase": "filter",
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "dashboard": "attendance",
+      "chart_id": 13,
+      "phase": "initial",
+      "rows": 2,
+      "equal": true
+    },
+    {
+      "dashboard": "attendance",
+      "chart_id": 8,
+      "phase": "initial",
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "dashboard": "attendance",
+      "chart_id": 9,
+      "phase": "initial",
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "dashboard": "attendance",
+      "chart_id": null,
+      "phase": "initial",
+      "rows": 25,
+      "equal": true
+    },
+    {
+      "dashboard": "attendance",
+      "chart_id": 10,
+      "phase": "initial",
+      "rows": 31,
+      "equal": true
+    },
+    {
+      "dashboard": "attendance",
+      "chart_id": 12,
+      "phase": "initial",
+      "rows": 3,
+      "equal": true
+    },
+    {
+      "dashboard": "attendance",
+      "chart_id": 11,
+      "phase": "initial",
+      "rows": 31,
+      "equal": true
+    },
+    {
+      "dashboard": "attendance",
+      "chart_id": 10,
+      "phase": "filter",
+      "rows": 31,
+      "equal": true
+    },
+    {
+      "dashboard": "attendance",
+      "chart_id": 9,
+      "phase": "filter",
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "dashboard": "attendance",
+      "chart_id": 11,
+      "phase": "filter",
+      "rows": 31,
+      "equal": true
+    },
+    {
+      "dashboard": "attendance",
+      "chart_id": 8,
+      "phase": "filter",
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "dashboard": "attendance",
+      "chart_id": 12,
+      "phase": "filter",
+      "rows": 3,
+      "equal": true
+    },
+    {
+      "dashboard": "attendance",
+      "chart_id": 13,
+      "phase": "filter",
+      "rows": 2,
+      "equal": true
+    },
+    {
+      "dashboard": "departments",
+      "chart_id": 14,
+      "phase": "initial",
+      "rows": 25,
+      "equal": true
+    },
+    {
+      "dashboard": "departments",
+      "chart_id": 15,
+      "phase": "initial",
+      "rows": 25,
+      "equal": true
+    },
+    {
+      "dashboard": "lateness",
+      "chart_id": 20,
+      "phase": "initial",
+      "rows": 3,
+      "equal": true
+    },
+    {
+      "dashboard": "lateness",
+      "chart_id": 17,
+      "phase": "initial",
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "dashboard": "lateness",
+      "chart_id": 18,
+      "phase": "initial",
+      "rows": 31,
+      "equal": true
+    },
+    {
+      "dashboard": "lateness",
+      "chart_id": 16,
+      "phase": "initial",
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "dashboard": "lateness",
+      "chart_id": null,
+      "phase": "initial",
+      "rows": 25,
+      "equal": true
+    },
+    {
+      "dashboard": "lateness",
+      "chart_id": 19,
+      "phase": "initial",
+      "rows": 31,
+      "equal": true
+    },
+    {
+      "dashboard": "lateness",
+      "chart_id": 19,
+      "phase": "filter",
+      "rows": 31,
+      "equal": true
+    },
+    {
+      "dashboard": "lateness",
+      "chart_id": 16,
+      "phase": "filter",
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "dashboard": "lateness",
+      "chart_id": 17,
+      "phase": "filter",
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "dashboard": "lateness",
+      "chart_id": 18,
+      "phase": "filter",
+      "rows": 31,
+      "equal": true
+    },
+    {
+      "dashboard": "lateness",
+      "chart_id": 20,
+      "phase": "filter",
+      "rows": 3,
+      "equal": true
+    }
+  ]
+}

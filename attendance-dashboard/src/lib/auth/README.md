@@ -1,7 +1,11 @@
-# SSO integration boundary
+# Authentication boundary
 
-Pending: provider/protocol, session verification, actual roles and department scopes.
-Current routes render only an empty shell and do not read protected data.
-Before adding an embedded dashboard or guest-token endpoint, require a verified
-server-side session and derive permitted department IDs from trusted claims.
-Do not add a mock identity or an unrestricted guest-token fallback.
+SSO implementation is deferred at the user's request. The temporary local preview
+policy permits only explicitly enabled development mode with matching loopback
+Origin and Host. Keep the development server bound to 127.0.0.1 and do not expose
+it through a reverse proxy. Preview tokens grant all-department access.
+
+Production fails closed. Before enabling production, require a verified server-side
+SSO session and derive department RLS from trusted role claims. Never accept scope
+or arbitrary dashboard UUIDs from browser input. Do not use the preview identity
+for production authorization.

@@ -1,0 +1,144 @@
+{
+  "measuredAt": "2026-09-22T06:25:53.134Z",
+  "method": "Same colocated headless Chromium, Next.js development, 3 repetitions, chart cache_timeout=-1 on datasets and charts. Includes 500 ms stable period. Department filter for three pages; one-day date filter for Department Performance.",
+  "comparison": [
+    {
+      "key": "overview",
+      "beforeInitialMedianMs": 24618.128896,
+      "afterInitialMedianMs": 3856.5392440000014,
+      "afterInitialSamplesMs": [
+        4629.681078,
+        3856.5392440000014,
+        3683.8155659999993
+      ],
+      "beforeFilterMedianMs": 6265.957387000002,
+      "afterFilterMedianMs": 1941.8173639999986,
+      "afterFilterSamplesMs": [
+        3039.0657440000004,
+        1941.8173639999986,
+        1558.6596070000014
+      ],
+      "initialReductionPercent": 84.33455580522768,
+      "filterReductionPercent": 69.01004516837774
+    },
+    {
+      "key": "attendance",
+      "beforeInitialMedianMs": 21228.236197000006,
+      "afterInitialMedianMs": 4127.942317000001,
+      "afterInitialSamplesMs": [
+        4127.942317000001,
+        3938.6926989999993,
+        4179.925737999998
+      ],
+      "beforeFilterMedianMs": 5277.691790000012,
+      "afterFilterMedianMs": 1456.7259940000004,
+      "afterFilterSamplesMs": [
+        1713.775619,
+        1456.7259940000004,
+        1426.9513309999966
+      ],
+      "initialReductionPercent": 80.55447339716633,
+      "filterReductionPercent": 72.39842620669599
+    },
+    {
+      "key": "departments",
+      "beforeInitialMedianMs": 7863.49721500001,
+      "afterInitialMedianMs": 3613.574682999999,
+      "afterInitialSamplesMs": [
+        3613.574682999999,
+        3941.312933000001,
+        3498.2933630000043
+      ],
+      "beforeFilterMedianMs": 2280.536457,
+      "afterFilterMedianMs": 937.2672210000019,
+      "afterFilterSamplesMs": [
+        930.1761580000002,
+        937.2672210000019,
+        1134.0495280000032
+      ],
+      "initialReductionPercent": 54.046213991060796,
+      "filterReductionPercent": 58.901458552740785
+    },
+    {
+      "key": "lateness",
+      "beforeInitialMedianMs": 20714.76460699999,
+      "afterInitialMedianMs": 3797.6316149999984,
+      "afterInitialSamplesMs": [
+        3797.6316149999984,
+        3774.361632,
+        3873.263396999995
+      ],
+      "beforeFilterMedianMs": 5778.09172299999,
+      "afterFilterMedianMs": 1511.2080490000008,
+      "afterFilterSamplesMs": [
+        1511.2080490000008,
+        1410.7322150000036,
+        1628.4222390000068
+      ],
+      "initialReductionPercent": 81.66702983573035,
+      "filterReductionPercent": 73.84589720193331
+    }
+  ],
+  "dateSamples": [
+    {
+      "run": 1,
+      "range": "2026-08-03 <= tanggal < 2026-08-04",
+      "readyMs": 930.1761580000002,
+      "lastChartMs": 398.20892300000014,
+      "requests": [
+        {
+          "status": 200,
+          "finishMs": 394.8264040000013,
+          "durationMs": 279.043
+        },
+        {
+          "status": 200,
+          "finishMs": 398.20892300000014,
+          "durationMs": 280.413
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "range": "2026-08-03 <= tanggal < 2026-08-04",
+      "readyMs": 937.2672210000019,
+      "lastChartMs": 429.02931499999977,
+      "requests": [
+        {
+          "status": 200,
+          "finishMs": 330.95072900000014,
+          "durationMs": 209.779
+        },
+        {
+          "status": 200,
+          "finishMs": 429.02931499999977,
+          "durationMs": 239.69500000000002
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "range": "2026-08-03 <= tanggal < 2026-08-04",
+      "readyMs": 1134.0495280000032,
+      "lastChartMs": 559.5201230000021,
+      "requests": [
+        {
+          "status": 200,
+          "finishMs": 419.9954199999993,
+          "durationMs": 301.85499999999996
+        },
+        {
+          "status": 200,
+          "finishMs": 559.5201230000021,
+          "durationMs": 310.02000000000004
+        }
+      ]
+    }
+  ],
+  "refreshSample": {
+    "one_day_refresh_seconds": 0.3988972750958055,
+    "refreshed_dates": 1,
+    "rollback_preserved_generation": true,
+    "pending_dates": 0
+  }
+}

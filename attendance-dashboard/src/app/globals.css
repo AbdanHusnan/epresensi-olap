@@ -49,3 +49,7 @@ footer { margin-top: auto; padding: 25px 42px; display: flex; justify-content: s
  footer { padding: 25px 22px; }
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.analytics-panel { margin-top: 28px; }
+.superset-mount iframe { display: block; width: 100%; height: max(850px, 85vh); border: 0; background: white; border-radius: 12px; }
+.empty-panel button { padding: 10px 18px; border: 0; border-radius: 6px; background: var(--accent); color: white; cursor: pointer; }

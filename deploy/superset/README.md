@@ -159,3 +159,31 @@ satu departemen, satu hari kerja, hari nonkerja dan periode kosong.
 Layout/filter diverifikasi melalui metadata; rendering browser belum diverifikasi.
 Keempat dashboard Superset kini tersedia; integrasi SSO/embedding Next.js masih
 merupakan tahap terpisah dan belum diaktifkan.
+
+## Integrasi Next.js lokal — 22 September 2026
+
+Keempat dashboard sekarang dikonfigurasi untuk Embedded SDK pada
+`http://127.0.0.1:3002`. SSO ditunda sesuai instruksi; pratinjau seluruh departemen
+hanya aktif pada Next.js development dengan Origin/Host localhost yang cocok.
+Produksi menolak endpoint guest token sampai integrasi SSO selesai.
+
+Provisioner API publik: `.venv/bin/python scripts/configure_next_embedding.py --apply`.
+Akun `next_dashboard_embed` memakai role `NextDashboardTokenIssuer` (grant guest token
+serta read SecurityRestApi untuk CSRF). DashboardGuest hanya memiliki permission
+baca yang diperlukan embedded dashboard. Tidak ada permission datasource/database
+global, SQL Lab, Admin, atau tulis. Token dibatasi ke satu embedded UUID.
+
+CSP frame-ancestors mengizinkan self dan origin Next.js lokal. Guest signing key
+diturunkan secara terpisah dari SECRET_KEY dengan HMAC, expiry lima menit.
+Kredensial dan UUID Next.js berada di `.env.local` yang diabaikan Git (mode 600).
+Jangan expose dev server melalui reverse proxy. Panduan akses dua SSH tunnel dan
+langkah SSO selanjutnya ada di `attendance-dashboard/README.md`.
+
+## Mart aktif — 22 September 2026
+
+20 chart kini menggunakan dataset mart KPI (ID 3), komposisi (ID 4), dan
+distribusi keterlambatan (ID 5). Opsi departemen memakai dimensi (ID 6). Dataset
+legacy ID 1–2 tetap tersedia. Cache chart/dataset mart dibypass agar hasil committed
+terbaru segera terbaca. Refresh otomatis pada akhir transaksi ETL melalui trigger
+PostgreSQL. Panduan lengkap, rollback, dan hasil benchmark:
+[Attendance marts](../../docs/attendance-marts.md).
