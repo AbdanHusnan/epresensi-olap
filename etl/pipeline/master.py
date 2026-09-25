@@ -105,7 +105,7 @@ def execute_pipeline(*, start_date, end_date, apply=False, overlap_minutes=5,
         if apply:
             # Lock ownership proves older cooperative writers are no longer active.
             target.execute("""UPDATE etl_control.pipeline_runs
-                SET status = 'FAILED', finished_at = CURRENT_TIMESTAMP,
+                SET status = 'FAILED', finished_at = clock_timestamp(),
                     error_message = 'Interrupted run; transaction rolled back. Retry from committed checkpoints.'
                 WHERE status = 'RUNNING' AND pipeline_name = ANY(%s)""",
                 ([PIPELINE, 'incremental_facts'],))

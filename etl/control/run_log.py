@@ -4,9 +4,10 @@ def start_run(conn, pipeline_name):
             """
             INSERT INTO etl_control.pipeline_runs (
                 pipeline_name,
-                status
+                status,
+                started_at
             )
-            VALUES (%s, 'RUNNING')
+            VALUES (%s, 'RUNNING', clock_timestamp())
             RETURNING run_id
             """,
             (pipeline_name,),
@@ -22,11 +23,14 @@ def finish_run_success(
     rows_updated=0,
 ):
     with conn.cursor() as cur:
+        # Include deferred fact/mart validation in elapsed time, while keeping
+        # data and SUCCESS atomic in the caller's transaction.
+        cur.execute("SET CONSTRAINTS ALL IMMEDIATE")
         cur.execute(
             """
             UPDATE etl_control.pipeline_runs
             SET
-                finished_at = CURRENT_TIMESTAMP,
+                finished_at = clock_timestamp(),
                 status = 'SUCCESS',
                 rows_extracted = %s,
                 rows_inserted = %s,
@@ -48,7 +52,7 @@ def finish_run_failed(conn, run_id, error_message):
             """
             UPDATE etl_control.pipeline_runs
             SET
-                finished_at = CURRENT_TIMESTAMP,
+                finished_at = clock_timestamp(),
                 status = 'FAILED',
                 error_message = %s
             WHERE run_id = %s

@@ -1,0 +1,15 @@
+[Unit]
+Description=OLAP local Next.js dashboard preview
+
+[Service]
+Type=simple
+WorkingDirectory=/home/piramida/OLAP/attendance-dashboard
+ExecStart=/usr/bin/node node_modules/next/dist/bin/next dev --hostname 127.0.0.1 --port 3002
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=30
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target
