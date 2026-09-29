@@ -1,0 +1,527 @@
+{
+  "profile": "existing-employees-202609-v1",
+  "start_date": "2026-09-01",
+  "end_date": "2026-09-30",
+  "seed": 202609,
+  "employees": 82000,
+  "departments": 25,
+  "reference_digest": "cd0bc907727075aa1f6806e12765f6822a7425f6974ae8fb844e2d24229b83cc",
+  "weights": {
+    "WFO_TEPAT_WAKTU": 38,
+    "WFH_TEPAT_WAKTU": 14,
+    "WFO_TERLAMBAT": 12,
+    "WFH_TERLAMBAT": 5,
+    "WFO_PULANG_AWAL": 6,
+    "WFO_TERLAMBAT_PULANG_AWAL": 3,
+    "WFO_TANPA_PULANG": 4,
+    "CUTI_APPROVED": 5,
+    "SAKIT_APPROVED": 4,
+    "IZIN_APPROVED": 3,
+    "IZIN_PENDING": 2,
+    "IZIN_REJECTED": 1,
+    "TIDAK_ABSEN": 3
+  },
+  "master_fingerprints": {
+    "m_departemen": [
+      25,
+      "b2d73812c2dfea90ddfaad5fd20d2a9b"
+    ],
+    "m_pegawai": [
+      82000,
+      "523b840749edd3251dee64762a84ea4a"
+    ],
+    "m_user": [
+      82000,
+      "a1741e61aa4d557c4288fb0dbc3ec23b"
+    ],
+    "m_shift": [
+      100,
+      "073da7ebb43baa8655e33a31a5142632"
+    ],
+    "m_jadwal": [
+      125,
+      "8331a3429a9cfd63e2c56d0540d235e8"
+    ],
+    "m_tipe_ijin": [
+      1,
+      "19aebf9c934fb266c3be370752a5f910"
+    ],
+    "m_jenis_ijin": [
+      3,
+      "2516d77dea4f0d6c7182977cca70ca09"
+    ],
+    "m_hari_libur": [
+      2,
+      "834a11cbc8bd5f9b8a2654675215f221"
+    ],
+    "t_libur_shift": [
+      0,
+      "d41d8cd98f00b204e9800998ecf8427e"
+    ]
+  },
+  "complete": true,
+  "rows": {
+    "t_checkinout": 2886400,
+    "t_perizinan": 270600
+  },
+  "categories": {
+    "WFO_TEPAT_WAKTU": 685520,
+    "WFH_TEPAT_WAKTU": 252560,
+    "WFO_TERLAMBAT": 216480,
+    "WFH_TERLAMBAT": 90200,
+    "WFO_PULANG_AWAL": 108240,
+    "WFO_TERLAMBAT_PULANG_AWAL": 54120,
+    "WFO_TANPA_PULANG": 72160,
+    "CUTI_APPROVED": 90200,
+    "SAKIT_APPROVED": 72160,
+    "IZIN_APPROVED": 54120,
+    "IZIN_PENDING": 36080,
+    "IZIN_REJECTED": 18040,
+    "TIDAK_ABSEN": 54120
+  },
+  "daily": [
+    {
+      "date": "2026-09-01",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-02",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-03",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-04",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-05",
+      "categories": {}
+    },
+    {
+      "date": "2026-09-06",
+      "categories": {}
+    },
+    {
+      "date": "2026-09-07",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-08",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-09",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-10",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-11",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-12",
+      "categories": {}
+    },
+    {
+      "date": "2026-09-13",
+      "categories": {}
+    },
+    {
+      "date": "2026-09-14",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-15",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-16",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-17",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-18",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-19",
+      "categories": {}
+    },
+    {
+      "date": "2026-09-20",
+      "categories": {}
+    },
+    {
+      "date": "2026-09-21",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-22",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-23",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-24",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-25",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-26",
+      "categories": {}
+    },
+    {
+      "date": "2026-09-27",
+      "categories": {}
+    },
+    {
+      "date": "2026-09-28",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-29",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    },
+    {
+      "date": "2026-09-30",
+      "categories": {
+        "WFO_TEPAT_WAKTU": 31160,
+        "WFH_TEPAT_WAKTU": 11480,
+        "WFO_TERLAMBAT": 9840,
+        "WFH_TERLAMBAT": 4100,
+        "WFO_PULANG_AWAL": 4920,
+        "WFO_TERLAMBAT_PULANG_AWAL": 2460,
+        "WFO_TANPA_PULANG": 3280,
+        "CUTI_APPROVED": 4100,
+        "SAKIT_APPROVED": 3280,
+        "IZIN_APPROVED": 2460,
+        "IZIN_PENDING": 1640,
+        "IZIN_REJECTED": 820,
+        "TIDAK_ABSEN": 2460
+      }
+    }
+  ],
+  "expected": {
+    "full_month_facts": 2460000,
+    "full_month_statuses": {
+      "HADIR": 1479280,
+      "IZIN": 216480,
+      "TIDAK_ABSEN": 108240,
+      "NON_WORKING_DAY": 656000
+    },
+    "incremental_only_new_attendance_facts": 1695760,
+    "late_employee_days": 360800,
+    "early_departure_employee_days": 162360,
+    "wfh_employee_days": 342760,
+    "incomplete_present_days": 72160
+  },
+  "committed": false
+}

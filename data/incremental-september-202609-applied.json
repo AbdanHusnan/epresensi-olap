@@ -1,0 +1,86 @@
+{
+  "profile": "existing-employees-202609-v1",
+  "inserted": {
+    "t_checkinout": 2886400,
+    "t_perizinan": 270600
+  },
+  "first_ids": {
+    "t_checkinout": 5030000,
+    "t_perizinan": 155801
+  },
+  "baseline": {
+    "t_checkinout": {
+      "max_id": 2492800,
+      "fingerprint": [
+        2492800,
+        "946e0366403957665f5c2f50eb2265f2"
+      ]
+    },
+    "t_perizinan": {
+      "max_id": 155800,
+      "fingerprint": [
+        155800,
+        "8e9cfefe8a3795cb29c471d862828db1"
+      ]
+    }
+  },
+  "masters_unchanged": true,
+  "existing_transactions_unchanged": true,
+  "expected": {
+    "full_month_facts": 2460000,
+    "full_month_statuses": {
+      "HADIR": 1479280,
+      "IZIN": 216480,
+      "TIDAK_ABSEN": 108240,
+      "NON_WORKING_DAY": 656000
+    },
+    "incremental_only_new_attendance_facts": 1695760,
+    "late_employee_days": 360800,
+    "early_departure_employee_days": 162360,
+    "wfh_employee_days": 342760,
+    "incomplete_present_days": 72160
+  },
+  "categories": {
+    "WFO_TEPAT_WAKTU": 685520,
+    "WFH_TEPAT_WAKTU": 252560,
+    "WFO_TERLAMBAT": 216480,
+    "WFH_TERLAMBAT": 90200,
+    "WFO_PULANG_AWAL": 108240,
+    "WFO_TERLAMBAT_PULANG_AWAL": 54120,
+    "WFO_TANPA_PULANG": 72160,
+    "CUTI_APPROVED": 90200,
+    "SAKIT_APPROVED": 72160,
+    "IZIN_APPROVED": 54120,
+    "IZIN_PENDING": 36080,
+    "IZIN_REJECTED": 18040,
+    "TIDAK_ABSEN": 54120
+  },
+  "committed": true,
+  "calendar_rows_added": 7,
+  "checkpoints_unchanged": true,
+  "olap_fact_count_unchanged": true,
+  "pipeline_run_id_unchanged": true,
+  "baseline_pipeline_run_id": 979,
+  "baseline_checkpoints": [
+    [
+      "fact_kehadiran",
+      "t_checkinout",
+      "id",
+      null,
+      2492800,
+      "2026-09-29 03:30:00.376419",
+      "2026-09-29 03:30:00.376419"
+    ],
+    [
+      "fact_perizinan",
+      "t_perizinan",
+      "timestamp",
+      "2026-08-29 10:00:00",
+      null,
+      "2026-09-29 03:30:00.376419",
+      "2026-09-29 03:30:00.376419"
+    ]
+  ],
+  "baseline_attendance_facts": 2542000,
+  "artifact_sha256": "63ccd0d15bb5ea796b2e910037d1212f8321ebf619571932b38f1e891559dc36"
+}

@@ -1,0 +1,63 @@
+{
+  "attendance_categories": {
+    "WFH_TEPAT_WAKTU": 252560,
+    "WFH_TERLAMBAT": 90200,
+    "WFO_PULANG_AWAL": 108240,
+    "WFO_TANPA_PULANG": 72160,
+    "WFO_TEPAT_WAKTU": 685520,
+    "WFO_TERLAMBAT": 216480,
+    "WFO_TERLAMBAT_PULANG_AWAL": 54120
+  },
+  "source_event_rows": "2886400",
+  "permission_categories": {
+    "CUTI_APPROVED": 90200,
+    "IZIN_APPROVED": 54120,
+    "IZIN_PENDING": 36080,
+    "IZIN_REJECTED": 18040,
+    "SAKIT_APPROVED": 72160
+  },
+  "source_permission_rows": 270600,
+  "all_categories_match_manifest": true,
+  "source_totals": {
+    "m_pegawai": 82000,
+    "m_departemen": 25,
+    "t_checkinout": 5379200,
+    "t_perizinan": 426400
+  },
+  "new_id_ranges": {
+    "t_checkinout": [
+      5030000,
+      7916399
+    ],
+    "t_perizinan": [
+      155801,
+      426400
+    ]
+  },
+  "permission_high_timestamp": "2026-09-30 05:30:00",
+  "olap_september_facts": 0,
+  "olap_total_facts": 2542000,
+  "olap_total_permissions": 155800,
+  "olap_september_calendar_days": 30,
+  "checkpoints": [
+    [
+      "fact_kehadiran",
+      "t_checkinout",
+      "id",
+      null,
+      2492800,
+      "2026-09-29 03:30:00.376419",
+      "2026-09-29 03:30:00.376419"
+    ],
+    [
+      "fact_perizinan",
+      "t_perizinan",
+      "timestamp",
+      "2026-08-29 10:00:00",
+      null,
+      "2026-09-29 03:30:00.376419",
+      "2026-09-29 03:30:00.376419"
+    ]
+  ],
+  "baseline_preserved": true
+}
