@@ -2,7 +2,7 @@ import "server-only";
 import { getSupersetConfig } from "./config";
 import type { DashboardKey } from "@/types/dashboard";
 
-export async function createPreviewGuestToken(key: DashboardKey) {
+export async function createPreviewGuestToken(key: DashboardKey, publicSupersetUrl?: string) {
   const config = getSupersetConfig();
   const id = config.dashboardIds[key];
   if (!id || !config.url || !config.internalUrl || !config.username || !config.password) throw new Error("SUPERSET_NOT_CONFIGURED");
@@ -31,5 +31,5 @@ export async function createPreviewGuestToken(key: DashboardKey) {
     user: { username: "local-dashboard-preview" }, resources: [{ type: "dashboard", id }], rls: [],
   }, login.access_token);
   if (typeof guest.token !== "string" || !guest.token) throw new Error("SUPERSET_TOKEN_FAILED");
-  return { token: guest.token, dashboardId: id, supersetUrl: config.url };
+  return { token: guest.token, dashboardId: id, supersetUrl: publicSupersetUrl || config.url };
 }

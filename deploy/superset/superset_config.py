@@ -32,6 +32,6 @@ TALISMAN_CONFIG = {
     "frame_options": None,
     "content_security_policy": {
         **DEFAULT_TALISMAN_CONFIG["content_security_policy"],
-        "frame-ancestors": ["'self'", "http://127.0.0.1:3002", "http://localhost:3002"],
+        "frame-ancestors": ["'self'", "http://127.0.0.1:3002", "http://localhost:3002", "http://127.0.0.1:13002"],
     },
 }

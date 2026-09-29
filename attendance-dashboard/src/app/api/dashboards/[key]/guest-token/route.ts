@@ -15,7 +15,8 @@ export async function POST(request: Request, context: { params: Promise<{ key: s
     return NextResponse.json({ error: "Akses dashboard memerlukan SSO. Pratinjau hanya tersedia di development localhost." }, { status: 403, headers });
   }
   try {
-    return NextResponse.json(await createPreviewGuestToken(key as DashboardKey), { headers });
+    const publicSupersetUrl = request.headers.get("origin") === process.env.APP_TUNNEL_ORIGIN ? process.env.SUPERSET_TUNNEL_URL : undefined;
+    return NextResponse.json(await createPreviewGuestToken(key as DashboardKey, publicSupersetUrl), { headers });
   } catch {
     return NextResponse.json({ error: "Dashboard belum dapat diakses. Coba kembali atau hubungi administrator." }, { status: 503, headers });
   }

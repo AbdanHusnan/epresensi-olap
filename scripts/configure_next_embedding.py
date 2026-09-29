@@ -13,7 +13,9 @@ from dotenv import dotenv_values
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = "http://127.0.0.1:8090"
-ORIGINS = ["http://127.0.0.1:3002", "http://localhost:3002"]
+ORIGINS = ["http://127.0.0.1:3002", "http://localhost:3002", "http://127.0.0.1:13002"]
+TUNNEL_ORIGIN = ORIGINS[2]
+TUNNEL_SUPERSET_URL = "http://127.0.0.1:18090"
 MAPPING = {"OVERVIEW": 1, "ATTENDANCE": 2, "DEPARTMENTS": 3, "LATENESS": 4}
 
 
@@ -79,7 +81,7 @@ def main():
         embedded = request(f"/api/v1/dashboard/{dashboard_id}/embedded", {"allowed_domains": ORIGINS})["result"]
         env[f"SUPERSET_{key}_ID"] = embedded["uuid"]
         print(f"{key}: embedded dashboard {dashboard_id} configured")
-    env.update(APP_ORIGIN=ORIGINS[0], APP_LOCALHOST_ORIGIN=ORIGINS[1], DASHBOARD_LOCAL_PREVIEW="true", SUPERSET_URL=BASE, SUPERSET_INTERNAL_URL=BASE, SUPERSET_SERVICE_USERNAME=username, SUPERSET_SERVICE_PASSWORD=password)
+    env.update(APP_ORIGIN=ORIGINS[0], APP_LOCALHOST_ORIGIN=ORIGINS[1], APP_TUNNEL_ORIGIN=TUNNEL_ORIGIN, SUPERSET_TUNNEL_URL=TUNNEL_SUPERSET_URL, DASHBOARD_LOCAL_PREVIEW="true", SUPERSET_URL=BASE, SUPERSET_INTERNAL_URL=BASE, SUPERSET_SERVICE_USERNAME=username, SUPERSET_SERVICE_PASSWORD=password)
     save_env(env_path, env)
     print("Local embedding configuration saved to .env.local (mode 600). Production remains disabled.")
 
