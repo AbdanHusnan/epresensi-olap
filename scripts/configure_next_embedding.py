@@ -13,7 +13,7 @@ from dotenv import dotenv_values
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = "http://127.0.0.1:8090"
-ORIGIN = "http://127.0.0.1:3002"
+ORIGINS = ["http://127.0.0.1:3002", "http://localhost:3002"]
 MAPPING = {"OVERVIEW": 1, "ATTENDANCE": 2, "DEPARTMENTS": 3, "LATENESS": 4}
 
 
@@ -76,10 +76,10 @@ def main():
         save_env(env_path, env)
         request("/api/v1/security/users/", {"username": username, "first_name": "Next", "last_name": "Embedding", "email": "next-dashboard@localhost", "active": True, "password": password, "roles": [role_by_name[service_name]]})
     for key, dashboard_id in MAPPING.items():
-        embedded = request(f"/api/v1/dashboard/{dashboard_id}/embedded", {"allowed_domains": [ORIGIN]})["result"]
+        embedded = request(f"/api/v1/dashboard/{dashboard_id}/embedded", {"allowed_domains": ORIGINS})["result"]
         env[f"SUPERSET_{key}_ID"] = embedded["uuid"]
         print(f"{key}: embedded dashboard {dashboard_id} configured")
-    env.update(APP_ORIGIN=ORIGIN, DASHBOARD_LOCAL_PREVIEW="true", SUPERSET_URL=BASE, SUPERSET_INTERNAL_URL=BASE, SUPERSET_SERVICE_USERNAME=username, SUPERSET_SERVICE_PASSWORD=password)
+    env.update(APP_ORIGIN=ORIGINS[0], APP_LOCALHOST_ORIGIN=ORIGINS[1], DASHBOARD_LOCAL_PREVIEW="true", SUPERSET_URL=BASE, SUPERSET_INTERNAL_URL=BASE, SUPERSET_SERVICE_USERNAME=username, SUPERSET_SERVICE_PASSWORD=password)
     save_env(env_path, env)
     print("Local embedding configuration saved to .env.local (mode 600). Production remains disabled.")
 
