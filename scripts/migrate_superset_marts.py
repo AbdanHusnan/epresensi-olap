@@ -7,7 +7,8 @@ from copy import deepcopy
 from collections import Counter
 import json
 from pathlib import Path
-from etl.connectors.olap import get_olap_connection
+from scripts.report_paths import report_path
+from scripts.dashboard_db import get_olap_connection
 from scripts.superset_api import SupersetAPI
 
 BACKUP=Path('backups/superset-before-marts.json')
@@ -94,7 +95,7 @@ def main():
                         raise ValueError(f'Chart {cid} {run["key"]}/{request["phase"]} differs')
                     validations.append({'dashboard':run['key'],'chart_id':cid,'phase':request['phase'],'rows':len(left),'equal':True})
                 print('Validated',run['key'],cid,request['phase'],flush=True)
-    Path('docs/dashboard-mart-validation.json').write_text(json.dumps({'datasets':ids,'queries':validations},indent=2))
+    report_path('dashboard-mart-validation.json').write_text(json.dumps({'datasets':ids,'queries':validations},indent=2))
     # API does not support atomic multi-chart writes: restore snapshots if any write fails.
     try:
         for cid,chart in charts.items():

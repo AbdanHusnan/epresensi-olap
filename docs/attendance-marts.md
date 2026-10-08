@@ -74,7 +74,7 @@ Informasi ini tersedia di database monitoring; belum ditambahkan sebagai widget 
   dengan mart menggunakan EXCEPT ALL dua arah dan sama.
 - 41 query chart/filter dibandingkan sebelum cutover, termasuk semua 20 chart dan
   pemilihan departemen. Seluruh nilai sama (COUNT integer dan SUM numeric dibandingkan
-  sebagai nilai, bukan representasi string). Lihat `dashboard-mart-validation.json`.
+  sebagai nilai, bukan representasi string). Laporan lama dibersihkan; hasil pengujian ulang ditulis ke `logs/reports/dashboard-mart-validation.json`.
 - Tujuh tes PostgreSQL terisolasi lulus: perubahan tanggal/departemen, delete/truncate,
   rename dimensi, no-op dan coalescing, koreksi nilai, NULL/zero denominators,
   visibility antar-koneksi, kegagalan commit/rollback. Schema uji dibersihkan.
@@ -96,7 +96,7 @@ departemen. Lingkungan tetap development, browser berjalan di server yang sama,
 tanpa throttling, dengan readiness 500 ms stabil setelah request terakhir. Hasil
 bukan SLA produksi atau pengukuran jaringan pengguna. Cache hasil chart dibypass;
 perbaikan bukan berasal dari cache hasil query. Biaya Superset/iframe/assets/render
-masih tersisa; tidak semua waktu load adalah SQL. Detail: `dashboard-mart-performance.json`.
+masih tersisa; tidak semua waktu load adalah SQL. Rincian JSON pengukuran lama telah dibersihkan; ringkasan hasil tetap tercatat di atas.
 
 ## Provision, ulang validasi, dan recovery
 

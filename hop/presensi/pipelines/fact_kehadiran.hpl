@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pipeline>
+  <info>
+    <name>fact_kehadiran</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Atomic database batch with durable checkpoint; resume by rerunning workflow.</description>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters />
+  </info>
+  <order>
+    <hop>
+      <from>Mulai batch</from>
+      <to>Proses dan commit batch</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Proses dan commit batch</from>
+      <to>Baca checkpoint</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Baca checkpoint</from>
+      <to>Hasil batch</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <transform>
+    <name>Mulai batch</name>
+    <type>TableInput</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <connection>presensi_target</connection>
+    <sql>SELECT 1 AS batch_token</sql>
+    <limit>0</limit>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <GUI>
+      <xloc>120</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Proses dan commit batch</name>
+    <type>ExecSql</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <connection>presensi_target</connection>
+    <sql>SELECT hop_etl.fact_step();
+COMMIT;</sql>
+    <execute_each_row>Y</execute_each_row>
+    <single_statement>N</single_statement>
+    <replace_variables>N</replace_variables>
+    <set_params>N</set_params>
+    <GUI>
+      <xloc>360</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Baca checkpoint</name>
+    <type>DBJoin</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <connection>presensi_target</connection>
+    <sql>SELECT phase, phase&lt;&gt;'done' AS has_more, next_id, event_rows, next_date, fact_rows FROM hop_etl.fact_checkpoint</sql>
+    <rowlimit>1</rowlimit>
+    <outer_join>N</outer_join>
+    <replace_vars>N</replace_vars>
+    <GUI>
+      <xloc>600</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Hasil batch</name>
+    <type>RowsToResult</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <GUI>
+      <xloc>840</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform_error_handling />
+  <attributes />
+</pipeline>

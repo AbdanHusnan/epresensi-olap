@@ -1,0 +1,10 @@
+{
+  "name": "local",
+  "description": "Local resumable fact backfill",
+  "engineRunConfiguration": {
+    "Local": {
+      "safe_mode": true
+    }
+  },
+  "defaultSelection": true
+}

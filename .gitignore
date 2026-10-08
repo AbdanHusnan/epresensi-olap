@@ -22,6 +22,7 @@ Thumbs.db
 
 # Logs
 *.log
+/logs/hop-fact/
 
 # PostgreSQL local data
 postgres-data/
@@ -33,3 +34,9 @@ backups/
 
 # Web app environment template (contains no secrets)
 !attendance-dashboard/.env.example
+
+# Locally extracted database backups
+/var/www/backup_db/
+
+# Generated audit and validation reports
+/logs/reports/

@@ -1,0 +1,15 @@
+{
+  "name": "local",
+  "description": "Local Hop engine for presensi",
+  "engineRunConfiguration": {
+    "Local": {
+      "rowset_size": "10000",
+      "safe_mode": true,
+      "show_feedback": true,
+      "feedback_size": "1000",
+      "gather_metrics": true
+    }
+  },
+  "configurationVariables": [],
+  "defaultSelection": true
+}

@@ -3,8 +3,8 @@ import os
 from pathlib import Path
 import unittest
 import uuid
-from etl.connectors.olap import get_olap_connection
-from etl.control.locking import acquire_pipeline_lock
+from scripts.dashboard_db import get_olap_connection
+from scripts.dashboard_db import acquire_pipeline_lock
 
 
 @unittest.skipUnless(os.getenv('RUN_POSTGRES_TESTS') == '1','Set RUN_POSTGRES_TESTS=1')

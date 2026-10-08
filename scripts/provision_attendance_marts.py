@@ -2,8 +2,8 @@
 import argparse
 import json
 from pathlib import Path
-from etl.connectors.olap import get_olap_connection
-from etl.control.locking import acquire_pipeline_lock
+from scripts.dashboard_db import get_olap_connection
+from scripts.dashboard_db import acquire_pipeline_lock
 
 
 def main():

@@ -1,0 +1,201 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pipeline>
+  <info>
+    <name>dim_pegawai</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Current employee snapshot, category and department lookup; stable keys; no delete</description>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters />
+  </info>
+  <order>
+    <hop>
+      <from>Baca dan mapping pegawai</from>
+      <to>Lookup departemen</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Lookup departemen</from>
+      <to>Upsert dim_pegawai</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <transform>
+    <name>Baca dan mapping pegawai</name>
+    <type>TableInput</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <GUI>
+      <xloc>150</xloc>
+      <yloc>160</yloc>
+    </GUI>
+    <connection>presensi_source</connection>
+    <sql>SELECT p.id AS pegawai_id, p.id AS pegawai_id_sumber,
+p.departemen AS departemen_id_sumber, p.nip, p.nama AS nama_pegawai,
+p.status AS kategori_pegawai_id_sumber, v.previleges AS kategori_pegawai,
+p.jenis_kelamin AS jenis_kelamin_kode, p.jabatan, p.pangkat, p.jenis_jabatan,
+p.eselon, p.kelas_jabatan, p.unit_kerja_induk AS unit_kerja_induk_id_sumber,
+p.created_at AS source_created_at, p.updated_at AS source_updated_at,
+NULL::boolean AS status_aktif
+FROM public.m_pegawai p LEFT JOIN public.m_previleges v ON v.id=p.status
+ORDER BY p.id</sql>
+    <limit>0</limit>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+  </transform>
+  <transform>
+    <name>Lookup departemen</name>
+    <type>DBLookup</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <GUI>
+      <xloc>450</xloc>
+      <yloc>160</yloc>
+    </GUI>
+    <connection>presensi_target</connection>
+    <cache>Y</cache>
+    <cache_size>10000</cache_size>
+    <cache_load_all>Y</cache_load_all>
+    <lookup>
+      <schema>public</schema>
+      <table>dim_departemen</table>
+      <key>
+        <name>departemen_id_sumber</name>
+        <field>departemen_id_sumber</field>
+        <condition>=</condition>
+      </key>
+      <value>
+        <name>departemen_key</name>
+        <rename>departemen_key</rename>
+        <default />
+        <type>Integer</type>
+      </value>
+      <value>
+        <name>departemen_id</name>
+        <rename>departemen_id</rename>
+        <default />
+        <type>Integer</type>
+      </value>
+      <fail_on_multiple>Y</fail_on_multiple>
+      <eat_row_on_failure>N</eat_row_on_failure>
+    </lookup>
+  </transform>
+  <transform>
+    <name>Upsert dim_pegawai</name>
+    <type>InsertUpdate</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <GUI>
+      <xloc>750</xloc>
+      <yloc>160</yloc>
+    </GUI>
+    <connection>presensi_target</connection>
+    <commit>1000</commit>
+    <update_bypassed>N</update_bypassed>
+    <lookup>
+      <schema>public</schema>
+      <table>dim_pegawai</table>
+      <key>
+        <name>pegawai_id_sumber</name>
+        <field>pegawai_id_sumber</field>
+        <condition>=</condition>
+      </key>
+      <value>
+        <name>pegawai_id</name>
+        <rename>pegawai_id</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>pegawai_id_sumber</name>
+        <rename>pegawai_id_sumber</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>departemen_id_sumber</name>
+        <rename>departemen_id_sumber</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>nip</name>
+        <rename>nip</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>nama_pegawai</name>
+        <rename>nama_pegawai</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>kategori_pegawai_id_sumber</name>
+        <rename>kategori_pegawai_id_sumber</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>kategori_pegawai</name>
+        <rename>kategori_pegawai</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>jenis_kelamin_kode</name>
+        <rename>jenis_kelamin_kode</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>jabatan</name>
+        <rename>jabatan</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>pangkat</name>
+        <rename>pangkat</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>jenis_jabatan</name>
+        <rename>jenis_jabatan</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>eselon</name>
+        <rename>eselon</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>kelas_jabatan</name>
+        <rename>kelas_jabatan</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>unit_kerja_induk_id_sumber</name>
+        <rename>unit_kerja_induk_id_sumber</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>source_created_at</name>
+        <rename>source_created_at</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>source_updated_at</name>
+        <rename>source_updated_at</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>status_aktif</name>
+        <rename>status_aktif</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>departemen_key</name>
+        <rename>departemen_key</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>departemen_id</name>
+        <rename>departemen_id</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+  </transform>
+  <transform_error_handling />
+  <attributes />
+</pipeline>

@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow>
+  <name>fact_ingest_events_all</name>
+  <name_sync_with_filename>Y</name_sync_with_filename>
+  <description>Resumable historical backfill; each iteration commits one checkpointed batch.</description>
+  <parameters />
+  <actions>
+    <action>
+      <name>Start</name>
+      <type>SPECIAL</type>
+      <parallel>N</parallel>
+      <xloc>100</xloc>
+      <yloc>160</yloc>
+      <repeat>N</repeat>
+      <schedulerType>0</schedulerType>
+    </action>
+    <action>
+      <name>Batch</name>
+      <type>PIPELINE</type>
+      <parallel>N</parallel>
+      <xloc>330</xloc>
+      <yloc>160</yloc>
+      <filename>${PROJECT_HOME}/pipelines/fact_ingest_events.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>Y</clear_rows>
+      <clear_files>N</clear_files>
+      <wait_until_finished>Y</wait_until_finished>
+      <run_configuration>local</run_configuration>
+      <loglevel>Minimal</loglevel>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+    </action>
+    <action>
+      <name>Masih ada batch</name>
+      <type>EVAL</type>
+      <parallel>N</parallel>
+      <xloc>560</xloc>
+      <yloc>160</yloc>
+      <script>var rows = previous_result.getRows();
+if (rows.size() != 1) { throw new Error('Expected exactly one checkpoint result'); }
+var row = rows.get(0);
+row.getRowMeta().getBoolean(row.getData(), 'has_more', false);</script>
+    </action>
+    <action>
+      <name>Selesai</name>
+      <type>SUCCESS</type>
+      <parallel>N</parallel>
+      <xloc>790</xloc>
+      <yloc>160</yloc>
+    </action>
+  </actions>
+  <hops>
+    <hop>
+      <from>Start</from>
+      <to>Batch</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>Batch</from>
+      <to>Masih ada batch</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Masih ada batch</from>
+      <to>Batch</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Masih ada batch</from>
+      <to>Selesai</to>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+  </hops>
+  <attributes />
+</workflow>

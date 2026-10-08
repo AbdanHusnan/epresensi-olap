@@ -1,52 +1,38 @@
-# ePresensi OLAP ETL
+# ePresensi OLAP — Apache Hop
 
-Python ETL for PostgreSQL attendance and leave analytics. Source and warehouse
-connections are configured with `OLTP_*` and `OLAP_*` variables in `.env`.
+Pipeline dimensi dan fakta presensi menggunakan Apache Hop dengan PostgreSQL.
+Sumber aktif: `dbabsen_restore`; target pengembangan: `epresensi_analytics_hop_dev`.
 
-## Dummy 82.000 pegawai — satu bulan
+## Acuan dan operasi
 
-Profil yang disepakati: [Jawa Timur, Agustus 2026](docs/dummy-jatim-202608.md),
-25 departemen, 4 pola shift, proporsi WFO tepat waktu/WFH/terlambat/izin/tidak absen
-60/10/10/10/10. Generator: `--profile jatim-202608`.
+- [Kesepakatan mapping presensi](docs/kesepakatan-mapping-presensi-hop.md): aturan bisnis, grain, transformasi, dan keputusan review.
+- [Panduan Apache Hop](hop/README.md): konfigurasi, pipeline dimensi, backfill fakta, dan resume checkpoint.
+- [Mapping kolom](docs/oltp-mapping-review.csv) dan [inventaris sumber](docs/oltp-columns-hop.md).
+- [Relasi sumber](docs/oltp-erd-hop.md).
 
-## Initial load requirements
+Folder `hop/` berisi project, metadata koneksi, pipeline, dan workflow.
+SQL transformasi berada di `sql/hop/`; skrip setup, audit, dan validasi berada di
+`scripts/`. Laporan hasil eksekusi disimpan di `logs/reports/` dan log runner di
+`logs/hop-fact/`, keduanya diabaikan Git. Kredensial lokal tidak disimpan dalam
+repository.
 
-Lihat [requirement dan langkah initial load](docs/initial-load-requirements.md)
-untuk kondisi OLTP kosong, pemetaan seluruh dimensi/fakta, dan mode `--check-only`.
+ETL Python lama, generator dummy, tes khusus ETL lama, dan unit schedulernya
+sudah dihapus. Gunakan workflow Hop untuk pemrosesan data. Runner backfill dapat
+dilanjutkan dengan:
 
-## Replace dummy data and run an initial load
+```bash
+.venv/bin/python scripts/run_hop_fact.py --detach
+```
 
-See [the initial-load runbook](docs/initial-load.md) for the complete procedure,
-backup requirements, exact commands, validation queries, and recovery steps.
+Jangan menjalankan runner baru bila masih ada proses aktif. Backfill memakai
+checkpoint; penyelesaian diperiksa melalui laporan validasi lengkap.
 
-The replacement workflow supports 82,000 fictional employees and six months of
-attendance through compressed source batches and daily warehouse batches:
+## Dashboard
 
-- `python -m etl.dummy.generate`: generate reproducible source data.
-- `python -m etl.dummy.seed`: preview or replace source records.
-- `python -m etl.pipeline.initial_load`: preview or atomically replace warehouse data.
+- [Panduan Superset](deploy/superset/README.md).
+- [Mart agregasi](docs/attendance-marts.md).
+- [Aplikasi Next.js](attendance-dashboard/README.md).
 
-Both database commands default to previews. Writes require `--apply`, the exact
-`--confirm-db` name, and a fresh `--backup` path. Source replacement additionally
-requires `--all-public-records`, which clears all public source table records;
-review the scope in the runbook before using it.
-
-Existing standalone pipelines live in `etl/pipeline/`. Their upserts update or
-insert records but do not remove obsolete records from an earlier dataset.
-
-## Phase 10 — Master orchestration
-
-See [the master runbook](docs/master-orchestration.md) for ordered dimension/fact
-loading, atomic checkpoints and rollback, reruns, and the daily scheduler.
-Preview: `.venv/bin/python -m etl.pipeline.master --recent-days 2`.
-
-## Dashboard analytics / Superset
-
-Instance Superset khusus proyek, akun OLAP read-only, dua dataset dan empat KPI:
-lihat [panduan koneksi dashboard](deploy/superset/README.md).
-Target KPI dibiarkan kosong sampai kebijakan bisnis tersedia.
-
-## Web app dashboard
-
-Kerangka Next.js berada di [attendance-dashboard](attendance-dashboard/README.md).
-Jalankan `npm run dev` dari folder tersebut untuk pratinjau lokal pada port 3002.
+Utilitas Python dashboard memakai `scripts/dashboard_db.py` dan konfigurasi
+`OLAP_*` pada `.env`, terpisah dari pipeline Hop. Jalankan utilitas ini sebagai
+modul dari root repository, misalnya `python -m scripts.provision_dashboard`.

@@ -1,0 +1,227 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pipeline>
+  <info>
+    <name>dim_shift</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Combined m_jadwal + m_shift; one row per schedule ID; stable surrogate; no automatic deletion.</description>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters />
+  </info>
+  <order>
+    <hop>
+      <from>Gabung shift dan jadwal</from>
+      <to>Lookup departemen</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Lookup departemen</from>
+      <to>Upsert dim_shift</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <transform>
+    <name>Gabung shift dan jadwal</name>
+    <type>TableInput</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <GUI>
+      <xloc>150</xloc>
+      <yloc>160</yloc>
+    </GUI>
+    <connection>presensi_source</connection>
+    <sql>WITH combined AS (
+ SELECT j.id AS jadwal_id_sumber, j.jenis AS shift_id_sumber,
+ s.nama AS nama_shift, s.departemen_id AS departemen_id_sumber,
+ s.status AS is_aktif_saat_ini, s.nama ~* 'regular|reguler' AS is_reguler,
+ s.is_flexible AS is_flexible_kode_sumber,
+ CASE s.is_flexible WHEN 0 THEN false WHEN 1 THEN true ELSE NULL END AS is_flexible,
+ s.event_id AS event_id_sumber, s.created_at AS shift_source_created_at,
+ j.created_at AS jadwal_source_created_at, j.hari AS hari_sumber,
+ CASE lower(btrim(j.hari))
+  WHEN 'mon' THEN 1 WHEN 'monday' THEN 1 WHEN 'senin' THEN 1
+  WHEN 'tue' THEN 2 WHEN 'tuesday' THEN 2 WHEN 'selasa' THEN 2
+  WHEN 'wed' THEN 3 WHEN 'wednesday' THEN 3 WHEN 'rabu' THEN 3
+  WHEN 'thu' THEN 4 WHEN 'thursday' THEN 4 WHEN 'kamis' THEN 4
+  WHEN 'fri' THEN 5 WHEN 'friday' THEN 5 WHEN 'jumat' THEN 5
+  WHEN 'sat' THEN 6 WHEN 'saturday' THEN 6 WHEN 'sabtu' THEN 6
+  WHEN 'sun' THEN 7 WHEN 'sunday' THEN 7 WHEN 'minggu' THEN 7
+ END AS hari_iso,
+ j.jam_masuk, j.jam_keluar, j.jam_masuk_awal, j.jam_keluar_akhir,
+ j.flexible_time AS flexible_time_sumber,
+ j.jam_keluar &lt; j.jam_masuk AS indikasi_lintas_tengah_malam,
+ j.jam_keluar = j.jam_masuk AS is_jam_sama
+ FROM public.m_jadwal j LEFT JOIN public.m_shift s ON s.id=j.jenis
+)
+SELECT *, (ARRAY['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'])[hari_iso] AS hari
+FROM combined ORDER BY jadwal_id_sumber
+</sql>
+    <limit>0</limit>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+  </transform>
+  <transform>
+    <name>Lookup departemen</name>
+    <type>DBLookup</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <GUI>
+      <xloc>450</xloc>
+      <yloc>160</yloc>
+    </GUI>
+    <connection>presensi_target</connection>
+    <cache>Y</cache>
+    <cache_size>10000</cache_size>
+    <cache_load_all>Y</cache_load_all>
+    <lookup>
+      <schema>public</schema>
+      <table>dim_departemen</table>
+      <key>
+        <name>departemen_id_sumber</name>
+        <field>departemen_id_sumber</field>
+        <condition>=</condition>
+      </key>
+      <value>
+        <name>departemen_key</name>
+        <rename>departemen_key</rename>
+        <default />
+        <type>Integer</type>
+      </value>
+      <fail_on_multiple>Y</fail_on_multiple>
+      <eat_row_on_failure>N</eat_row_on_failure>
+    </lookup>
+  </transform>
+  <transform>
+    <name>Upsert dim_shift</name>
+    <type>InsertUpdate</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <GUI>
+      <xloc>750</xloc>
+      <yloc>160</yloc>
+    </GUI>
+    <connection>presensi_target</connection>
+    <commit>1000</commit>
+    <update_bypassed>N</update_bypassed>
+    <lookup>
+      <schema>public</schema>
+      <table>dim_shift</table>
+      <key>
+        <name>jadwal_id_sumber</name>
+        <field>jadwal_id_sumber</field>
+        <condition>=</condition>
+      </key>
+      <value>
+        <name>jadwal_id_sumber</name>
+        <rename>jadwal_id_sumber</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>shift_id_sumber</name>
+        <rename>shift_id_sumber</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>nama_shift</name>
+        <rename>nama_shift</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>departemen_id_sumber</name>
+        <rename>departemen_id_sumber</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>departemen_key</name>
+        <rename>departemen_key</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>is_aktif_saat_ini</name>
+        <rename>is_aktif_saat_ini</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>is_reguler</name>
+        <rename>is_reguler</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>is_flexible_kode_sumber</name>
+        <rename>is_flexible_kode_sumber</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>is_flexible</name>
+        <rename>is_flexible</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>event_id_sumber</name>
+        <rename>event_id_sumber</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>shift_source_created_at</name>
+        <rename>shift_source_created_at</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>jadwal_source_created_at</name>
+        <rename>jadwal_source_created_at</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>hari_sumber</name>
+        <rename>hari_sumber</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>hari</name>
+        <rename>hari</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>hari_iso</name>
+        <rename>hari_iso</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>jam_masuk</name>
+        <rename>jam_masuk</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>jam_keluar</name>
+        <rename>jam_keluar</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>jam_masuk_awal</name>
+        <rename>jam_masuk_awal</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>jam_keluar_akhir</name>
+        <rename>jam_keluar_akhir</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>flexible_time_sumber</name>
+        <rename>flexible_time_sumber</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>indikasi_lintas_tengah_malam</name>
+        <rename>indikasi_lintas_tengah_malam</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>is_jam_sama</name>
+        <rename>is_jam_sama</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+  </transform>
+  <transform_error_handling />
+  <attributes />
+</pipeline>

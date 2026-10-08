@@ -1,0 +1,21 @@
+{
+  "name": "presensi_source",
+  "rdbms": {
+    "POSTGRESQL": {
+      "pluginId": "POSTGRESQL",
+      "pluginName": "PostgreSQL",
+      "accessType": 0,
+      "hostname": "${HOP_SOURCE_HOST}",
+      "port": "${HOP_SOURCE_PORT}",
+      "databaseName": "${HOP_SOURCE_DB}",
+      "username": "${HOP_SOURCE_USER}",
+      "password": "${HOP_SOURCE_PASSWORD}",
+      "attributes": {
+        "SUPPORTS_BOOLEAN_DATA_TYPE": "Y",
+        "SUPPORTS_TIMESTAMP_DATA_TYPE": "Y",
+        "QUOTE_ALL_FIELDS": "N",
+        "SQL_CONNECT": "SET default_transaction_read_only = on"
+      }
+    }
+  }
+}

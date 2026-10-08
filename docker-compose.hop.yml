@@ -1,0 +1,44 @@
+# Start: docker compose -p epresensi-hop -f docker-compose.hop.yml up -d
+# Laptop tunnel: ssh -N -L 18080:127.0.0.1:8080 pti
+# Browser: http://localhost:18080/ui
+services:
+  hop-web:
+    image: apache/hop-web@sha256:ec55779d57fdda7c3eef1d766bf388471e4f8df4a269d80f94fd020202e9b7b1
+    container_name: epresensi-hop-web
+    restart: unless-stopped
+    networks:
+      - default
+      - olap
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      TZ: Asia/Jakarta
+      JAVA_TOOL_OPTIONS: "-DHOP_EMPTY_STRING_DIFFERS_FROM_NULL=Y"
+      HOP_OPTIONS: "-Xms256m -Xmx2g"
+      HOP_PROJECT_NAME: presensi
+      HOP_PROJECT_FOLDER: /usr/local/tomcat/webapps/ROOT/config/projects/presensi
+      HOP_AUDIT_FOLDER: /usr/local/tomcat/webapps/ROOT/config/audit
+      HOP_ENVIRONMENT_NAME: presensi-local
+      HOP_ENVIRONMENT_CONFIG_FILE_NAME_PATHS: /usr/local/tomcat/webapps/ROOT/config/environments/presensi-local.json
+    command:
+      - /bin/bash
+      - -c
+      - mkdir -p /usr/local/tomcat/webapps/ROOT/config/projects/presensi /usr/local/tomcat/webapps/ROOT/config/audit && exec /bin/bash /tmp/run-web.sh
+    volumes:
+      - hop-config:/usr/local/tomcat/webapps/ROOT/config
+    mem_limit: 3g
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# This volume includes project files, metadata, and Hop configuration.
+# Preserve it when recreating the container; do not use `down -v`.
+volumes:
+  hop-config:
+
+networks:
+  olap:
+    external: true
+    name: olap_default

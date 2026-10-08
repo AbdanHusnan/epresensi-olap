@@ -10,7 +10,7 @@ from pathlib import Path
 import time
 import urllib.request
 from dotenv import dotenv_values
-from etl.connectors.olap import get_olap_connection
+from scripts.dashboard_db import get_olap_connection
 
 
 def main():

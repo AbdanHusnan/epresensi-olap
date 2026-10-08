@@ -111,8 +111,9 @@ Cache hasil query merupakan lapisan berbeda dari mart:
 
 ## Reproduksi dan bukti
 
-Ringkasan angka, seluruh sampel SQL, dan execution plan pertama per query tersedia
-pada `dashboard-performance-results.json`. Script hanya menulis hasil benchmark;
+Laporan JSON pengukuran lama telah dibersihkan; ringkasan angka tetap tercatat
+di dokumen ini. Jalankan skrip berikut untuk membuat laporan baru (default di `/tmp`).
+Script hanya menulis hasil benchmark;
 SQL comparison menggunakan temporary table dan rollback.
 
 ```bash
