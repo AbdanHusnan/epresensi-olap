@@ -22,7 +22,7 @@ $$;
 REVOKE ALL ON FUNCTION hop_etl.classify_fact(integer,boolean,bigint,boolean,boolean,boolean,boolean,boolean,boolean,boolean,boolean) FROM PUBLIC;
 
 CREATE OR REPLACE FUNCTION hop_etl.build_fact_day(p_day date) RETURNS bigint
-LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog SET work_mem='128MB' AS $$
+LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog SET work_mem='128MB' SET jit=off AS $$
 DECLARE affected bigint; last_day date; nfinal bigint; nevents bigint;
 BEGIN
  SELECT last_date INTO STRICT last_day FROM hop_etl.fact_checkpoint WHERE singleton;

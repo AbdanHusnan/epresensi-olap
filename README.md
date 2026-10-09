@@ -16,16 +16,10 @@ SQL transformasi berada di `sql/hop/`; skrip setup, audit, dan validasi berada d
 `logs/hop-fact/`, keduanya diabaikan Git. Kredensial lokal tidak disimpan dalam
 repository.
 
-ETL Python lama, generator dummy, tes khusus ETL lama, dan unit schedulernya
-sudah dihapus. Gunakan workflow Hop untuk pemrosesan data. Runner backfill dapat
-dilanjutkan dengan:
-
-```bash
-.venv/bin/python scripts/run_hop_fact.py --detach
-```
-
-Jangan menjalankan runner baru bila masih ada proses aktif. Backfill memakai
-checkpoint; penyelesaian diperiksa melalui laporan validasi lengkap.
+Pipeline dan workflow fakta buatan sebelumnya beserta runner backfill telah dihapus
+atas permintaan pengguna pada 9 Oktober 2026. Pipeline dimensi tetap tersedia;
+pipeline fakta akan dibuat sendiri oleh pengguna melalui Apache Hop. SQL pendukung,
+data database, checkpoint, dan laporan lama dipertahankan sebagai referensi.
 
 ## Dashboard
 

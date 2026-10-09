@@ -38,6 +38,9 @@ BEGIN
   IF st.first_date IS NULL THEN RAISE EXCEPTION 'No dated source events'; END IF;
   SELECT count(*) INTO n FROM public.dim_calendar WHERE tanggal BETWEEN st.first_date AND st.last_date;
   IF n<>st.last_date-st.first_date+1 THEN RAISE EXCEPTION 'Calendar must cover % through % before facts',st.first_date,st.last_date; END IF;
+  -- A completed event scan can reveal older dates than the initial calendar.
+  -- Add missing dates before any facts, retaining the existing frozen snapshot.
+  INSERT INTO hop_etl.calendar_snapshot SELECT * FROM public.dim_calendar ON CONFLICT DO NOTHING;
   UPDATE hop_etl.fact_checkpoint SET first_date=st.first_date,last_date=st.last_date,next_date=st.first_date,phase='days',changed_at=clock_timestamp() WHERE singleton;
   ANALYZE hop_etl.event_day;
   RETURN 0;

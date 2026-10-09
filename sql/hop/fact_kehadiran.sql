@@ -1,4 +1,12 @@
 DO $$ BEGIN IF current_database()<>'epresensi_analytics_hop_dev' THEN RAISE EXCEPTION 'Wrong target'; END IF; END $$;
+-- Legacy mart publication must not run during a checkpointed Hop backfill.
+-- Keep dirty-date tracking so a later explicit mart refresh can consume all dates.
+DO $$ BEGIN
+ IF EXISTS(SELECT 1 FROM pg_trigger WHERE tgrelid=to_regclass('analytics.mart_dirty_dates')
+           AND tgname='flush_attendance_marts' AND NOT tgisinternal) THEN
+  ALTER TABLE analytics.mart_dirty_dates DISABLE TRIGGER flush_attendance_marts;
+ END IF;
+END $$;
 ALTER TABLE public.fact_kehadiran
  ALTER COLUMN is_expected_workday DROP NOT NULL,
  ALTER COLUMN is_terlambat DROP NOT NULL,

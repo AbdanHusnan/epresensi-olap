@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS hop_etl.leave_source (
 );
 CREATE INDEX IF NOT EXISTS hop_leave_period_idx ON hop_etl.leave_source USING gist(periode);
 CREATE INDEX IF NOT EXISTS hop_leave_start_idx ON hop_etl.leave_source(awal);
+CREATE INDEX IF NOT EXISTS hop_leave_invalid_start_idx ON hop_etl.leave_source(awal) WHERE periode IS NULL;
 CREATE TABLE IF NOT EXISTS hop_etl.off_source (id integer PRIMARY KEY,pegawai_id integer,tanggal date,updated_at timestamp);
 CREATE INDEX IF NOT EXISTS hop_off_date_idx ON hop_etl.off_source(tanggal,pegawai_id);
 CREATE TABLE IF NOT EXISTS hop_etl.fact_days (

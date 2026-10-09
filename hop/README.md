@@ -150,7 +150,18 @@ sesuai parameter pipeline. Rekonsiliasi dan pengujian kasus batas disimpan pada
 sama dengan laporan pembanding. SQL mandiri dan SQL di dalam pipeline harus tetap
 sama bila mapping diedit.
 
-## Fact kehadiran: seluruh histori restore
+## Status pipeline fakta — 9 Oktober 2026
+
+Pipeline `fact_kehadiran.hpl` dan `fact_ingest_events.hpl`, kedua workflow
+pendukungnya, serta `scripts/run_hop_fact.py` telah dihapus atas permintaan
+pengguna. Pengguna akan membuat pipeline fakta sendiri melalui Apache Hop.
+Pipeline dimensi tetap tersedia. Data database, fungsi SQL, checkpoint, serta
+laporan validasi lama dipertahankan; penghapusan ini bukan reset database.
+
+Bagian berikut merupakan **catatan historis implementasi yang sudah dihentikan**.
+Perintah runner dan referensi pipeline/workflow fakta di bawah tidak lagi berlaku.
+
+## Riwayat fact kehadiran: seluruh histori restore
 
 Workflow `workflows/fact_kehadiran_all.hwf` menjalankan
 `pipelines/fact_kehadiran.hpl` berulang sampai checkpoint selesai. Target tetap
@@ -220,3 +231,43 @@ dari dokumentasi yang dipelihara. Baseline validasi dimensi tetap disimpan di sa
 untuk opsi `--unchanged`. Laporan audit/benchmark lama telah dibersihkan; jalankan
 skrip terkait bila memerlukan hasil baru. Skrip validasi tetap dipertahankan karena
 runner backfill fakta memakainya untuk pemeriksaan akhir.
+
+### Penyesuaian load histori 8 Oktober 2026
+
+Pembacaan seluruh event menemukan rentang tanggal **2020-06-01 sampai
+2026-09-01**. Kalender target diperluas melalui pipeline dengan parameter
+`START_DATE=2020-06-01,END_DATE=2026-12-31` menjadi 2.405 tanggal. Tanggal tambahan
+masuk snapshot sebelum pembentukan fakta; parameter default kalender tetap sama.
+Untuk validasi kalender aktual, gunakan `--start-date 2020-06-01 --end-date 2026-12-31`.
+
+Rentang tersebut bukan histori event yang kontinu sejak 2020. Ada **976 tanggal
+unik berisi event**: satu event bertanggal 2020-06-01, lalu 366 tanggal tahun 2024,
+365 tanggal tahun 2025, dan 244 tanggal tahun 2026 sampai 1 September. Tidak ada
+event presensi pada 2021–2023; fakta review yang muncul di periode tersebut
+berasal dari bukti izin/libur individual sesuai aturan kandidat. Tanggal 2020
+tetap dipertahankan untuk review, bukan dianggap bukti histori harian lengkap.
+
+Trigger legacy `analytics.mart_dirty_dates.flush_attendance_marts` dinonaktifkan
+khusus pada target Hop dev. Pencatatan dirty dates tetap aktif. Mart/dashboard
+legacy belum diperbarui oleh load ini dan memerlukan refresh eksplisit serta
+validasi terpisah saat integrasi dashboard; keberhasilan load bukan bukti mart
+sudah siap. Pengaturan ini dipertahankan oleh setup SQL fakta.
+
+Kompilasi JIT dinonaktifkan khusus fungsi pembentukan fakta untuk mengurangi
+biaya kompilasi per tanggal. Perbandingan proyeksi sebelum/sesudah pada 58.928
+baris menghasilkan nilai identik. Run ini menggunakan tujuh tanggal per batch
+commit; checkpoint tetap atomik dan dapat dilanjutkan tanpa menggandakan fakta.
+
+### Status terakhir: load dijeda atas permintaan pengguna
+
+Pada 2026-10-08T15:07:20.567523+07:00, runner dihentikan dengan membatalkan batch aktif.
+Commit terakhir mencakup tanggal sampai **2025-10-30**, sebanyak
+**29,825,212 baris fakta**. Checkpoint berikutnya adalah
+**2025-10-31**; batas akhir sumber tetap 2026-09-01.
+Seluruh event sudah di-staging, tetapi pembentukan fakta masih parsial. View KPI
+final tetap tertahan; jangan menyatakan full backfill selesai.
+
+Status runner dicatat `paused` di `logs/hop-fact/latest.json`. Pesan pembatalan
+pada log Hop adalah penghentian yang diminta pengguna. Tidak ada resume otomatis.
+Jika pengguna meminta melanjutkan, jalankan runner yang sama; checkpoint akan
+melanjutkan tanggal berikutnya tanpa membaca ulang seluruh sumber.
