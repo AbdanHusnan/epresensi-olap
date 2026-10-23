@@ -40,3 +40,6 @@ backups/
 
 # Generated audit and validation reports
 /logs/reports/
+
+# Local runtime state (databases, scheduler logs, temporary files)
+/runtime/
