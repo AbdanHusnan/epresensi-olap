@@ -1,0 +1,28 @@
+name: epresensi-mart
+
+services:
+  postgres-mart:
+    image: postgres:16
+    container_name: epresensi-mart-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${MART_DB:?Set MART_DB in .env.mart}
+      POSTGRES_USER: ${MART_USER:?Set MART_USER in .env.mart}
+      POSTGRES_PASSWORD: ${MART_PASSWORD:?Set MART_PASSWORD in .env.mart}
+      TZ: Asia/Jakarta
+    volumes:
+      - mart_postgres_data:/var/lib/postgresql/data
+    networks:
+      - mart
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  mart:
+    name: epresensi_mart
+
+volumes:
+  mart_postgres_data:

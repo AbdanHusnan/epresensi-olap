@@ -1,0 +1,28 @@
+name: epresensi-staging
+
+services:
+  postgres-staging:
+    image: postgres:16
+    container_name: epresensi-staging-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${STAGING_DB:?Set STAGING_DB in .env.staging}
+      POSTGRES_USER: ${STAGING_USER:?Set STAGING_USER in .env.staging}
+      POSTGRES_PASSWORD: ${STAGING_PASSWORD:?Set STAGING_PASSWORD in .env.staging}
+      TZ: Asia/Jakarta
+    volumes:
+      - staging_postgres_data:/var/lib/postgresql/data
+    networks:
+      - staging
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  staging:
+    name: epresensi_staging
+
+volumes:
+  staging_postgres_data:
