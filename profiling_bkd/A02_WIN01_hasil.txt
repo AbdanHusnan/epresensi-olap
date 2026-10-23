@@ -1,0 +1,18 @@
+BEGIN
+SET
+SET
+ test_id |                 metrik                  | event_terdampak | pegawai_hari_terdampak | departemen_snapshot_terdampak | denominator_event_jendela | denominator_pegawai_hari_teramati | departemen_teramati 
+---------+-----------------------------------------+-----------------+------------------------+-------------------------------+---------------------------+-----------------------------------+---------------------
+ A1      | jadwal_id_NULL                          | 1612            | 1321                   | 88                            |                  37652784 |                          17989342 |                4389
+ A1      | jadwal_id_orphan                        | 0               | 0                      | 0                             |                  37652784 |                          17989342 |                4389
+ A2      | checktype_invalid_atau_NULL             | 265027          | 251309                 | 3189                          |                  37652784 |                          17989342 |                4389
+ A2      | is_manual_NULL                          | 0               | 0                      | 0                             |                  37652784 |                          17989342 |                4389
+ A2      | is_wfh_invalid_atau_NULL                | 0               | 0                      | 0                             |                  37652784 |                          17989342 |                4389
+ A3      | approval_at_lebih_awal                  | <5              | <5                     | <5                            |                  37652784 |                          17989342 |                4389
+ A3      | manual_tanpa_approval                   | 0               | 0                      | 0                             |                  37652784 |                          17989342 |                4389
+ A3      | nonmanual_dengan_approval_at            | 37470982        | 17988505               | 4389                          |                  37652784 |                          17989342 |                4389
+ A4      | created_at_sebelum_m_pegawai_created_at | <5              | <5                     | <5                            |                  37652784 |                          17989342 |                4389
+ A7      | updated_at_berbeda_created_at           | 4379138         | 2810171                | 4381                          |                  37652784 |                          17989342 |                4389
+(10 rows)
+
+COMMIT

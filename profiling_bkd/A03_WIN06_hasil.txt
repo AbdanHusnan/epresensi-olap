@@ -1,0 +1,13 @@
+BEGIN
+SET
+SET
+ test_id |                   metrik                   | pegawai_jadwal_hari_kandidat | pegawai_hari_kandidat | departemen_snapshot_kandidat | denominator_kandidat_pegawai_jadwal_hari | event_checkout_dalam_seluruh_kandidat 
+---------+--------------------------------------------+------------------------------+-----------------------+------------------------------+------------------------------------------+---------------------------------------
+ A9      | checkout_only_lintas_hari_seluruh_kandidat | 227993                       | 227975                | 434                          |                                   227993 |                                252012
+ A9      | tanpa_checkin_jadwal_sama_di_D_minus_1     | 227993                       | 227975                | 434                          |                                   227993 |                                252012
+ A9      | tepat_1_checkin_jadwal_sama_di_D_minus_1   | 0                            | 0                     | 0                            |                                   227993 |                                252012
+ A9      | lebih_1_checkin_jadwal_sama_di_D_minus_1   | 0                            | 0                     | 0                            |                                   227993 |                                252012
+ A9      | checkout_pada_00_sampai_jam_keluar_rencana | 1012                         | 1012                  | 158                          |                                   227993 |                                252012
+(5 rows)
+
+COMMIT

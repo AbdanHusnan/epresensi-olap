@@ -1,0 +1,11 @@
+BEGIN
+SET
+SET
+ test_id |           metrik           | pegawai_jadwal_hari | pegawai_hari | departemen_snapshot | denominator_pegawai_jadwal_hari | denominator_pegawai_hari 
+---------+----------------------------+---------------------+--------------+---------------------+---------------------------------+--------------------------
+ A7      | masuk_berulang             | 813179              | 810793       | 4338                |                        18275287 |                 17989342
+ A7      | pulang_berulang            | 1069676             | 1067885      | 4343                |                        18275287 |                 17989342
+ A7      | masuk_atau_pulang_berulang | 1579508             | 1572442      | 4371                |                        18275287 |                 17989342
+(3 rows)
+
+COMMIT

@@ -1,0 +1,186 @@
+BEGIN
+SET
+SET
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            QUERY PLAN                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=30372155.33..30372155.36 rows=10 width=184)
+   Output: "*VALUES*".column1, "*VALUES*".column2, (CASE WHEN (("*VALUES*".column3 >= 1) AND ("*VALUES*".column3 <= 4)) THEN '<5'::text ELSE (COALESCE("*VALUES*".column3, '0'::bigint))::text END), (CASE WHEN (("*VALUES*".column4 >= 1) AND ("*VALUES*".column4 <= 4)) THEN '<5'::text ELSE (COALESCE("*VALUES*".column4, '0'::bigint))::text END), (CASE WHEN (("*VALUES*".column5 >= 1) AND ("*VALUES*".column5 <= 4)) THEN '<5'::text ELSE (COALESCE("*VALUES*".column5, '0'::bigint))::text END), ((COALESCE(sum(ed.events), '0'::numeric))::bigint), (count(*)), (count(DISTINCT ed.dept_snapshot))
+   Sort Key: "*VALUES*".column1, "*VALUES*".column2
+   CTE ed
+     ->  HashAggregate  (cost=10748453.86..12011751.67 rows=37172901 width=100)
+           Output: t.pegawai_id, p.departemen, ((t.created_at)::date), count(*), count(*) FILTER (WHERE (t.jadwal_id IS NULL)), count(*) FILTER (WHERE ((t.jadwal_id IS NOT NULL) AND (j.id IS NULL))), count(*) FILTER (WHERE ((t.checktype IS NULL) OR (t.checktype <> ALL ('{1,2}'::integer[])))), count(*) FILTER (WHERE ((t.is_wfh IS NULL) OR (t.is_wfh <> ALL ('{0,1}'::integer[])))), count(*) FILTER (WHERE (t.is_manual IS NULL)), count(*) FILTER (WHERE ((t.is_manual IS TRUE) AND (t.approval_at IS NULL))), count(*) FILTER (WHERE ((t.approval_at IS NOT NULL) AND (t.approval_at < t.created_at))), count(*) FILTER (WHERE ((t.is_manual IS FALSE) AND (t.approval_at IS NOT NULL))), count(*) FILTER (WHERE ((p.created_at IS NOT NULL) AND (t.created_at < p.created_at))), count(*) FILTER (WHERE ((t.updated_at IS NOT NULL) AND (t.updated_at <> t.created_at)))
+           Group Key: t.pegawai_id, p.departemen, (t.created_at)::date
+           Planned Partitions: 64
+           ->  Hash Left Join  (cost=15750.08..5044736.87 rows=37172901 width=59)
+                 Output: t.pegawai_id, p.departemen, (t.created_at)::date, t.jadwal_id, j.id, t.checktype, t.is_wfh, t.is_manual, t.approval_at, t.created_at, p.created_at, t.updated_at
+                 Inner Unique: true
+                 Hash Cond: (t.pegawai_id = p.id)
+                 ->  Hash Left Join  (cost=3630.86..4842103.25 rows=37172901 width=43)
+                       Output: t.pegawai_id, t.created_at, t.jadwal_id, t.checktype, t.is_wfh, t.is_manual, t.approval_at, t.updated_at, j.id
+                       Inner Unique: true
+                       Hash Cond: (t.jadwal_id = j.id)
+                       ->  Seq Scan on public.t_checkinout t  (cost=0.00..4740889.64 rows=37172901 width=39)
+                             Output: t.id, t.pegawai_id, t.latlong, t.departemen, t.location, t.jarak, t.checktype, t.imei, t.approval, t.approval_at, t.created_at, t.updated_at, t.current_location, t.ijin, t.keterangan, t.file, t.type_ijin, t.deskripsi, t.timezone, t.is_wfh, t.work_code, t.selisih_waktu, t.jadwal_id, t.hari, t.jam_masuk, t.jam_keluar, t.jam_masuk_awal, t.jam_keluar_akhir, t.flexible_time, t.is_manual, t.temp_current_location
+                             Filter: ((t.created_at >= '2025-09-01 00:00:00'::timestamp without time zone) AND (t.created_at < '2026-09-01 00:00:00'::timestamp without time zone))
+                       ->  Hash  (cost=2298.16..2298.16 rows=106616 width=4)
+                             Output: j.id
+                             ->  Seq Scan on public.m_jadwal j  (cost=0.00..2298.16 rows=106616 width=4)
+                                   Output: j.id
+                 ->  Hash  (cost=10546.32..10546.32 rows=125832 width=16)
+                       Output: p.departemen, p.created_at, p.id
+                       ->  Seq Scan on public.m_pegawai p  (cost=0.00..10546.32 rows=125832 width=16)
+                             Output: p.departemen, p.created_at, p.id
+   ->  Nested Loop  (cost=18360402.90..18360403.50 rows=10 width=184)
+         Output: "*VALUES*".column1, "*VALUES*".column2, CASE WHEN (("*VALUES*".column3 >= 1) AND ("*VALUES*".column3 <= 4)) THEN '<5'::text ELSE (COALESCE("*VALUES*".column3, '0'::bigint))::text END, CASE WHEN (("*VALUES*".column4 >= 1) AND ("*VALUES*".column4 <= 4)) THEN '<5'::text ELSE (COALESCE("*VALUES*".column4, '0'::bigint))::text END, CASE WHEN (("*VALUES*".column5 >= 1) AND ("*VALUES*".column5 <= 4)) THEN '<5'::text ELSE (COALESCE("*VALUES*".column5, '0'::bigint))::text END, ((COALESCE(sum(ed.events), '0'::numeric))::bigint), (count(*)), (count(DISTINCT ed.dept_snapshot))
+         ->  Nested Loop  (cost=18360402.90..18360402.97 rows=1 width=264)
+               Output: ((COALESCE(sum(ed.events), '0'::numeric))::bigint), (count(*)), (count(DISTINCT ed.dept_snapshot)), ((sum(ed_1.a1_null))::bigint), (count(*) FILTER (WHERE (ed_1.a1_null > 0))), (count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a1_null > 0))), ((sum(ed_1.a1_orphan))::bigint), (count(*) FILTER (WHERE (ed_1.a1_orphan > 0))), (count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a1_orphan > 0))), ((sum(ed_1.a2_checktype))::bigint), (count(*) FILTER (WHERE (ed_1.a2_checktype > 0))), (count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a2_checktype > 0))), ((sum(ed_1.a2_wfh))::bigint), (count(*) FILTER (WHERE (ed_1.a2_wfh > 0))), (count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a2_wfh > 0))), ((sum(ed_1.a2_manual))::bigint), (count(*) FILTER (WHERE (ed_1.a2_manual > 0))), (count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a2_manual > 0))), ((sum(ed_1.a3_noapproval))::bigint), (count(*) FILTER (WHERE (ed_1.a3_noapproval > 0))), (count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a3_noapproval > 0))), ((sum(ed_1.a3_early))::bigint), (count(*) FILTER (WHERE (ed_1.a3_early > 0))), (count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a3_early > 0))), ((sum(ed_1.a3_nonmanual))::bigint), (count(*) FILTER (WHERE (ed_1.a3_nonmanual > 0))), (count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a3_nonmanual > 0))), ((sum(ed_1.a4_prepegawai))::bigint), (count(*) FILTER (WHERE (ed_1.a4_prepegawai > 0))), (count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a4_prepegawai > 0))), ((sum(ed_1.a7_changed))::bigint), (count(*) FILTER (WHERE (ed_1.a7_changed > 0))), (count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a7_changed > 0)))
+               ->  Aggregate  (cost=6424542.26..6424542.27 rows=1 width=24)
+                     Output: count(*), (COALESCE(sum(ed.events), '0'::numeric))::bigint, count(DISTINCT ed.dept_snapshot)
+                     ->  Sort  (cost=6052813.24..6145745.50 rows=37172901 width=12)
+                           Output: ed.events, ed.dept_snapshot
+                           Sort Key: ed.dept_snapshot
+                           ->  CTE Scan on ed  (cost=0.00..743458.02 rows=37172901 width=12)
+                                 Output: ed.events, ed.dept_snapshot
+               ->  Aggregate  (cost=11935860.65..11935860.68 rows=1 width=240)
+                     Output: (sum(ed_1.a1_null))::bigint, count(*) FILTER (WHERE (ed_1.a1_null > 0)), count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a1_null > 0)), (sum(ed_1.a1_orphan))::bigint, count(*) FILTER (WHERE (ed_1.a1_orphan > 0)), count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a1_orphan > 0)), (sum(ed_1.a2_checktype))::bigint, count(*) FILTER (WHERE (ed_1.a2_checktype > 0)), count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a2_checktype > 0)), (sum(ed_1.a2_wfh))::bigint, count(*) FILTER (WHERE (ed_1.a2_wfh > 0)), count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a2_wfh > 0)), (sum(ed_1.a2_manual))::bigint, count(*) FILTER (WHERE (ed_1.a2_manual > 0)), count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a2_manual > 0)), (sum(ed_1.a3_noapproval))::bigint, count(*) FILTER (WHERE (ed_1.a3_noapproval > 0)), count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a3_noapproval > 0)), (sum(ed_1.a3_early))::bigint, count(*) FILTER (WHERE (ed_1.a3_early > 0)), count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a3_early > 0)), (sum(ed_1.a3_nonmanual))::bigint, count(*) FILTER (WHERE (ed_1.a3_nonmanual > 0)), count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a3_nonmanual > 0)), (sum(ed_1.a4_prepegawai))::bigint, count(*) FILTER (WHERE (ed_1.a4_prepegawai > 0)), count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a4_prepegawai > 0)), (sum(ed_1.a7_changed))::bigint, count(*) FILTER (WHERE (ed_1.a7_changed > 0)), count(DISTINCT ed_1.dept_snapshot) FILTER (WHERE (ed_1.a7_changed > 0))
+                     ->  Sort  (cost=7196315.74..7289248.00 rows=37172901 width=84)
+                           Output: ed_1.a1_null, ed_1.dept_snapshot, ed_1.a1_orphan, ed_1.a2_checktype, ed_1.a2_wfh, ed_1.a2_manual, ed_1.a3_noapproval, ed_1.a3_early, ed_1.a3_nonmanual, ed_1.a4_prepegawai, ed_1.a7_changed
+                           Sort Key: ed_1.dept_snapshot
+                           ->  CTE Scan on ed ed_1  (cost=0.00..743458.02 rows=37172901 width=84)
+                                 Output: ed_1.a1_null, ed_1.dept_snapshot, ed_1.a1_orphan, ed_1.a2_checktype, ed_1.a2_wfh, ed_1.a2_manual, ed_1.a3_noapproval, ed_1.a3_early, ed_1.a3_nonmanual, ed_1.a4_prepegawai, ed_1.a7_changed
+         ->  Values Scan on "*VALUES*"  (cost=0.00..0.12 rows=10 width=88)
+               Output: "*VALUES*".column1, "*VALUES*".column2, "*VALUES*".column3, "*VALUES*".column4, "*VALUES*".column5
+ Settings: work_mem = '64MB'
+ JIT:
+   Functions: 35
+   Options: Inlining true, Optimization true, Expressions true, Deforming true
+(51 rows)
+
+                                                                                                                                                                                                                                                                                                                        QUERY PLAN                                                                                                                                                                                                                                                                                                                         
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=16407146.65..16407146.82 rows=3 width=168)
+   Output: 'A5'::text, "*VALUES*".column1, CASE WHEN (("*VALUES*".column2 >= 1) AND ("*VALUES*".column2 <= 4)) THEN '<5'::text ELSE ("*VALUES*".column2)::text END, CASE WHEN (("*VALUES*".column3 >= 1) AND ("*VALUES*".column3 <= 4)) THEN '<5'::text ELSE ("*VALUES*".column3)::text END, CASE WHEN (("*VALUES*".column4 >= 1) AND ("*VALUES*".column4 <= 4)) THEN '<5'::text ELSE ("*VALUES*".column4)::text END, (count(*))
+   ->  Aggregate  (cost=16407146.65..16407146.67 rows=1 width=80)
+         Output: count(*), (COALESCE(sum(per_day.excess_identik), '0'::numeric))::bigint, count(*) FILTER (WHERE (per_day.excess_identik > 0)), count(DISTINCT per_day.dept_snapshot) FILTER (WHERE (per_day.excess_identik > 0)), (COALESCE(sum(per_day.near_adjacent), '0'::numeric))::bigint, count(*) FILTER (WHERE (per_day.near_adjacent > 0)), count(DISTINCT per_day.dept_snapshot) FILTER (WHERE (per_day.near_adjacent > 0)), (COALESCE(sum(per_day.near_waktu_berbeda), '0'::numeric))::bigint, count(*) FILTER (WHERE (per_day.near_waktu_berbeda > 0)), count(DISTINCT per_day.dept_snapshot) FILTER (WHERE (per_day.near_waktu_berbeda > 0))
+         ->  Sort  (cost=16249895.62..16259145.68 rows=3700024 width=28)
+               Output: per_day.excess_identik, per_day.dept_snapshot, per_day.near_adjacent, per_day.near_waktu_berbeda
+               Sort Key: per_day.dept_snapshot
+               ->  Subquery Scan on per_day  (cost=6336478.37..15757710.60 rows=3700024 width=28)
+                     Output: per_day.excess_identik, per_day.dept_snapshot, per_day.near_adjacent, per_day.near_waktu_berbeda
+                     ->  GroupAggregate  (cost=6336478.37..15720710.36 rows=3700024 width=36)
+                           Output: marks.pegawai_id, marks.dept_snapshot, ((marks.created_at)::date), count(*) FILTER (WHERE (marks.signature_rownum > 1)), count(*) FILTER (WHERE ((marks.prev_created_at IS NOT NULL) AND ((marks.created_at - marks.prev_created_at) < '00:01:00'::interval))), count(*) FILTER (WHERE ((marks.prev_created_at IS NOT NULL) AND (marks.created_at > marks.prev_created_at) AND ((marks.created_at - marks.prev_created_at) < '00:01:00'::interval)))
+                           Group Key: marks.pegawai_id, marks.dept_snapshot, ((marks.created_at)::date)
+                           ->  Incremental Sort  (cost=6336478.37..15210994.29 rows=15448859 width=36)
+                                 Output: marks.pegawai_id, marks.dept_snapshot, ((marks.created_at)::date), marks.signature_rownum, marks.prev_created_at, marks.created_at
+                                 Sort Key: marks.pegawai_id, marks.dept_snapshot, ((marks.created_at)::date)
+                                 Presorted Key: marks.pegawai_id
+                                 ->  Subquery Scan on marks  (cost=6336365.46..14425366.28 rows=15448859 width=36)
+                                       Output: marks.pegawai_id, marks.dept_snapshot, (marks.created_at)::date, marks.signature_rownum, marks.prev_created_at, marks.created_at
+                                       Filter: (marks.created_at >= '2025-09-01 00:00:00'::timestamp without time zone)
+                                       ->  WindowAgg  (cost=6336365.46..13922082.03 rows=37172968 width=63)
+                                             Output: t.id, t.pegawai_id, p.departemen, t.jadwal_id, t.checktype, t.created_at, t.is_wfh, t.is_manual, t.approval_at, t.updated_at, (row_number() OVER (?)), lag(t.created_at) OVER (?)
+                                             ->  Incremental Sort  (cost=6336365.46..12992757.83 rows=37172968 width=55)
+                                                   Output: t.id, t.pegawai_id, t.jadwal_id, t.checktype, t.created_at, t.is_wfh, t.is_manual, t.approval_at, t.updated_at, p.departemen, (row_number() OVER (?))
+                                                   Sort Key: t.pegawai_id, t.jadwal_id, t.checktype, t.created_at, t.id
+                                                   Presorted Key: t.pegawai_id, t.jadwal_id, t.checktype, t.created_at
+                                                   ->  WindowAgg  (cost=6336364.79..11966823.37 rows=37172968 width=55)
+                                                         Output: t.id, t.pegawai_id, t.jadwal_id, t.checktype, t.created_at, t.is_wfh, t.is_manual, t.approval_at, t.updated_at, p.departemen, row_number() OVER (?)
+                                                         ->  Gather Merge  (cost=6336364.79..10665769.49 rows=37172968 width=47)
+                                                               Output: t.id, t.pegawai_id, t.jadwal_id, t.checktype, t.created_at, t.is_wfh, t.is_manual, t.approval_at, t.updated_at, p.departemen
+                                                               Workers Planned: 2
+                                                               ->  Sort  (cost=6335364.76..6374086.61 rows=15488737 width=47)
+                                                                     Output: t.id, t.pegawai_id, t.jadwal_id, t.checktype, t.created_at, t.is_wfh, t.is_manual, t.approval_at, t.updated_at, p.departemen
+                                                                     Sort Key: t.pegawai_id, t.jadwal_id, t.checktype, t.created_at, t.is_wfh, t.is_manual, t.approval_at, t.updated_at, t.id
+                                                                     ->  Parallel Hash Left Join  (cost=10467.67..4009182.33 rows=15488737 width=47)
+                                                                           Output: t.id, t.pegawai_id, t.jadwal_id, t.checktype, t.created_at, t.is_wfh, t.is_manual, t.approval_at, t.updated_at, p.departemen
+                                                                           Inner Unique: true
+                                                                           Hash Cond: (t.pegawai_id = p.id)
+                                                                           ->  Parallel Seq Scan on public.t_checkinout t  (cost=0.00..3958055.35 rows=15488737 width=43)
+                                                                                 Output: t.id, t.pegawai_id, t.latlong, t.departemen, t.location, t.jarak, t.checktype, t.imei, t.approval, t.approval_at, t.created_at, t.updated_at, t.current_location, t.ijin, t.keterangan, t.file, t.type_ijin, t.deskripsi, t.timezone, t.is_wfh, t.work_code, t.selisih_waktu, t.jadwal_id, t.hari, t.jam_masuk, t.jam_keluar, t.jam_masuk_awal, t.jam_keluar_akhir, t.flexible_time, t.is_manual, t.temp_current_location
+                                                                                 Filter: ((t.created_at >= '2025-08-31 23:59:00'::timestamp without time zone) AND (t.created_at < '2026-09-01 00:00:00'::timestamp without time zone))
+                                                                           ->  Parallel Hash  (cost=9812.30..9812.30 rows=52430 width=8)
+                                                                                 Output: p.departemen, p.id
+                                                                                 ->  Parallel Seq Scan on public.m_pegawai p  (cost=0.00..9812.30 rows=52430 width=8)
+                                                                                       Output: p.departemen, p.id
+   ->  Values Scan on "*VALUES*"  (cost=0.00..0.04 rows=3 width=56)
+         Output: "*VALUES*".column1, "*VALUES*".column2, "*VALUES*".column3, "*VALUES*".column4
+ Settings: work_mem = '64MB'
+ JIT:
+   Functions: 35
+   Options: Inlining true, Optimization true, Expressions true, Deforming true
+(50 rows)
+
+                                                                                                                                                                                                                        QUERY PLAN                                                                                                                                                                                                                        
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Subquery Scan on hist  (cost=16479337.15..16944011.42 rows=200 width=168)
+   Output: 'A6'::text, hist.bucket, CASE WHEN ((hist.n_hari >= 1) AND (hist.n_hari <= 4)) THEN '<5'::text ELSE (hist.n_hari)::text END, CASE WHEN ((hist.n_event >= 1) AND (hist.n_event <= 4)) THEN '<5'::text ELSE (hist.n_event)::text END, CASE WHEN ((hist.n_dept >= 1) AND (hist.n_dept <= 4)) THEN '<5'::text ELSE (hist.n_dept)::text END, $1
+   CTE by_day
+     ->  HashAggregate  (cost=7510776.73..8338454.61 rows=37172901 width=20)
+           Output: t.pegawai_id, p.departemen, ((t.created_at)::date), count(*)
+           Group Key: t.pegawai_id, p.departemen, (t.created_at)::date
+           Planned Partitions: 32
+           ->  Hash Left Join  (cost=12119.22..4943523.26 rows=37172901 width=12)
+                 Output: t.pegawai_id, p.departemen, (t.created_at)::date
+                 Inner Unique: true
+                 Hash Cond: (t.pegawai_id = p.id)
+                 ->  Seq Scan on public.t_checkinout t  (cost=0.00..4740889.64 rows=37172901 width=12)
+                       Output: t.id, t.pegawai_id, t.latlong, t.departemen, t.location, t.jarak, t.checktype, t.imei, t.approval, t.approval_at, t.created_at, t.updated_at, t.current_location, t.ijin, t.keterangan, t.file, t.type_ijin, t.deskripsi, t.timezone, t.is_wfh, t.work_code, t.selisih_waktu, t.jadwal_id, t.hari, t.jam_masuk, t.jam_keluar, t.jam_masuk_awal, t.jam_keluar_akhir, t.flexible_time, t.is_manual, t.temp_current_location
+                       Filter: ((t.created_at >= '2025-09-01 00:00:00'::timestamp without time zone) AND (t.created_at < '2026-09-01 00:00:00'::timestamp without time zone))
+                 ->  Hash  (cost=10546.32..10546.32 rows=125832 width=8)
+                       Output: p.departemen, p.id
+                       ->  Seq Scan on public.m_pegawai p  (cost=0.00..10546.32 rows=125832 width=8)
+                             Output: p.departemen, p.id
+   InitPlan 2 (returns $1)
+     ->  Aggregate  (cost=836390.27..836390.28 rows=1 width=8)
+           Output: count(*)
+           ->  CTE Scan on by_day by_day_1  (cost=0.00..743458.02 rows=37172901 width=0)
+                 Output: by_day_1.pegawai_id, by_day_1.dept_snapshot, by_day_1.hari_proksi, by_day_1.n_event
+   ->  GroupAggregate  (cost=7304492.26..7769160.53 rows=200 width=56)
+         Output: (CASE WHEN (by_day.n_event = 1) THEN '01'::text WHEN (by_day.n_event = 2) THEN '02'::text WHEN (by_day.n_event = 3) THEN '03'::text WHEN (by_day.n_event = 4) THEN '04'::text WHEN ((by_day.n_event >= 5) AND (by_day.n_event <= 9)) THEN '05-09'::text WHEN ((by_day.n_event >= 10) AND (by_day.n_event <= 19)) THEN '10-19'::text ELSE '20+'::text END), count(*), (sum(by_day.n_event))::bigint, count(DISTINCT by_day.dept_snapshot)
+         Group Key: (CASE WHEN (by_day.n_event = 1) THEN '01'::text WHEN (by_day.n_event = 2) THEN '02'::text WHEN (by_day.n_event = 3) THEN '03'::text WHEN (by_day.n_event = 4) THEN '04'::text WHEN ((by_day.n_event >= 5) AND (by_day.n_event <= 9)) THEN '05-09'::text WHEN ((by_day.n_event >= 10) AND (by_day.n_event <= 19)) THEN '10-19'::text ELSE '20+'::text END)
+         ->  Sort  (cost=7304492.26..7397424.52 rows=37172901 width=44)
+               Output: (CASE WHEN (by_day.n_event = 1) THEN '01'::text WHEN (by_day.n_event = 2) THEN '02'::text WHEN (by_day.n_event = 3) THEN '03'::text WHEN (by_day.n_event = 4) THEN '04'::text WHEN ((by_day.n_event >= 5) AND (by_day.n_event <= 9)) THEN '05-09'::text WHEN ((by_day.n_event >= 10) AND (by_day.n_event <= 19)) THEN '10-19'::text ELSE '20+'::text END), by_day.n_event, by_day.dept_snapshot
+               Sort Key: (CASE WHEN (by_day.n_event = 1) THEN '01'::text WHEN (by_day.n_event = 2) THEN '02'::text WHEN (by_day.n_event = 3) THEN '03'::text WHEN (by_day.n_event = 4) THEN '04'::text WHEN ((by_day.n_event >= 5) AND (by_day.n_event <= 9)) THEN '05-09'::text WHEN ((by_day.n_event >= 10) AND (by_day.n_event <= 19)) THEN '10-19'::text ELSE '20+'::text END), by_day.dept_snapshot
+               ->  CTE Scan on by_day  (cost=0.00..1486916.04 rows=37172901 width=44)
+                     Output: CASE WHEN (by_day.n_event = 1) THEN '01'::text WHEN (by_day.n_event = 2) THEN '02'::text WHEN (by_day.n_event = 3) THEN '03'::text WHEN (by_day.n_event = 4) THEN '04'::text WHEN ((by_day.n_event >= 5) AND (by_day.n_event <= 9)) THEN '05-09'::text WHEN ((by_day.n_event >= 10) AND (by_day.n_event <= 19)) THEN '10-19'::text ELSE '20+'::text END, by_day.n_event, by_day.dept_snapshot
+ Settings: work_mem = '64MB'
+ JIT:
+   Functions: 25
+   Options: Inlining true, Optimization true, Expressions true, Deforming true
+(35 rows)
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    QUERY PLAN                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=17238769.02..17238769.19 rows=3 width=176)
+   Output: 'A7'::text, "*VALUES*".column1, CASE WHEN (("*VALUES*".column2 >= 1) AND ("*VALUES*".column2 <= 4)) THEN '<5'::text ELSE ("*VALUES*".column2)::text END, CASE WHEN (("*VALUES*".column3 >= 1) AND ("*VALUES*".column3 <= 4)) THEN '<5'::text ELSE ("*VALUES*".column3)::text END, CASE WHEN (("*VALUES*".column4 >= 1) AND ("*VALUES*".column4 <= 4)) THEN '<5'::text ELSE ("*VALUES*".column4)::text END, (count(*)), (count(DISTINCT ROW(by_jadwal_day.pegawai_id, by_jadwal_day.hari_proksi)))
+   ->  Aggregate  (cost=17238769.02..17238769.03 rows=1 width=88)
+         Output: count(*), count(DISTINCT ROW(by_jadwal_day.pegawai_id, by_jadwal_day.hari_proksi)), count(*) FILTER (WHERE (by_jadwal_day.n_masuk > 1)), count(DISTINCT ROW(by_jadwal_day.pegawai_id, by_jadwal_day.hari_proksi)) FILTER (WHERE (by_jadwal_day.n_masuk > 1)), count(DISTINCT by_jadwal_day.dept_snapshot) FILTER (WHERE (by_jadwal_day.n_masuk > 1)), count(*) FILTER (WHERE (by_jadwal_day.n_pulang > 1)), count(DISTINCT ROW(by_jadwal_day.pegawai_id, by_jadwal_day.hari_proksi)) FILTER (WHERE (by_jadwal_day.n_pulang > 1)), count(DISTINCT by_jadwal_day.dept_snapshot) FILTER (WHERE (by_jadwal_day.n_pulang > 1)), count(*) FILTER (WHERE ((by_jadwal_day.n_masuk > 1) OR (by_jadwal_day.n_pulang > 1))), count(DISTINCT ROW(by_jadwal_day.pegawai_id, by_jadwal_day.hari_proksi)) FILTER (WHERE ((by_jadwal_day.n_masuk > 1) OR (by_jadwal_day.n_pulang > 1))), count(DISTINCT by_jadwal_day.dept_snapshot) FILTER (WHERE ((by_jadwal_day.n_masuk > 1) OR (by_jadwal_day.n_pulang > 1)))
+         ->  Sort  (cost=15008394.96..15101327.22 rows=37172901 width=28)
+               Output: by_jadwal_day.pegawai_id, by_jadwal_day.hari_proksi, by_jadwal_day.n_masuk, by_jadwal_day.dept_snapshot, by_jadwal_day.n_pulang
+               Sort Key: by_jadwal_day.dept_snapshot
+               ->  Subquery Scan on by_jadwal_day  (cost=8172919.03..9444929.24 rows=37172901 width=28)
+                     Output: by_jadwal_day.pegawai_id, by_jadwal_day.hari_proksi, by_jadwal_day.n_masuk, by_jadwal_day.dept_snapshot, by_jadwal_day.n_pulang
+                     ->  HashAggregate  (cost=8172919.03..9073200.23 rows=37172901 width=32)
+                           Output: t.pegawai_id, p.departemen, t.jadwal_id, ((t.created_at)::date), count(*) FILTER (WHERE (t.checktype = 1)), count(*) FILTER (WHERE (t.checktype = 2))
+                           Group Key: t.pegawai_id, p.departemen, t.jadwal_id, (t.created_at)::date
+                           Planned Partitions: 32
+                           ->  Hash Left Join  (cost=12119.22..4943523.26 rows=37172901 width=20)
+                                 Output: t.pegawai_id, p.departemen, t.jadwal_id, (t.created_at)::date, t.checktype
+                                 Inner Unique: true
+                                 Hash Cond: (t.pegawai_id = p.id)
+                                 ->  Seq Scan on public.t_checkinout t  (cost=0.00..4740889.64 rows=37172901 width=20)
+                                       Output: t.id, t.pegawai_id, t.latlong, t.departemen, t.location, t.jarak, t.checktype, t.imei, t.approval, t.approval_at, t.created_at, t.updated_at, t.current_location, t.ijin, t.keterangan, t.file, t.type_ijin, t.deskripsi, t.timezone, t.is_wfh, t.work_code, t.selisih_waktu, t.jadwal_id, t.hari, t.jam_masuk, t.jam_keluar, t.jam_masuk_awal, t.jam_keluar_akhir, t.flexible_time, t.is_manual, t.temp_current_location
+                                       Filter: ((t.created_at >= '2025-09-01 00:00:00'::timestamp without time zone) AND (t.created_at < '2026-09-01 00:00:00'::timestamp without time zone))
+                                 ->  Hash  (cost=10546.32..10546.32 rows=125832 width=8)
+                                       Output: p.departemen, p.id
+                                       ->  Seq Scan on public.m_pegawai p  (cost=0.00..10546.32 rows=125832 width=8)
+                                             Output: p.departemen, p.id
+   ->  Values Scan on "*VALUES*"  (cost=0.00..0.04 rows=3 width=56)
+         Output: "*VALUES*".column1, "*VALUES*".column2, "*VALUES*".column3, "*VALUES*".column4
+ Settings: work_mem = '64MB'
+ JIT:
+   Functions: 20
+   Options: Inlining true, Optimization true, Expressions true, Deforming true
+(30 rows)
+
+COMMIT

@@ -1,0 +1,14 @@
+BEGIN
+SET
+SET
+ test_id |              metrik               |              kategori              | event_atau_pegawai_hari | pegawai_hari_terdampak | departemen_snapshot_terdampak | denominator_event_jendela | denominator_pegawai_hari 
+---------+-----------------------------------+------------------------------------+-------------------------+------------------------+-------------------------------+---------------------------+--------------------------
+ A8      | kategori_event_master_snapshot    | jadwal_null                        | 1612                    | 1321                   | 88                            |                  37652784 |                 17989342
+ A8      | kategori_event_master_snapshot    | nonreguler_berdasarkan_keyword     | 35815525                | 17139606               | 4388                          |                  37652784 |                 17989342
+ A8      | kategori_event_master_snapshot    | reguler_aktif_snapshot             | 1595873                 | 769748                 | 718                           |                  37652784 |                 17989342
+ A8      | kategori_event_master_snapshot    | reguler_status_bukan_true_snapshot | 239774                  | 109993                 | 362                           |                  37652784 |                 17989342
+ A8      | pegawai_hari_multi_jadwal_reguler | checktype_manual_filter_only       | 941                     | 941                    | 124                           |                  37652784 |                 17989342
+ A8      | pegawai_hari_multi_jadwal_reguler | raw_event                          | 941                     | 941                    | 124                           |                  37652784 |                 17989342
+(6 rows)
+
+COMMIT

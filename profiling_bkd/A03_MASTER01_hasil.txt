@@ -1,0 +1,11 @@
+BEGIN
+SET
+SET
+ test_id |                    metrik                     | nilai | denominator_jadwal 
+---------+-----------------------------------------------+-------+--------------------
+ A9      | jam_masuk_atau_keluar_null                    | 0     |             106616
+ A9      | jam_keluar_lebih_awal_dari_jam_masuk          | 9909  |             106616
+ A9      | departemen_snapshot_dengan_jadwal_lintas_hari | 1037  |             106616
+(3 rows)
+
+COMMIT

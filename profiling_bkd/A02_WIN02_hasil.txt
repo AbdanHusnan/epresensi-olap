@@ -1,0 +1,11 @@
+BEGIN
+SET
+SET
+ test_id |                  metrik                   | event_berlebih_atau_berdekatan | pegawai_hari_terdampak | departemen_snapshot_terdampak | denominator_pegawai_hari_teramati 
+---------+-------------------------------------------+--------------------------------+------------------------+-------------------------------+-----------------------------------
+ A5      | identik_signature_excess                  | 55318                          | 36566                  | 3105                          |                          17989342
+ A5      | near_adjacent_lt_1_menit_termasuk_identik | 2115419                        | 1114501                | 4348                          |                          17989342
+ A5      | near_positif_lt_1_menit                   | 2058116                        | 1087070                | 4346                          |                          17989342
+(3 rows)
+
+COMMIT
