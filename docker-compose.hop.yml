@@ -9,17 +9,20 @@ services:
     networks:
       - default
       - olap
+      - staging
     ports:
       - "127.0.0.1:8080:8080"
     environment:
       TZ: Asia/Jakarta
       JAVA_TOOL_OPTIONS: "-DHOP_EMPTY_STRING_DIFFERS_FROM_NULL=Y"
-      HOP_OPTIONS: "-Xms256m -Xmx2g"
-      HOP_PROJECT_NAME: presensi
-      HOP_PROJECT_FOLDER: /usr/local/tomcat/webapps/ROOT/config/projects/presensi
+      # Hop Web and hop-run share this 3 GB container.  Keep each JVM below
+      # 1 GB so a batch ingestion job cannot be terminated by the OOM killer.
+      HOP_OPTIONS: "-Xms256m -Xmx1g"
+      HOP_PROJECT_NAME: epresensi-staging
+      HOP_PROJECT_FOLDER: /usr/local/tomcat/webapps/ROOT/config/projects/epresensi-staging
       HOP_AUDIT_FOLDER: /usr/local/tomcat/webapps/ROOT/config/audit
-      HOP_ENVIRONMENT_NAME: presensi-local
-      HOP_ENVIRONMENT_CONFIG_FILE_NAME_PATHS: /usr/local/tomcat/webapps/ROOT/config/environments/presensi-local.json
+      HOP_ENVIRONMENT_NAME: presensi-staging-local
+      HOP_ENVIRONMENT_CONFIG_FILE_NAME_PATHS: /usr/local/tomcat/webapps/ROOT/config/environments/presensi-staging-local.json
     command:
       - /bin/bash
       - -c
@@ -42,3 +45,7 @@ networks:
   olap:
     external: true
     name: olap_default
+  
+  staging:
+    external: true
+    name: epresensi_staging
