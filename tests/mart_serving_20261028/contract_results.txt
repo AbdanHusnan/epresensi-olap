@@ -1,0 +1,48 @@
+BEGIN
+CREATE FUNCTION
+INSERT 0 1
+INSERT 0 2
+INSERT 0 2
+INSERT 0 7
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 4
+ assert_ok 
+-----------
+ 
+(1 row)
+
+ assert_ok 
+-----------
+ 
+(1 row)
+
+ assert_ok 
+-----------
+ 
+(1 row)
+
+ assert_ok 
+-----------
+ 
+(1 row)
+
+INSERT 0 1
+ assert_ok 
+-----------
+ 
+(1 row)
+
+DO
+DO
+                                                                             result                                                                             
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ PASS: measures, all-department totals, UNKNOWN, two shifts, zero denominator, provisional state, grain, FK, SCD overlap, invalid measures and incomplete close
+(1 row)
+
+ROLLBACK

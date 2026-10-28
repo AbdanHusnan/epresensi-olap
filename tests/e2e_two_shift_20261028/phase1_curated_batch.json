@@ -1,0 +1,11 @@
+{
+  "batch_id": "E2E_V2_EVENTS_1",
+  "replayed": false,
+  "date_policy": "SAME_DAY_PROVISIONAL_V1",
+  "event_changes": 1,
+  "leave_changes": 0,
+  "population_changes": 0,
+  "event_daily_changes": 1,
+  "affected_employee_dates": 1,
+  "attendance_daily_changes": 1
+}

@@ -1,0 +1,15 @@
+ assert_true 
+-------------
+ 
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+                                                                                                                                            result                                                                                                                                            
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"batch_id": "HOP_LEAVE_REVOKE", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "leave_policy": "TRANSACTION_TYPE_V3", "event_changes": 0, "leave_changes": 1, "population_changes": 0, "event_daily_changes": 0, "affected_employee_dates": 1, "attendance_daily_changes": 1}
+(1 row)
+

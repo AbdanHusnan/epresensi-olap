@@ -1,0 +1,31 @@
+ current_database 
+------------------
+ mart_bkd
+(1 row)
+
+  schema_name   |             relname             | relkind 
+----------------+---------------------------------+---------
+ etl_control    | mart_batch                      | r
+ mart_kehadiran | dim_calendar                    | r
+ mart_kehadiran | dim_departemen                  | r
+ mart_kehadiran | dim_pegawai                     | r
+ mart_kehadiran | fact_kehadiran_daily            | r
+ serving        | agg_kehadiran_departemen_harian | r
+ serving        | attendance_date_state           | r
+ serving        | v_departemen_filter             | v
+ serving        | v_kehadiran_departemen_harian   | v
+ serving        | v_kehadiran_instansi_harian     | v
+(10 rows)
+
+       object        | count 
+---------------------+-------
+ fact                |     0
+ aggregate           |     0
+ calendar            |     0
+ employee            |     0
+ department_unknown  |     1
+ department_business |     0
+ batch               |     0
+ date_state          |     0
+(8 rows)
+

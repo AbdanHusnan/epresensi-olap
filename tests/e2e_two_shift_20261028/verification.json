@@ -1,0 +1,10 @@
+{
+  "event_rows": 4,
+  "event_daily_rows": 1,
+  "population_rows": 2,
+  "daily_rows": 2,
+  "ready_batches": 0,
+  "source_master_changed": false,
+  "raw_backfill_repeated": false,
+  "source_fixture_events_retained": 4
+}

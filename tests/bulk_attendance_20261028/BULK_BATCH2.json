@@ -1,0 +1,21 @@
+{
+  "batch_id": "BULK_BATCH2",
+  "snapshot_date": null,
+  "snapshot_complete": false,
+  "status": "APPLIED",
+  "created_at": "2026-10-28T11:41:44.608563+07:00",
+  "applied_at": "2026-10-28T11:41:58.467655+07:00",
+  "result": {
+    "batch_id": "BULK_BATCH2",
+    "replayed": false,
+    "date_policy": "SAME_DAY_PROVISIONAL_V1",
+    "leave_policy": "TRANSACTION_TYPE_V3",
+    "event_changes": 1400,
+    "leave_changes": 0,
+    "population_changes": 0,
+    "event_daily_changes": 1000,
+    "affected_employee_dates": 1000,
+    "attendance_daily_changes": 1000
+  },
+  "hop_wall_seconds": 14.396
+}

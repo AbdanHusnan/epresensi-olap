@@ -1,0 +1,21 @@
+{
+  "batch_id": "BULK_CORRECTION",
+  "snapshot_date": null,
+  "snapshot_complete": false,
+  "status": "APPLIED",
+  "created_at": "2026-10-28T11:42:32.494569+07:00",
+  "applied_at": "2026-10-28T11:42:43.670037+07:00",
+  "result": {
+    "batch_id": "BULK_CORRECTION",
+    "replayed": false,
+    "date_policy": "SAME_DAY_PROVISIONAL_V1",
+    "leave_policy": "TRANSACTION_TYPE_V3",
+    "event_changes": 0,
+    "leave_changes": 400,
+    "population_changes": 0,
+    "event_daily_changes": 0,
+    "affected_employee_dates": 400,
+    "attendance_daily_changes": 400
+  },
+  "hop_wall_seconds": 11.626
+}

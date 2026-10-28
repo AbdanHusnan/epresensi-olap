@@ -1,0 +1,21 @@
+{
+  "database": "staging_bkd_e2e_two_shift_20261028",
+  "pegawai_event": 57342,
+  "pegawai_control": 32532,
+  "departemen": 36545,
+  "shift_ids": [
+    22731,
+    22732
+  ],
+  "schedule_ids": [
+    125519,
+    125526
+  ],
+  "existing_raw_evidence_ids": [
+    168205076,
+    168207135,
+    168208636,
+    168212299
+  ],
+  "scope": "Two existing employees and references copied from backfilled raw. No source master mutation."
+}

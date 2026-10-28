@@ -234,7 +234,8 @@ CREATE TEMP TABLE cv2_leave_input ON COMMIT DROP AS
 SELECT r.*,u.pegawai_id user_pegawai_id,j.nama jenis_nama,j.setengah_hari,
  t.id tipe_id,t.nama tipe_nama,
  jsonb_build_object('pegawai_id',r.pegawai_id,'user_id',r.user_id,'departemen',r.departemen,
- 'jenis_ijin',r.jenis_ijin,'approval',r.approval,'approval_at',r.approval_at,
+ 'jenis_ijin',r.jenis_ijin,'tipe_ijin',r.tipe_ijin,'leave_contract','TRANSACTION_TYPE_V3',
+ 'approval',r.approval,'approval_at',r.approval_at,
  'tgl_ijin',r.tgl_ijin,'tgl_ijin_sampai',r.tgl_ijin_sampai,'updated_at',r.updated_at,
  'joined_jenis_id',j.id,'user_employee',u.pegawai_id,'jenis',j.nama,'partial',j.setengah_hari,
                     'type_id',t.id,'type_name',t.nama) fingerprint,
@@ -242,6 +243,7 @@ SELECT r.*,u.pegawai_id user_pegawai_id,j.nama jenis_nama,j.setengah_hari,
  CASE WHEN r.pegawai_id IS NULL THEN 'MISSING_EMPLOYEE' END,
  CASE WHEN r.user_id IS NOT NULL AND u.pegawai_id IS DISTINCT FROM r.pegawai_id THEN 'IDENTITY_MISMATCH' END,
  CASE WHEN r.tgl_ijin IS NULL OR COALESCE(r.tgl_ijin_sampai,r.tgl_ijin)<r.tgl_ijin THEN 'INVALID_RANGE' END,
+ CASE WHEN r.tipe_ijin IS NULL OR r.tipe_ijin NOT IN (1,2,3) THEN 'UNKNOWN_LEAVE_TRANSACTION_TYPE' END,
  CASE WHEN j.id IS NULL OR t.id IS NULL THEN 'LEAVE_REFERENCE_MISSING' END),'') review_reason
 FROM etl_control.curated_batch_item i JOIN raw.raw_perizinan r ON r.id=i.source_id
 LEFT JOIN raw.raw_user u ON u.id=r.user_id
@@ -262,10 +264,13 @@ DELETE FROM curated.cur_leave_daily d USING cv2_changed_leave c WHERE d.perizina
 DELETE FROM etl_control.curated_leave_state d USING cv2_changed_leave c WHERE d.perizinan_id_sumber=c.id;
 INSERT INTO curated.cur_leave_daily
 (perizinan_id_sumber,pegawai_id,tanggal_izin,departemen_id_izin,jenis_izin_id_sumber,
- nama_jenis_izin,tipe_izin_id_sumber,nama_tipe_izin,approval,approval_at,is_full_day_leave,
+ nama_jenis_izin,tipe_izin_id_sumber,nama_tipe_izin,tipe_ijin_sumber,setengah_hari_jenis_sumber,
+ approval,approval_at,is_full_day_leave,
  is_partial_day_leave,is_valid_leave,perlu_review,alasan_review,source_updated_at,source_snapshot_at)
 SELECT r.id,r.pegawai_id,g.d::date,r.departemen,r.jenis_ijin,r.jenis_nama,r.tipe_id,r.tipe_nama,
- r.approval,r.approval_at,NOT r.setengah_hari,r.setengah_hari,
+ r.tipe_ijin,r.setengah_hari,r.approval,r.approval_at,
+ CASE WHEN r.tipe_ijin IN (1,2,3) THEN r.tipe_ijin=1 END,
+ CASE WHEN r.tipe_ijin IN (1,2,3) THEN r.tipe_ijin IN (2,3) END,
  r.approval IS TRUE AND r.review_reason IS NULL,r.review_reason IS NOT NULL,
  r.review_reason,r.updated_at,r.extracted_at
 FROM cv2_leave_input r JOIN cv2_changed_leave c ON c.id=r.id
@@ -317,11 +322,13 @@ CREATE TEMP TABLE cv2_daily (LIKE curated.cur_attendance_daily INCLUDING DEFAULT
 INSERT INTO cv2_daily
 (pegawai_id,tanggal,departemen_id,is_employee_active,population_basis,checkin_event_count,
  checkout_event_count,first_checkin_at,last_checkout_at,has_manual_event,has_valid_leave,
- has_full_day_leave,has_partial_day_leave,perlu_review,alasan_review,is_date_final,
+ has_full_day_leave,has_partial_day_leave,has_excused_checkin,has_excused_checkout,
+ perlu_review,alasan_review,is_date_final,
  date_assignment_policy,source_snapshot_at)
 SELECT a.pegawai_id,a.tanggal,p.departemen_id,p.is_employee_active,p.population_basis,
  COALESCE(e.checkin_event_count,0),COALESCE(e.checkout_event_count,0),e.first_checkin_at,e.last_checkout_at,
  COALESCE(e.has_manual_event,false),COALESCE(l.valid,false),COALESCE(l.full_day,false),COALESCE(l.partial_day,false),
+ COALESCE(l.excused_checkin,false),COALESCE(l.excused_checkout,false),
  p.pegawai_id IS NULL OR p.is_employee_active IS NULL OR COALESCE(p.perlu_review,false)
  OR COALESCE(e.perlu_review,false) OR COALESCE(l.review,false) OR u.n>0,
  NULLIF(concat_ws(';',p.alasan_review,e.alasan_review,l.reasons,
@@ -336,6 +343,7 @@ LEFT JOIN LATERAL (
  SELECT count(*) n,bool_or(is_valid_leave) valid,
  bool_or(is_valid_leave AND is_full_day_leave) full_day,
  bool_or(is_valid_leave AND is_partial_day_leave) partial_day,
+ bool_or(excuses_checkin) excused_checkin,bool_or(excuses_checkout) excused_checkout,
  bool_or(perlu_review) review,string_agg(DISTINCT alasan_review,';') reasons,
  max(source_snapshot_at) snapshot_at FROM curated.cur_leave_daily l
  WHERE l.pegawai_id=a.pegawai_id AND l.tanggal_izin=a.tanggal
@@ -349,8 +357,8 @@ DELETE FROM curated.cur_attendance_daily d USING cv2_affected a
 WHERE d.pegawai_id=a.pegawai_id AND d.tanggal=a.tanggal
 AND NOT EXISTS(SELECT 1 FROM cv2_daily n WHERE n.pegawai_id=d.pegawai_id AND n.tanggal=d.tanggal);
 GET DIAGNOSTICS v_removed=ROW_COUNT;
-INSERT INTO curated.cur_attendance_daily AS dst (pegawai_id,tanggal,departemen_id,is_employee_active,population_basis,checkin_event_count,checkout_event_count,first_checkin_at,last_checkout_at,has_manual_event,has_valid_leave,has_full_day_leave,has_partial_day_leave,perlu_review,alasan_review,is_date_final,date_assignment_policy,source_snapshot_at)
- SELECT pegawai_id,tanggal,departemen_id,is_employee_active,population_basis,checkin_event_count,checkout_event_count,first_checkin_at,last_checkout_at,has_manual_event,has_valid_leave,has_full_day_leave,has_partial_day_leave,perlu_review,alasan_review,is_date_final,date_assignment_policy,source_snapshot_at FROM cv2_daily
+INSERT INTO curated.cur_attendance_daily AS dst (pegawai_id,tanggal,departemen_id,is_employee_active,population_basis,checkin_event_count,checkout_event_count,first_checkin_at,last_checkout_at,has_manual_event,has_valid_leave,has_full_day_leave,has_partial_day_leave,has_excused_checkin,has_excused_checkout,perlu_review,alasan_review,is_date_final,date_assignment_policy,source_snapshot_at)
+ SELECT pegawai_id,tanggal,departemen_id,is_employee_active,population_basis,checkin_event_count,checkout_event_count,first_checkin_at,last_checkout_at,has_manual_event,has_valid_leave,has_full_day_leave,has_partial_day_leave,has_excused_checkin,has_excused_checkout,perlu_review,alasan_review,is_date_final,date_assignment_policy,source_snapshot_at FROM cv2_daily
  ON CONFLICT (pegawai_id,tanggal) DO UPDATE SET departemen_id=EXCLUDED.departemen_id,
  is_employee_active=EXCLUDED.is_employee_active,
  population_basis=EXCLUDED.population_basis,
@@ -362,6 +370,8 @@ INSERT INTO curated.cur_attendance_daily AS dst (pegawai_id,tanggal,departemen_i
  has_valid_leave=EXCLUDED.has_valid_leave,
  has_full_day_leave=EXCLUDED.has_full_day_leave,
  has_partial_day_leave=EXCLUDED.has_partial_day_leave,
+ has_excused_checkin=EXCLUDED.has_excused_checkin,
+ has_excused_checkout=EXCLUDED.has_excused_checkout,
  perlu_review=EXCLUDED.perlu_review,
  alasan_review=EXCLUDED.alasan_review,
  is_date_final=EXCLUDED.is_date_final,
@@ -374,7 +384,7 @@ v_daily:=v_daily+v_removed;
 v_result:=jsonb_build_object('batch_id',p_batch_id,'event_changes',v_event,
  'leave_changes',v_leave,'population_changes',v_population,'event_daily_changes',v_event_daily,
  'attendance_daily_changes',v_daily,'affected_employee_dates',(SELECT count(*) FROM cv2_affected),
- 'date_policy','SAME_DAY_PROVISIONAL_V1','replayed',false);
+ 'date_policy','SAME_DAY_PROVISIONAL_V1','leave_policy','TRANSACTION_TYPE_V3','replayed',false);
 UPDATE etl_control.curated_batch SET status='APPLIED',applied_at=current_timestamp,result=v_result
 WHERE batch_id=p_batch_id;
 RETURN v_result;

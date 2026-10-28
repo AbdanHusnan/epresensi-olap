@@ -3,6 +3,21 @@
 Pipeline aktif: [curated_incremental_batch.hpl](pipelines/curated/curated_incremental_batch.hpl).
 Implementasi SQL: [20261028_curated_incremental_etl.sql](../sql/staging/20261028_curated_incremental_etl.sql).
 
+Revisi izin memakai `t_perizinan.tipe_ijin`: 1 bebas masuk/pulang, 2 bebas masuk,
+3 bebas pulang, hanya untuk pengajuan approved valid. Master `setengah_hari`
+dipertahankan sebagai audit; cakupan izin mengikuti tipe transaksi.
+
+Pasang migrasi schema dan fungsi secara atomik dengan:
+
+```bash
+python3 hop/scripts/install_curated_etl.py --database staging_bkd
+```
+
+Installer memakai lock yang sama dengan consumer. Ia menolak migrasi lama jika
+hasil izin sudah ada, agar reprocess dapat direncanakan eksplisit. Jangan hanya
+memasang SQL fungsi baru pada schema lama. Target uji dua shift juga menggunakan
+installer yang sama dengan nama database targetnya.
+
 Satu eksekusi Hop mengambil satu manifest READY tertua dan menjalankan lima
 proses dalam satu transaksi PostgreSQL: snapshot populasi jika diminta, lookup
 /upsert event, ekspansi izin, ringkasan event, dan hasil harian pegawai. Memecahnya
@@ -117,7 +132,17 @@ menghasilkan unknown/review, bukan dianggap aktif/nonaktif secara diam-diam.
   approval, dan penghapusan memperbarui kunci lama dan baru. Izin overlap tidak
   menggandakan pegawai. Izin invalid tanpa rentang/identitas yang dapat diekspansi
   tercatat pada `etl_control.curated_leave_state`.
-- Kolom generated tidak diisi loader. Snapshot atau izin dapat mengubah KPI
+- Kolom generated tidak diisi loader. `tipe_ijin_sumber` berbeda dari
+  `tipe_izin_id_sumber` yang merupakan kategori master. Flag bebas masuk/pulang
+  digabung per pegawai-tanggal, sehingga izin overlap tidak menggandakan orang.
+  Kolom `setengah_hari_jenis_sumber` hanya menyimpan nilai master asli.
+- `no_checkin_days`/`no_checkout_days` hanya menghitung sisi yang masih diwajibkan
+  setelah izin. `checkin_days`/`checkout_days` tetap bukti event. Kolom
+  `required_*_days`, `excused_*_days`, dan `required_*_present_days` menyediakan
+  rekonsiliasi serta pembilang/penyebut pemenuhan kewajiban tanpa menghitung event
+  pada sisi yang dibebaskan. Kode izin NULL/tidak dikenal masuk review tanpa
+  pengecualian. Izin masuk tidak mewajibkan check-in kembali di tengah hari.
+- Snapshot atau izin dapat mengubah KPI
   meskipun tidak ada presensi baru. Batch tanpa perubahan relevan tidak menulis
   ulang fakta/ringkasan (diverifikasi dengan xmin pada pengujian).
 - Kebijakan sementara SAME_DAY_PROVISIONAL_V1 memakai tanggal kalender untuk
@@ -133,10 +158,10 @@ menghasilkan unknown/review, bukan dianggap aktif/nonaktif secara diam-diam.
 ## Pengujian
 
 ```bash
-python3 tests/curated_etl_v2/run.py --reset-synthetic
+python3 tests/leave_exemptions_20261028/run.py --reset-synthetic
 ```
 
-Perintah ini hanya membuat ulang `staging_bkd_etl_v2_test_20261028`, menyalin DDL
-raw/curated tanpa data, lalu memasukkan fixture sintetis. Hasil berada di
-[hasil integrasi](../tests/curated_etl_v2/integration_results.txt).
+Perintah ini hanya membuat ulang `staging_bkd_leave_v3_test_20261028`, menyalin DDL
+raw/curated tanpa data, lalu memasukkan fixture sintetis dan menjalankan Hop.
+Hasil berada di [hasil integrasi](../tests/leave_exemptions_20261028/results.txt).
 Database staging aktif dan sumber tidak dipakai sebagai fixture.

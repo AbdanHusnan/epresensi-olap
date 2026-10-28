@@ -1,0 +1,59 @@
+Pager usage is off.
+     current_database      | test_date  
+---------------------------+------------
+ staging_bkd_bulk_20261028 | 2026-10-28
+(1 row)
+
+    batch_id     | status  |                                                                                                                                                 result                                                                                                                                                 
+-----------------+---------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ BULK_SNAPSHOT   | APPLIED | {"batch_id": "BULK_SNAPSHOT", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "leave_policy": "TRANSACTION_TYPE_V3", "event_changes": 0, "leave_changes": 0, "population_changes": 2400, "event_daily_changes": 0, "affected_employee_dates": 2400, "attendance_daily_changes": 2400}
+ BULK_BATCH1     | APPLIED | {"batch_id": "BULK_BATCH1", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "leave_policy": "TRANSACTION_TYPE_V3", "event_changes": 1000, "leave_changes": 1600, "population_changes": 0, "event_daily_changes": 1000, "affected_employee_dates": 2000, "attendance_daily_changes": 2000}
+ BULK_BATCH2     | APPLIED | {"batch_id": "BULK_BATCH2", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "leave_policy": "TRANSACTION_TYPE_V3", "event_changes": 1400, "leave_changes": 0, "population_changes": 0, "event_daily_changes": 1000, "affected_employee_dates": 1000, "attendance_daily_changes": 1000}
+ BULK_NOOP       | APPLIED | {"batch_id": "BULK_NOOP", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "leave_policy": "TRANSACTION_TYPE_V3", "event_changes": 0, "leave_changes": 0, "population_changes": 0, "event_daily_changes": 0, "affected_employee_dates": 0, "attendance_daily_changes": 0}
+ BULK_CORRECTION | APPLIED | {"batch_id": "BULK_CORRECTION", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "leave_policy": "TRANSACTION_TYPE_V3", "event_changes": 0, "leave_changes": 400, "population_changes": 0, "event_daily_changes": 0, "affected_employee_dates": 400, "attendance_daily_changes": 400}
+(5 rows)
+
+   phase    |                                                                              totals                                                                               
+------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ batch1     | {"ei": 1000, "eo": 1000, "ld": 1400, "ni": 600, "no": 1400, "pi": 800, "po": 0, "ri": 1400, "ro": 1400, "active": 2400, "present_in": 1000, "present_out": 0}
+ batch2     | {"ei": 1000, "eo": 1000, "ld": 1400, "ni": 600, "no": 600, "pi": 800, "po": 800, "ri": 1400, "ro": 1400, "active": 2400, "present_in": 1000, "present_out": 1000}
+ correction | {"ei": 600, "eo": 1000, "ld": 1200, "ni": 1000, "no": 600, "pi": 800, "po": 800, "ri": 1800, "ro": 1400, "active": 2400, "present_in": 1000, "present_out": 1000}
+ noop       | {"ei": 1000, "eo": 1000, "ld": 1400, "ni": 600, "no": 600, "pi": 800, "po": 800, "ri": 1400, "ro": 1400, "active": 2400, "present_in": 1000, "present_out": 1000}
+ snapshot   | {"ei": 0, "eo": 0, "ld": 0, "ni": 2400, "no": 2400, "pi": 0, "po": 0, "ri": 2400, "ro": 2400, "active": 2400, "present_in": 0, "present_out": 0}
+(5 rows)
+
+ scenario | employees | active | checkin | checkout | excused_checkin | excused_checkout | required_checkin | required_checkout | no_checkin | no_checkout | leave_days 
+----------+-----------+--------+---------+----------+-----------------+------------------+------------------+-------------------+------------+-------------+------------
+        0 |       200 |    200 |       0 |        0 |               0 |                0 |              200 |               200 |        200 |         200 |          0
+        1 |       200 |    200 |     200 |      200 |               0 |                0 |              200 |               200 |          0 |           0 |          0
+        2 |       200 |    200 |     200 |        0 |               0 |                0 |              200 |               200 |          0 |         200 |          0
+        3 |       200 |    200 |       0 |      200 |               0 |                0 |              200 |               200 |        200 |           0 |          0
+        4 |       200 |    200 |       0 |        0 |               0 |                0 |              200 |               200 |        200 |         200 |          0
+        5 |       200 |    200 |       0 |      200 |             200 |                0 |                0 |               200 |          0 |           0 |        200
+        6 |       200 |    200 |     200 |        0 |               0 |              200 |              200 |                 0 |          0 |           0 |        200
+        7 |       200 |    200 |       0 |        0 |               0 |              200 |              200 |                 0 |        200 |           0 |        200
+        8 |       200 |    200 |       0 |        0 |               0 |              200 |              200 |                 0 |        200 |           0 |        200
+        9 |       200 |    200 |     200 |      200 |             200 |              200 |                0 |                 0 |          0 |           0 |        200
+       10 |       200 |    200 |     200 |      200 |               0 |                0 |              200 |               200 |          0 |           0 |          0
+       11 |       200 |    200 |       0 |        0 |             200 |              200 |                0 |                 0 |          0 |           0 |        200
+(12 rows)
+
+ pegawai_id |  tanggal   | checkin_event_count | checkout_event_count |  first_checkin_at   |  last_checkout_at   | checkin_days | checkout_days | no_checkin_days | no_checkout_days 
+------------+------------+---------------------+----------------------+---------------------+---------------------+--------------+---------------+-----------------+------------------
+       1588 | 2026-10-28 |                   2 |                    2 | 2026-10-28 07:00:00 | 2026-10-28 15:30:00 |            1 |             1 |               0 |                0
+       5219 | 2026-10-28 |                   2 |                    2 | 2026-10-28 07:30:00 | 2026-10-28 16:00:00 |            1 |             1 |               0 |                0
+       5341 | 2026-10-28 |                   2 |                    2 | 2026-10-28 07:30:00 | 2026-10-28 16:00:00 |            1 |             1 |               0 |                0
+       5500 | 2026-10-28 |                   2 |                    2 | 2026-10-28 06:30:00 | 2026-10-28 22:00:00 |            1 |             1 |               0 |                0
+       5808 | 2026-10-28 |                   2 |                    2 | 2026-10-28 07:30:00 | 2026-10-28 16:00:00 |            1 |             1 |               0 |                0
+       6715 | 2026-10-28 |                   2 |                    2 | 2026-10-28 07:00:00 | 2026-10-28 15:30:00 |            1 |             1 |               0 |                0
+       7512 | 2026-10-28 |                   2 |                    2 | 2026-10-28 07:00:00 | 2026-10-28 15:00:00 |            1 |             1 |               0 |                0
+       8184 | 2026-10-28 |                   2 |                    2 | 2026-10-28 07:00:00 | 2026-10-28 16:00:00 |            1 |             1 |               0 |                0
+      10063 | 2026-10-28 |                   2 |                    2 | 2026-10-28 07:00:00 | 2026-10-28 15:30:00 |            1 |             1 |               0 |                0
+      10398 | 2026-10-28 |                   2 |                    2 | 2026-10-28 07:00:00 | 2026-10-28 15:00:00 |            1 |             1 |               0 |                0
+(10 rows)
+
+ inconsistent_kpi_rows 
+-----------------------
+                     0
+(1 row)
+

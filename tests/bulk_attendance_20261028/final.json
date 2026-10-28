@@ -1,0 +1,15 @@
+{
+  "events": 2400,
+  "event_daily": 1400,
+  "leaves": 1600,
+  "population": 2400,
+  "daily": 2400,
+  "ready_batches": 0,
+  "review_events": 0,
+  "review_leaves": 0,
+  "passed": true,
+  "database": "staging_bkd_bulk_20261028",
+  "source_fixtures_retained": true,
+  "active_staging_raw_changed": false,
+  "bulk_snapshot_status_mutation_tested": false
+}

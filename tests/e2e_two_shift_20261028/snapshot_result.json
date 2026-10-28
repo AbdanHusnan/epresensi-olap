@@ -1,0 +1,41 @@
+{
+  "kpi": {
+    "rows": 2,
+    "active": 2,
+    "checkin": 0,
+    "no_checkin": 2,
+    "checkout": 0,
+    "no_checkout": 2,
+    "leave": 0
+  },
+  "daily": [
+    {
+      "pegawai_id": 32532,
+      "tanggal": "2026-10-28",
+      "checkin_event_count": 0,
+      "checkout_event_count": 0,
+      "first_checkin_at": null,
+      "last_checkout_at": null,
+      "active_employee_days": 1,
+      "checkin_days": 0,
+      "checkout_days": 0,
+      "no_checkin_days": 1,
+      "no_checkout_days": 1,
+      "is_date_final": false
+    },
+    {
+      "pegawai_id": 57342,
+      "tanggal": "2026-10-28",
+      "checkin_event_count": 0,
+      "checkout_event_count": 0,
+      "first_checkin_at": null,
+      "last_checkout_at": null,
+      "active_employee_days": 1,
+      "checkin_days": 0,
+      "checkout_days": 0,
+      "no_checkin_days": 1,
+      "no_checkout_days": 1,
+      "is_date_final": false
+    }
+  ]
+}

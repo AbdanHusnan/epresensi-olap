@@ -1,0 +1,23 @@
+{
+  "database": "staging_bkd_bulk_20261028",
+  "employees": 2400,
+  "departments": 757,
+  "per_scenario": 200,
+  "scenarios": [
+    "no_events",
+    "both_events",
+    "checkin_only",
+    "checkout_only",
+    "full_leave",
+    "leave_checkin_with_checkout",
+    "leave_checkout_with_checkin",
+    "leave_checkin_missing_checkout",
+    "leave_checkout_missing_checkin",
+    "full_leave_with_events",
+    "two_shifts",
+    "overlapping_partial_leaves"
+  ],
+  "date": "2026-10-28",
+  "active_raw_modified": false,
+  "source_master_modified": false
+}

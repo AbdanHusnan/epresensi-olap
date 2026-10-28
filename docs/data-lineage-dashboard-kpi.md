@@ -25,14 +25,16 @@ Aturan atribusi tanggal lintas malam belum final.
    aktivasi shift, atau fallback ke departemen induk untuk membentuk populasi.
 3. Workday pegawai tidak dapat ditentukan dari bukti yang tersedia. Populasi
    dashboard adalah **seluruh pegawai aktif**, termasuk yang tidak memiliki
-   jadwal atau event. Kalender, libur, dan izin tidak mengurangi denominator.
+   jadwal atau event. Kalender, libur, dan izin tidak mengurangi populasi aktif.
+   Denominator kewajiban masuk/pulang mengecualikan sisi yang dibebaskan izin valid.
 4. Grain utama adalah **pegawai × tanggal pelaporan**. Beberapa shift pada
    tanggal sama tetap satu pegawai. Jam masuk aktual adalah check-in paling
    awal; jam pulang aktual adalah check-out paling akhir dari seluruh shift.
 5. Pisahkan **Tidak Absen Masuk** dan **Tidak Absen Pulang**. Izin adalah metrik
-   tersendiri yang dapat beririsan dengan metrik event maupun ketiadaan event.
-6. Satu logical `mart_kehadiran` berisi dimensi/fakta. Dashboard hanya membaca
-   agregasi schema `serving`.
+   tersendiri yang dapat beririsan dengan bukti event. Izin approved valid
+   membebaskan masuk/pulang menurut tipe transaksi: 1 keduanya, 2 masuk, 3 pulang.
+6. Satu logical `mart_kehadiran` berisi dimensi/fakta. Ringkasan KPI dashboard membaca
+   agregasi schema `serving`; drill-down pegawai membaca fact harian.
 
 ## 2. Filter, populasi, dan waktu
 
@@ -76,7 +78,7 @@ Alur: **sumber → raw → curated → mart_kehadiran → serving → dashboard*
 | `cur_attendance_event_daily` | pegawai × tanggal | Semua shift, flag masuk/pulang, jumlah event, masuk pertama/pulang terakhir. |
 | `cur_leave_daily` | pegawai × tanggal izin × pengajuan | Ekspansi rentang izin dan validasi. |
 | `cur_attendance_daily` | pegawai × tanggal | Join populasi dengan event dan izin yang telah diringkas per pegawai-hari. |
-| `mart_kehadiran.fact_kehadiran_daily` | pegawai × tanggal | Salin kontrak curated dan bentuk measure 0/1. |
+| `mart_kehadiran.fact_kehadiran_daily` | pegawai × tanggal | Salin kontrak dan measure 0/1 yang sudah tersedia di curated. |
 | `serving.agg_kehadiran_departemen_harian` | tanggal × departemen | Agregasi metrik populasi, event dan izin. |
 | `serving.v_departemen_filter` | satu ID departemen | Opsi filter. |
 
@@ -90,29 +92,42 @@ untuk KPI utama.
 Misalkan `A` adalah pegawai aktif pada basis snapshot, `M` memiliki check-in,
 `P` memiliki check-out, dan `I` memiliki setidaknya satu izin approved valid.
 Semua flag dievaluasi pada pegawai-hari yang sama dan dikonversi menjadi 0/1.
+`EM` berarti ada izin valid tipe 1/2; `EP` berarti ada izin valid tipe 1/3.
+Gunakan `t_perizinan.tipe_ijin`, sebagaimana pemetaan pada `public.v_perizinan`;
+master `setengah_hari` disimpan untuk audit dan tidak menentukan arah pengecualian.
 
 | KPI | Measure per pegawai-hari | Agregasi |
 |---|---|---|
 | Pegawai Aktif | `active_employee_days = A` | SUM |
 | Absen Masuk | `checkin_days = A AND M` | SUM |
-| Tidak Absen Masuk | `no_checkin_days = A AND NOT M` | SUM |
+| Tidak Absen Masuk | `no_checkin_days = A AND NOT EM AND NOT M` | SUM |
 | Absen Pulang | `checkout_days = A AND P` | SUM |
-| Tidak Absen Pulang | `no_checkout_days = A AND NOT P` | SUM |
+| Tidak Absen Pulang | `no_checkout_days = A AND NOT EP AND NOT P` | SUM |
 | Pegawai Izin | `leave_days = A AND I` | SUM; banyak pengajuan tetap satu orang. |
+| Wajib Masuk setelah Izin | `required_checkin_days = A AND NOT EM` | SUM |
+| Wajib Pulang setelah Izin | `required_checkout_days = A AND NOT EP` | SUM |
+| Bebas Masuk | `excused_checkin_days = A AND EM` | SUM |
+| Bebas Pulang | `excused_checkout_days = A AND EP` | SUM |
+| Pemenuhan Wajib Masuk | `required_checkin_present_days = A AND NOT EM AND M` | SUM |
+| Pemenuhan Wajib Pulang | `required_checkout_present_days = A AND NOT EP AND P` | SUM |
 | Persentase Absen Masuk | — | `100.0 * SUM(checkin_days) / NULLIF(SUM(active_employee_days),0)` |
 | Persentase Absen Pulang | — | `100.0 * SUM(checkout_days) / NULLIF(SUM(active_employee_days),0)` |
 
 Persentase adalah proporsi populasi aktif dengan event, bukan kepatuhan jadwal.
-Pegawai izin tanpa event tetap tercatat pada Tidak Absen Masuk dan Tidak Absen
-Pulang serta Pegawai Izin. Izin penuh/parsial dapat dirinci tanpa menggandakan
-total pegawai izin. Kategori izin dan event tidak saling eksklusif.
+Izin penuh tanpa event tidak masuk Tidak Absen Masuk/Pulang. Izin tipe 2 tetap
+memerlukan checkout; tipe 3 tetap memerlukan check-in. Izin penuh/parsial dapat
+dirinci tanpa menggandakan total pegawai izin. Kategori izin dan event tidak
+saling eksklusif. Untuk persentase pemenuhan kewajiban gunakan
+`100.0 * SUM(required_*_present_days) / NULLIF(SUM(required_*_days),0)`.
+Event saat dibebaskan tetap ada pada bukti event, tetapi tidak pada pembilang
+pemenuhan kewajiban. Kode izin tidak dikenal/NULL masuk review tanpa pengecualian.
 
 Event pegawai nonaktif/tidak ditemukan tetap disimpan untuk audit, tetapi tidak
 masuk pembilang KPI populasi aktif. Kelengkapan presensi, keyword shift, atau
 review referensi jadwal tidak menjadi syarat check-in/out jika identitas dan
 tanggal pelaporannya jelas. Event manual tetap menjadi bukti event.
 
-KPI Wajib Hadir, Tanpa Keterangan, dan kepatuhan jadwal ditarik dari kontrak utama
+KPI Wajib Hadir berbasis roster, Tanpa Keterangan, dan kepatuhan jadwal ditarik dari kontrak utama
 karena kewajiban individual tidak dapat dibuktikan. Tidak Absen Masuk/Pulang
 bukan status pelanggaran disiplin. Keterlambatan dan WFO/WFH memerlukan kontrak
 lanjutan mengenai pemilihan konteks event sebelum digunakan.
@@ -127,7 +142,11 @@ Seluruh contoh memakai pegawai aktif dan tanggal pelaporan yang telah ditentukan
 | Check-in saja | 1 | 0 | 0 | 1 | 0 |
 | Check-out saja | 0 | 1 | 1 | 0 | 0 |
 | Dua shift, keduanya masuk/pulang | 1 | 0 | 1 | 0 | 0 |
-| Izin tanpa event | 0 | 1 | 0 | 1 | 1 |
+| Izin penuh tanpa event | 0 | 0 | 0 | 0 | 1 |
+| Izin tidak masuk, ada checkout | 0 | 0 | 1 | 0 | 1 |
+| Izin tidak pulang, ada check-in | 1 | 0 | 0 | 0 | 1 |
+| Izin tidak masuk, tanpa event | 0 | 0 | 0 | 1 | 1 |
+| Izin tidak pulang, tanpa event | 0 | 1 | 0 | 0 | 1 |
 | Izin dengan masuk/pulang | 1 | 0 | 1 | 0 | 1 |
 
 Masuk 07.00 dan 14.00, pulang 14.05 dan 21.00 menghasilkan masuk harian 07.00
@@ -137,8 +156,10 @@ kerja sah atau bukti satu sesi.
 Untuk setiap tanggal-departemen:
 
 ```text
-active_employee_days = checkin_days + no_checkin_days
-active_employee_days = checkout_days + no_checkout_days
+active_employee_days = required_checkin_days + excused_checkin_days
+active_employee_days = required_checkout_days + excused_checkout_days
+required_checkin_days = required_checkin_present_days + no_checkin_days
+required_checkout_days = required_checkout_present_days + no_checkout_days
 0 <= leave_days <= active_employee_days
 ```
 
@@ -152,8 +173,10 @@ rumus lama `expected = present + leave + absent` pada model yang beririsan ini.
    sebagai kontrak baru; pipeline lama menjadi baseline pembanding.
 2. Verifikasi kode status aktif, basis populasi historis, serta departemen filter.
 3. Konfirmasikan lintas malam, pasangan ambigu, dan penutupan tanggal.
-4. Revisi STTM curated ke mart/serving dan transformasi Hop agar tidak memakai
-   keyword shift, workday, atau pemisahan regular/non-regular untuk KPI utama.
+4. STTM curated ke mart/serving dan schema mart_bkd sudah diselaraskan; lihat
+   [kontrak downstream](sttm-curated-to-serving-kehadiran.md). Implementasi Hop
+   downstream masih berikutnya, tanpa keyword shift, workday, atau pemisahan
+   regular/non-regular untuk KPI utama.
 5. Bangun target analitik terpisah tanpa mengubah database aplikasi. Jangan
    rename/drop objek lama sebelum memeriksa dependensi.
 6. Uji departemen tanpa shift reguler, dua shift, event berulang, masuk/pulang

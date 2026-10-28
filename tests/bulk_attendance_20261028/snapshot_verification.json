@@ -1,0 +1,129 @@
+{
+  "phase": "snapshot",
+  "passed": true,
+  "checked_employee_dates": 2400,
+  "totals": {
+    "active": 2400,
+    "present_in": 0,
+    "present_out": 0,
+    "ei": 0,
+    "eo": 0,
+    "ri": 2400,
+    "ro": 2400,
+    "pi": 0,
+    "po": 0,
+    "ni": 2400,
+    "no": 2400,
+    "ld": 0
+  },
+  "groups": [
+    {
+      "scenario": 0,
+      "employees": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "no_checkin": 200,
+      "no_checkout": 200,
+      "leave_days": 0
+    },
+    {
+      "scenario": 1,
+      "employees": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "no_checkin": 200,
+      "no_checkout": 200,
+      "leave_days": 0
+    },
+    {
+      "scenario": 2,
+      "employees": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "no_checkin": 200,
+      "no_checkout": 200,
+      "leave_days": 0
+    },
+    {
+      "scenario": 3,
+      "employees": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "no_checkin": 200,
+      "no_checkout": 200,
+      "leave_days": 0
+    },
+    {
+      "scenario": 4,
+      "employees": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "no_checkin": 200,
+      "no_checkout": 200,
+      "leave_days": 0
+    },
+    {
+      "scenario": 5,
+      "employees": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "no_checkin": 200,
+      "no_checkout": 200,
+      "leave_days": 0
+    },
+    {
+      "scenario": 6,
+      "employees": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "no_checkin": 200,
+      "no_checkout": 200,
+      "leave_days": 0
+    },
+    {
+      "scenario": 7,
+      "employees": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "no_checkin": 200,
+      "no_checkout": 200,
+      "leave_days": 0
+    },
+    {
+      "scenario": 8,
+      "employees": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "no_checkin": 200,
+      "no_checkout": 200,
+      "leave_days": 0
+    },
+    {
+      "scenario": 9,
+      "employees": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "no_checkin": 200,
+      "no_checkout": 200,
+      "leave_days": 0
+    },
+    {
+      "scenario": 10,
+      "employees": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "no_checkin": 200,
+      "no_checkout": 200,
+      "leave_days": 0
+    },
+    {
+      "scenario": 11,
+      "employees": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "no_checkin": 200,
+      "no_checkout": 200,
+      "leave_days": 0
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pipeline>
+  <info>
+    <name>bulk_curated</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Process one committed READY manifest atomically: population snapshot, event lookup, leave expansion, affected employee/date aggregates. Raw/source are read only. Overnight checkout remains unresolved pending policy.</description>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters />
+  </info>
+  <order>
+    <hop>
+      <from>Proses batch raw ke curated atomik</from>
+      <to>Batch selesai</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <transform>
+    <name>Proses batch raw ke curated atomik</name>
+    <type>TableInput</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <connection>bulk_test_20261028</connection>
+    <sql>SELECT etl_control.apply_next_curated_batch()::text AS batch_result</sql>
+    <limit>0</limit>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <GUI>
+      <xloc>240</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Batch selesai</name>
+    <type>Dummy</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <GUI>
+      <xloc>560</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform_error_handling />
+  <attributes />
+</pipeline>
