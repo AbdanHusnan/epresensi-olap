@@ -1,0 +1,302 @@
+SET
+DO
+CREATE FUNCTION
+CREATE FUNCTION
+INSERT 0 1
+INSERT 0 4
+INSERT 0 3
+INSERT 0 3
+INSERT 0 1
+INSERT 0 2
+INSERT 0 2
+ enqueue_curated_batch 
+-----------------------
+ population
+(1 row)
+
+                                                                                                               apply_curated_batch                                                                                                               
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"batch_id": "population", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "event_changes": 0, "leave_changes": 0, "population_changes": 4, "event_daily_changes": 0, "affected_employee_dates": 4, "attendance_daily_changes": 4}
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+INSERT 0 4
+ enqueue_curated_batch 
+-----------------------
+ events
+(1 row)
+
+                                                                                                             apply_curated_batch                                                                                                             
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"batch_id": "events", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "event_changes": 4, "leave_changes": 0, "population_changes": 0, "event_daily_changes": 1, "affected_employee_dates": 1, "attendance_daily_changes": 1}
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+SELECT 4
+                                                                                                            apply_curated_batch                                                                                                             
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"batch_id": "events", "replayed": true, "date_policy": "SAME_DAY_PROVISIONAL_V1", "event_changes": 4, "leave_changes": 0, "population_changes": 0, "event_daily_changes": 1, "affected_employee_dates": 1, "attendance_daily_changes": 1}
+(1 row)
+
+ enqueue_curated_batch 
+-----------------------
+ noop
+(1 row)
+
+                                                                                                            apply_curated_batch                                                                                                            
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"batch_id": "noop", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "event_changes": 0, "leave_changes": 0, "population_changes": 0, "event_daily_changes": 0, "affected_employee_dates": 0, "attendance_daily_changes": 0}
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+UPDATE 1
+ enqueue_curated_batch 
+-----------------------
+ move
+(1 row)
+
+                                                                                                            apply_curated_batch                                                                                                            
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"batch_id": "move", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "event_changes": 1, "leave_changes": 0, "population_changes": 0, "event_daily_changes": 2, "affected_employee_dates": 2, "attendance_daily_changes": 2}
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+DELETE 1
+ enqueue_curated_batch 
+-----------------------
+ delete
+(1 row)
+
+                                                                                                             apply_curated_batch                                                                                                             
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"batch_id": "delete", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "event_changes": 1, "leave_changes": 0, "population_changes": 0, "event_daily_changes": 1, "affected_employee_dates": 1, "attendance_daily_changes": 1}
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+ enqueue_curated_batch 
+-----------------------
+ failure
+(1 row)
+
+DO
+ assert_true 
+-------------
+ 
+(1 row)
+
+INSERT 0 1
+                                                                                                             apply_curated_batch                                                                                                              
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"batch_id": "failure", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "event_changes": 1, "leave_changes": 0, "population_changes": 0, "event_daily_changes": 1, "affected_employee_dates": 1, "attendance_daily_changes": 1}
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+INSERT 0 2
+ enqueue_curated_batch 
+-----------------------
+ night
+(1 row)
+
+                                                                                                            apply_curated_batch                                                                                                             
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"batch_id": "night", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "event_changes": 2, "leave_changes": 0, "population_changes": 0, "event_daily_changes": 1, "affected_employee_dates": 2, "attendance_daily_changes": 2}
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+INSERT 0 2
+ enqueue_curated_batch 
+-----------------------
+ leave
+(1 row)
+
+                                                                                                            apply_curated_batch                                                                                                             
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"batch_id": "leave", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "event_changes": 0, "leave_changes": 2, "population_changes": 0, "event_daily_changes": 0, "affected_employee_dates": 3, "attendance_daily_changes": 3}
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+UPDATE 1
+UPDATE 1
+ enqueue_curated_batch 
+-----------------------
+ leave_shrink
+(1 row)
+
+                                                                                                                apply_curated_batch                                                                                                                
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"batch_id": "leave_shrink", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "event_changes": 0, "leave_changes": 2, "population_changes": 0, "event_daily_changes": 0, "affected_employee_dates": 3, "attendance_daily_changes": 3}
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+UPDATE 1
+ enqueue_curated_batch 
+-----------------------
+ leave_revoke
+(1 row)
+
+                                                                                                                apply_curated_batch                                                                                                                
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"batch_id": "leave_revoke", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "event_changes": 0, "leave_changes": 1, "population_changes": 0, "event_daily_changes": 0, "affected_employee_dates": 1, "attendance_daily_changes": 1}
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+UPDATE 1
+ enqueue_curated_batch 
+-----------------------
+ invalid_leave
+(1 row)
+
+                                                                                                                apply_curated_batch                                                                                                                 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"batch_id": "invalid_leave", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "event_changes": 0, "leave_changes": 1, "population_changes": 0, "event_daily_changes": 0, "affected_employee_dates": 1, "attendance_daily_changes": 0}
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+UPDATE 1
+ enqueue_curated_batch 
+-----------------------
+ deactivate
+(1 row)
+
+                                                                                                               apply_curated_batch                                                                                                               
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"batch_id": "deactivate", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "event_changes": 0, "leave_changes": 0, "population_changes": 1, "event_daily_changes": 0, "affected_employee_dates": 1, "attendance_daily_changes": 1}
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+DO
+ enqueue_curated_batch 
+-----------------------
+ historical_snapshot
+(1 row)
+
+DO
+                                                                                   result                                                                                   
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ PASS: incremental, two shifts, no-op xmin, correction, deletion, retry, overnight review, leave shrink/revoke, population changes, manifest immutability, historical guard
+(1 row)
+
+CREATE FUNCTION
+CREATE TRIGGER
+UPDATE 1
+ enqueue_curated_batch 
+-----------------------
+ late_failure
+(1 row)
+
+DO
+ assert_true 
+-------------
+ 
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+DROP TRIGGER
+                                                                                                                apply_curated_batch                                                                                                                
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"batch_id": "late_failure", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "event_changes": 1, "leave_changes": 0, "population_changes": 0, "event_daily_changes": 1, "affected_employee_dates": 1, "attendance_daily_changes": 1}
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+DELETE 1
+ enqueue_curated_batch 
+-----------------------
+ queue_noop
+(1 row)
+
+                                                                                                            apply_next_curated_batch                                                                                                             
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"batch_id": "queue_noop", "replayed": false, "date_policy": "SAME_DAY_PROVISIONAL_V1", "event_changes": 0, "leave_changes": 0, "population_changes": 0, "event_daily_changes": 0, "affected_employee_dates": 0, "attendance_daily_changes": 0}
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+ assert_true 
+-------------
+ 
+(1 row)
+
+                         result                         
+--------------------------------------------------------
+ PASS: downstream atomic rollback, retry, queue wrapper
+(1 row)
+

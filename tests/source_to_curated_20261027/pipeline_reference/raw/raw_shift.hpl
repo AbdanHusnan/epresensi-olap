@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <name>raw_shift</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Full refresh source public.m_shift to raw.raw_shift; business values are copied unchanged.</description>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters />
+  </info>
+  <order>
+    <hop>
+      <from>Baca source m_shift</from>
+      <to>Tulis raw shift</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <transform>
+    <name>Baca source m_shift</name>
+    <type>TableInput</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <connection>presensi_source</connection>
+    <sql>SELECT src.*, CURRENT_TIMESTAMP AS extracted_at, 'hop_full_refresh'::text AS pipeline_run_id FROM public.m_shift AS src</sql>
+    <limit>0</limit>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <GUI><xloc>160</xloc><yloc>160</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Tulis raw shift</name>
+    <type>TableOutput</type>
+    <description>Replace this raw snapshot only after the source stream starts successfully.</description>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <commit>10000</commit>
+    <connection>presensi_staging</connection>
+    <fields></fields>
+    <ignore_errors>N</ignore_errors>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_monthly>N</partitioning_monthly>
+    <return_keys>N</return_keys>
+    <specify_fields>N</specify_fields>
+    <schema>raw</schema>
+    <table>raw_shift</table>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_in_table>Y</tablename_in_table>
+    <truncate>Y</truncate>
+    <use_batch>Y</use_batch>
+    <attributes />
+    <GUI><xloc>480</xloc><yloc>160</yloc></GUI>
+  </transform>
+  <transform_error_handling />
+  <attributes />
+</pipeline>

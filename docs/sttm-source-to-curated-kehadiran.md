@@ -1,352 +1,169 @@
 # STTM Source ke Curated — Kehadiran KPI
 
-Status: **rancangan terkunci untuk review**. Dokumen ini merangkum keputusan
-source-to-curated yang disepakati sebelum pemetaan curated ke mart.
+> **Pembaruan ETL 28 Oktober 2026:** pipeline Hop dan fungsi incremental raw ke
+> curated sudah dipasang dan diuji. Data bisnis belum dimuat; producer raw masih
+> perlu mengirim manifest ID berubah. Lintas malam tetap provisional/unresolved.
+> Petunjuk dan batas implementasi ada di [panduan ETL](../hop/README.md).
 
-## 1. Prinsip umum
+> **Status fisik 28 Oktober 2026:** schema curated baru sudah dibuat di
+> `staging_bkd` dan masih kosong; data lama berada di `curated_legacy_20261028`.
+> ETL sudah dipasang; pengisian ulang data bisnis belum dijalankan. Lihat
+> [hasil pemeriksaan dan migrasi](penyesuaian-curated-staging-20261028.md).
 
-1. Data sumber dari `dbabsen_restore` disalin apa adanya ke raw staging.
-   Curated tidak membersihkan, mengganti, atau menghapus nilai bisnis sumber.
-2. Curated membentuk grain aman, melakukan lookup snapshot historis,
-   mengekspansi rentang izin, dan mengagregasikan event.
-3. Perubahan master pegawai, departemen, shift, atau jadwal tidak boleh
-   mengubah hasil historis. Validasi dan workday memakai snapshot tanggal terkait.
-4. Event `t_checkinout` adalah bukti transaksi utama. Snapshot hanya dipakai
-   untuk lookup dan validasi, bukan untuk menimpa nilai transaksi.
-5. Semua objek menyimpan waktu snapshot/proses dan indikator review bila bukti
-   atau relasi sumber tidak konsisten.
+Status: **revisi rancangan 28 Oktober 2026**. Menggantikan kontrak workday berbasis
+keyword regular/reguler. Acuan: [data lineage KPI](data-lineage-dashboard-kpi.md).
+Pipeline sudah dipasang; atribusi tanggal lintas malam belum final.
 
-## 2. Objek curated dan grain
+## 1. Prinsip dan objek
 
-| Objek | Grain | Kunci bisnis |
-|---|---|---|
-| `cur_employee_workday` | pegawai × tanggal | `(pegawai_id, tanggal)` |
-| `cur_event_attendance` | satu event presensi | `checkinout_id_sumber` |
-| `cur_regular_event_daily` | pegawai × tanggal kerja | `(pegawai_id, tanggal_kerja)` |
-| `cur_leave_daily` | pegawai × tanggal izin × pengajuan | `(perizinan_id_sumber, pegawai_id, tanggal_izin)` |
-| `cur_attendance_regular_daily` | pegawai × tanggal | `(pegawai_id, tanggal)` |
-| `cur_nonregular_event_daily` | pegawai × tanggal kerja × jadwal non-reguler | `(pegawai_id, tanggal_kerja, jadwal_id_sumber)` |
+Database aplikasi tidak diubah. Raw menyimpan nilai asli beserta metadata
+ekstraksi. Curated melakukan lookup, ekspansi izin, dan agregasi; tidak mencari
+shift reguler, mewariskan jadwal induk, atau menyimpulkan kewajiban pegawai.
 
-## 3. Snapshot historis dan update
-
-### 3.1 Snapshot harian
-
-Setiap tanggal proses, ETL menyimpan snapshot:
-
-- status dan departemen pegawai;
-- shift regular aktif per departemen;
-- jadwal shift menurut hari;
-- kalender, hari libur, dan libur shift individual.
-
-```text
-snapshot pegawai harian
-+ snapshot shift–jadwal regular harian
-+ snapshot kalender/libur harian
-→ cur_employee_workday per tanggal
-```
-
-Perubahan status, departemen, shift, atau jadwal hanya berlaku bagi snapshot
-sesudah perubahan. Record historis memakai snapshot tanggalnya sendiri.
-
-### 3.2 Update tanggal berjalan dan koreksi
-
-- Tanggal berjalan boleh dihitung ulang dan di-upsert menurut business key.
-- Query workday memulai dari seluruh `m_pegawai`; status aktif diturunkan
-  menjadi kolom, bukan filter awal. Perubahan aktif → nonaktif pada tanggal
-  berjalan pun dapat mengubah kewajiban menjadi `false`.
-- Tanggal yang telah ditutup tidak berubah karena refresh master harian.
-- Reprocess historis dilakukan eksplisit, memakai snapshot tanggal terkait dan
-  jejak audit revisi.
-- Perubahan/persetujuan izin memicu reprocess seluruh tanggal dalam rentang
-  izinnya; ini adalah koreksi transaksi, bukan refresh master.
-
-## 4. `cur_employee_workday`
-
-### 4.1 Tujuan
-
-Objek ini adalah satu-satunya sumber denominator dashboard reguler. Ia
-membentuk satu kandidat kewajiban per pegawai–tanggal, termasuk pegawai tanpa
-event presensi dan pegawai dengan izin penuh.
-
-### 4.2 STTM kolom
-
-| Kolom target | Sumber | Aturan |
-|---|---|---|
-| `pegawai_id` | `m_pegawai.id` | Salin identitas pegawai. |
-| `tanggal` | kalender ETL / `dim_calendar.tanggal` | Satu tanggal dalam periode proses. |
-| `departemen_id` | snapshot `m_pegawai.departemen` | Departemen yang berlaku pada snapshot tanggal tersebut. |
-| `is_employee_active` | snapshot `m_pegawai.status` | `true` bila status termasuk kategori aktif. |
-| `has_regular_schedule` | snapshot `m_shift`, `m_jadwal` | Ada minimal satu kandidat regular aktif untuk departemen dan hari terkait. |
-| `candidate_regular_schedule_count` | snapshot `m_shift`, `m_jadwal` | Jumlah kandidat; untuk audit, bukan pengali denominator. |
-| `is_day_off` | kalender, `m_hari_libur`, `t_libur_shift` | Weekend, hari libur, atau libur individual. |
-| `is_expected_workday` | turunan | Lihat rumus berikut. |
-| `source_snapshot_at` | proses snapshot | Waktu snapshot sumber. |
-| `source_updated_at` | sumber bila tersedia | Waktu sumber paling baru. |
-
-Kandidat jadwal dibentuk lebih dahulu pada grain `departemen × hari`:
-
-```text
-m_pegawai.departemen = m_shift.departemen_id
-m_shift.status = true
-nama shift mengandung keyword "regular" (case-insensitive)
-m_jadwal.jenis = m_shift.id
-m_jadwal.hari = hari kalender yang diproses
-```
-
-Satu departemen dapat mempunyai banyak shift regular aktif pada hari sama.
-Hal tersebut tidak menggandakan workday: pegawai cukup melakukan presensi pada
-salah satu jadwal regular aktif.
-
-```text
-has_regular_schedule = candidate_regular_schedule_count > 0
-is_day_off = is_weekend OR is_hari_libur OR has_libur_shift
-is_expected_workday =
-  is_employee_active AND has_regular_schedule AND NOT is_day_off
-```
-
-## 5. `cur_event_attendance`
-
-### 5.1 Tujuan
-
-Satu bukti event `t_checkinout` beserta lookup dan validasi historisnya.
-Tahap ini tidak mengagregasikan event.
-
-### 5.2 STTM kolom
-
-| Kolom target | Sumber / aturan |
+| Objek | Grain / kunci |
 |---|---|
-| `checkinout_id_sumber` | `t_checkinout.id` |
-| `pegawai_id` | `t_checkinout.pegawai_id` |
-| `tanggal_event`, `waktu_event` | `t_checkinout.created_at` dalam konteks Asia/Jakarta |
-| `checktype` | `t_checkinout.checktype` |
-| `departemen_id_event` | `t_checkinout.departemen` |
-| `jadwal_id_sumber`, `work_code_sumber` | `t_checkinout.jadwal_id`, `t_checkinout.work_code` |
-| `jam_masuk_sumber`, `jam_keluar_sumber` | `t_checkinout.jam_masuk`, `t_checkinout.jam_keluar` |
-| `is_manual`, `is_wfh_sumber` | `t_checkinout.is_manual`, `t_checkinout.is_wfh` |
-| `event_updated_at` | `t_checkinout.updated_at` |
-| `shift_id_sumber`, `nama_shift_snapshot` | Lookup snapshot shift–jadwal tanggal event |
-| `is_regular_shift`, `is_nonregular_shift` | Klasifikasi shift pada snapshot tanggal event |
-| `event_type` | `MASUK` bila checktype 1; `PULANG` bila 2; selain itu `LAIN` |
-| `is_valid_event_type` | `checktype IN (1,2)` |
-| `perlu_review`, `alasan_review` | Hasil validasi historis |
-| `source_snapshot_at` | Snapshot tanggal event |
+| `cur_employee_population_daily` | pegawai × tanggal; `(pegawai_id, tanggal)` |
+| `cur_event_attendance` | satu event; `checkinout_id_sumber` |
+| `cur_attendance_event_daily` | pegawai × tanggal; `(pegawai_id, tanggal)` |
+| `cur_leave_daily` | pegawai × tanggal izin × pengajuan |
+| `cur_attendance_daily` | pegawai × tanggal; `(pegawai_id, tanggal)` |
 
-Snapshot membuktikan konteks event pada tanggal kejadian. Ketidakcocokan
-referensi tidak menghapus event; ia diberi review, misalnya
-`JADWAL_TIDAK_DITEMUKAN_PADA_SNAPSHOT`,
-`WORK_CODE_TIDAK_COCOK_DENGAN_SHIFT_JADWAL`,
-`DEPARTEMEN_EVENT_TIDAK_COCOK_DENGAN_SNAPSHOT_PEGAWAI`, atau
-`PEGAWAI_TIDAK_AKTIF_PADA_SNAPSHOT`.
+## 2. Populasi harian
 
-Event manual tetap valid sebagai bukti KPI. Hanya checktype 1 dan 2 membentuk
-metrik check-in/check-out. Event terlambat harus memakai snapshot tanggal event,
-bukan snapshot tanggal pemrosesan.
+`cur_employee_population_daily` menggantikan `cur_employee_workday`.
+Snapshot boleh mencakup seluruh pegawai dengan flag aktif untuk mempertahankan
+konteks event pegawai di luar populasi KPI.
 
-## 6. `cur_regular_event_daily`
-
-```text
-Grain  : satu pegawai × satu tanggal kerja
-Sumber : cur_event_attendance
-Filter : is_regular_shift = true
-         AND event_type IN ('MASUK', 'PULANG')
-```
-
-| Kolom target | Aturan |
+| Kolom | Sumber / aturan |
 |---|---|
-| `pegawai_id`, `tanggal_kerja` | Key agregasi. |
-| `departemen_id_event` | Departemen tercatat pada event. |
-| `has_masuk`, `has_pulang` | Ada minimal satu event MASUK/PULANG. |
-| `checkin_event_count`, `checkout_event_count` | Jumlah event per tipe untuk audit duplikasi. |
-| `first_checkin_at`, `last_checkout_at` | Check-in paling awal dan check-out paling akhir. |
-| `has_manual_event` | Ada minimal satu event manual. |
-| `regular_schedule_count` | Jumlah jadwal regular transaksi yang muncul. |
-| `is_complete_attendance` | `has_masuk AND has_pulang`. |
-| `perlu_review`, `alasan_review` | Ambiguitas event, pasangan, atau jadwal. |
-| `source_snapshot_at` | Referensi snapshot validasi event. |
+| `pegawai_id` | `m_pegawai.id` |
+| `tanggal` | Tanggal pelaporan yang diproses. |
+| `departemen_id` | Usulan: snapshot `m_pegawai.departemen`; satu departemen KPI per pegawai-hari. |
+| `status_sumber`, `is_employee_active` | Nilai asli `m_pegawai.status` dan mapping aktif yang diverifikasi terhadap aplikasi. |
+| `population_basis` | Snapshot tanggal terkait atau master saat ekstraksi; bedakan eksplisit. |
+| `source_snapshot_at`, `source_updated_at` | Waktu snapshot dan pembaruan sumber bila tersedia. |
 
-Aturan tanggal kerja:
+Tidak ada syarat `has_regular_schedule`, `is_expected_workday`, weekend, atau
+libur untuk populasi aktif. Izin tetap masuk denominator. Snapshot sekarang
+bukan bukti status/departemen historis. Perubahan master tidak boleh diam-diam
+menimpa hasil tanggal tertutup; koreksi historis memerlukan jejak revisi.
 
-```text
-check-in                   → tanggal event check-in
-check-out hari yang sama   → tanggal event check-out
-check-out lintas tengah malam → tanggal check-in pasangan
-check-out tanpa pasangan   → tidak dipaksa ke hari sebelumnya; review
-```
+## 3. Event presensi
 
-Pasangan lintas tengah malam minimal mempunyai pegawai yang sama, check-out
-sesudah check-in, dan `jadwal_id_sumber` yang sama jika keduanya tersedia.
-Jika kandidat lebih dari satu, sistem tidak memilih otomatis.
+| Kolom `cur_event_attendance` | Sumber / aturan |
+|---|---|
+| `checkinout_id_sumber`, `pegawai_id` | `t_checkinout.id`, `pegawai_id` |
+| `tanggal_event`, `waktu_event` | `created_at` dalam konteks Asia/Jakarta; periksa tipe timestamp agar tidak menggeser zona dua kali. |
+| `checktype`, `event_type` | Nilai asli; 1 = MASUK, 2 = PULANG, selain itu LAIN. |
+| `departemen_id_event` | Departemen transaksi untuk audit, bukan pengali grain. |
+| `jadwal_id_sumber`, `work_code_sumber` | Nilai transaksi asli. |
+| `jam_masuk_sumber`, `jam_keluar_sumber` | Jam rencana pada transaksi, bukan timestamp aktual. |
+| `is_manual`, `is_wfh_sumber` | Nilai asli transaksi. |
+| `shift_id_sumber`, `nama_shift_snapshot` | LEFT JOIN jadwal ke shift tanpa filter nama/status shift saat ini. |
+| `tanggal` | Tanggal pelaporan menurut kebijakan atribusi; nullable bila belum dapat ditentukan. |
+| `date_assignment_status`, `date_assignment_reason` | Status/bukti atribusi, termasuk unresolved. |
+| `perlu_review`, `alasan_review` | Referensi hilang, konflik identitas/tanggal, inkonsistensi sumber. |
+| `event_updated_at`, `source_snapshot_at` | Timestamp sumber/snapshot. |
 
-```text
-checkin_days  = has_masuk
-checkout_days = has_pulang
-```
+Semua event dipertahankan. Event manual atau lookup jadwal gagal bukan otomatis
+dibuang dari KPI. Identitas dan tanggal pelaporan harus jelas untuk agregasi.
 
-Keduanya independen dari kelengkapan presensi maupun status administratif.
+## 4. Ringkasan seluruh shift
 
-## 7. `cur_leave_daily`
+`cur_attendance_event_daily` mengambil checktype 1/2 tanpa klasifikasi
+regular/non-regular. GROUP BY hanya pegawai dan tanggal pelaporan, bukan jadwal,
+shift, atau departemen transaksi.
 
-```text
-Grain  : satu pegawai × satu tanggal izin × satu pengajuan
-Sumber : t_perizinan, m_user, m_jenis_ijin, m_tipe_ijin
-```
+| Kolom | Aturan |
+|---|---|
+| `pegawai_id`, `tanggal` | Kunci unik. |
+| `has_masuk`, `has_pulang` | Ada minimal satu event tipe terkait. |
+| `checkin_event_count`, `checkout_event_count` | Jumlah event asli per tipe. |
+| `first_checkin_at` | MIN timestamp aktual hanya untuk checktype 1. |
+| `last_checkout_at` | MAX timestamp aktual hanya untuk checktype 2. |
+| `has_manual_event` | Ada event manual. |
+| `schedule_count`, `shift_count` | Jumlah ID berbeda yang diketahui; audit, bukan pengali KPI. |
+| `perlu_review`, `alasan_review` | Konflik relevan tanpa menghilangkan bukti event. |
 
-| Kolom target | Sumber / aturan |
+Pertahankan keterlacakan ke seluruh ID event. Banyak shift maupun event berulang
+tetap satu flag masuk/pulang per pegawai-hari. MIN/MAX bukan bukti satu sesi,
+durasi kerja sah, atau kewajiban shift tertentu.
+
+Tanggal same-day memakai tanggal lokal event. Arah lintas malam adalah hari
+check-in untuk checkout yang terbukti terkait, tetapi perilaku aplikasi lama,
+batas durasi, dan algoritme pasangan belum dikonfirmasi. ID jadwal bisa berbeda;
+jangan mewajibkan ID sama atau menggeser semua checkout ke D-1. Event ambigu
+memerlukan penyelesaian sebelum tanggal terdampak final dan tidak boleh dihitung
+dua kali. Simpan tanggal kalender event terpisah dari tanggal pelaporan.
+
+## 5. Izin harian
+
+| Kolom `cur_leave_daily` | Sumber / aturan |
 |---|---|
 | `perizinan_id_sumber` | `t_perizinan.id` |
-| `pegawai_id` | `t_perizinan.pegawai_id`; validasi silang `user_id → m_user.pegawai_id` |
-| `tanggal_izin` | Ekspansi inklusif rentang izin. |
-| `departemen_id_izin` | `t_perizinan.departemen`, sebagai bukti transaksi. |
-| `jenis_izin_id_sumber`, `nama_jenis_izin` | `t_perizinan.jenis_ijin → m_jenis_ijin` |
-| `tipe_izin_id_sumber`, `nama_tipe_izin` | `m_jenis_ijin.tipe_id → m_tipe_ijin` |
-| `approval`, `approval_at` | `t_perizinan.approval`, `t_perizinan.approval_at` |
-| `is_full_day_leave` | `m_jenis_ijin.setengah_hari = false` |
-| `is_partial_day_leave` | `m_jenis_ijin.setengah_hari = true` |
+| `pegawai_id` | `t_perizinan.pegawai_id`; validasi silang `user_id → m_user.pegawai_id`. |
+| `tanggal_izin` | Ekspansi inklusif `tgl_ijin` sampai `COALESCE(tgl_ijin_sampai,tgl_ijin)`; rentang terbalik masuk review. |
+| `departemen_id_izin` | Departemen transaksi untuk audit. |
+| `jenis_izin_id_sumber`, `nama_jenis_izin` | Lookup `jenis_ijin → m_jenis_ijin`, serta `m_tipe_ijin`. |
+| `approval`, `approval_at` | Nilai sumber. |
+| `is_full_day_leave`, `is_partial_day_leave` | Berdasarkan `setengah_hari`; pertahankan unknown jika NULL. |
 | `is_valid_leave` | Approved, identitas/rentang/referensi valid. |
-| `perlu_review`, `alasan_review` | Ketidaksesuaian identitas, rentang, atau referensi. |
-| `source_updated_at`, `source_snapshot_at` | Audit pembaruan dan snapshot. |
+| `perlu_review`, `alasan_review`, `source_updated_at`, `source_snapshot_at` | Audit. |
 
-```text
-tanggal_mulai = tgl_ijin
-tanggal_akhir = COALESCE(tgl_ijin_sampai, tgl_ijin)
-buat satu baris untuk setiap tanggal inklusif,
-hanya bila tanggal_akhir >= tanggal_mulai
-```
+Ringkas izin menjadi satu pegawai × tanggal sebelum join ke populasi:
+`has_valid_leave = ada minimal satu izin valid`. Banyak pengajuan dan izin
+penuh/parsial tidak menggandakan total Pegawai Izin. Komposisi jenis overlap
+memerlukan kategori MULTIPLE atau aturan prioritas jika harus eksklusif.
+Izin tidak meniadakan event atau mengurangi Tidak Absen Masuk/Pulang.
 
-Izin penuh dan parsial sama-sama diekspansi. Jika overlap, izin penuh
-berprioritas dalam hasil pegawai–tanggal, tetapi seluruh pengajuan tetap
-tersimpan di tabel ini.
+## 6. Record terpadu dan measure
 
-## 8. `cur_attendance_regular_daily`
-
-Objek ini adalah record terpadu siap fakta reguler. Basis key adalah union
-agar event atau izin tidak hilang:
-
-```text
-(pegawai_id, tanggal) dari cur_employee_workday
-UNION
-(pegawai_id, tanggal_kerja) dari cur_regular_event_daily
-UNION
-(pegawai_id, tanggal_izin) dari cur_leave_daily
-```
+Basis key `cur_attendance_daily` adalah union key populasi, event bertanggal
+jelas, dan izin harian; LEFT JOIN ringkasan masing-masing yang sudah unik.
+Bukti di luar populasi aktif tetap tersimpan tanpa masuk KPI utama.
 
 | Kelompok | Kolom |
 |---|---|
-| Identitas | `pegawai_id`, `tanggal`, `departemen_id` |
-| Kewajiban | `is_employee_active`, `has_regular_schedule`, `is_day_off`, `is_expected_workday` |
-| Event | `has_masuk`, `has_pulang`, jumlah event, waktu pertama/terakhir, `has_manual_event` |
-| Izin | `has_full_day_leave`, `has_partial_day_leave`, `selected_leave_coverage` |
-| Kehadiran | `is_complete_attendance`, `status_kehadiran` |
-| Keterlambatan | `is_late`, `late_minutes`, `late_schedule_id_sumber` |
-| Audit | `perlu_review`, `alasan_review`, `source_snapshot_at` |
-
-Aturan izin dan status:
+| Identitas/populasi | `pegawai_id`, `tanggal`, `departemen_id`, `is_employee_active`, `population_basis` |
+| Event | `has_masuk`, `has_pulang`, jumlah event, `first_checkin_at`, `last_checkout_at` |
+| Izin | `has_valid_leave`, `has_full_day_leave`, `has_partial_day_leave` |
+| Audit | `source_snapshot_at`, `perlu_review`, `alasan_review`, metadata finalisasi tanggal |
 
 ```text
-has_full_day_leave    = ada izin harian valid yang penuh
-has_partial_day_leave = ada izin harian valid yang parsial
-
-selected_leave_coverage =
-  FULL    bila has_full_day_leave
-  PARTIAL bila bukan FULL dan has_partial_day_leave
-  NONE    selain itu
-
-IZIN = has_full_day_leave
-HADIR_LENGKAP = NOT has_full_day_leave AND has_masuk AND has_pulang
-CHECKIN_BELUM_PULANG = NOT has_full_day_leave AND has_masuk AND NOT has_pulang
-TANPA_KETERANGAN =
-  NOT has_full_day_leave
-  AND is_expected_workday
-  AND NOT has_masuk
-  AND NOT has_pulang
+active_employee_days = is_employee_active ? 1 : 0
+checkin_days         = (is_employee_active AND has_masuk) ? 1 : 0
+no_checkin_days      = (is_employee_active AND NOT has_masuk) ? 1 : 0
+checkout_days        = (is_employee_active AND has_pulang) ? 1 : 0
+no_checkout_days     = (is_employee_active AND NOT has_pulang) ? 1 : 0
+leave_days           = (is_employee_active AND has_valid_leave) ? 1 : 0
 ```
 
-Izin parsial tidak menghapus kewajiban check-in/out dan tidak mengubah
-denominator. Hanya izin penuh yang menghasilkan status administratif `IZIN`.
+Join tanpa event/izin menghasilkan flag keberadaan false. Status aktif tidak
+diketahui tidak dimasukkan ke populasi aktif dan harus ditandai untuk audit.
+Tidak Absen Masuk/Pulang bukan TANPA_KETERANGAN atau penilaian disiplin.
+Persentase memakai populasi aktif dan menghasilkan NULL jika denominator nol.
 
-KPI flags:
+## 7. Refresh, validasi, dan migrasi
 
-```text
-scheduled_regular_days   = is_expected_workday ? 1 : 0
-checkin_days             = has_masuk ? 1 : 0
-checkout_days            = has_pulang ? 1 : 0
-complete_attendance_days = (has_masuk AND has_pulang) ? 1 : 0
-leave_days               = has_full_day_leave ? 1 : 0
-```
+- Perubahan event memicu recompute tanggal lama dan baru yang terdampak atribusi,
+  termasuk lintas malam; perubahan izin mencakup rentang lama dan baru.
+- Perubahan populasi tanggal berjalan menghitung ulang pembilang/penyebut pada
+  basis snapshot sama. Koreksi historis dicatat, bukan refresh master diam-diam.
+- Pastikan ringkasan unik sebelum join. Departemen belum terpetakan tetap
+  tertampung agar jumlah per departemen sama dengan ALL.
+- Uji `aktif = masuk + tidak masuk` dan `aktif = pulang + tidak pulang`.
+  Izin beririsan dengan event; jangan memakai partisi hadir + izin + absent.
+- Uji tanpa keyword reguler, dua shift, event berulang, masuk/pulang saja, izin,
+  nonaktif, referensi kosong, dan atribusi lintas malam.
 
-Izin penuh dan parsial tetap berada pada denominator
-`scheduled_regular_days`.
+| Nama/konsep lama | Pengganti |
+|---|---|
+| `cur_employee_workday` | `cur_employee_population_daily` |
+| `cur_regular_event_daily`, `cur_nonregular_event_daily` | `cur_attendance_event_daily` seluruh shift |
+| `cur_attendance_regular_daily` | `cur_attendance_daily` |
+| `scheduled_regular_days` | Konsep baru `active_employee_days`, bukan sekadar rename. |
+| `absent_days` / TANPA_KETERANGAN | Dua measure `no_checkin_days`, `no_checkout_days`. |
 
-Keterlambatan memakai nilai sumber pada event:
-
-```text
-waktu check-in aktual = t_checkinout.created_at
-jam masuk seharusnya  = t_checkinout.jam_masuk
-
-is_late = first_checkin_at > tanggal + jam_masuk_sumber
-late_minutes = selisih menit positif antara keduanya
-```
-
-Snapshot jadwal memvalidasi konsistensi `jadwal_id`, `work_code`, dan jam
-pada event. Jika beberapa jadwal transaksi atau referensinya ambigu,
-keterlambatan dikosongkan dan record diberi review; check-in/out tetap tercatat.
-
-## 9. `cur_nonregular_event_daily`
-
-```text
-Grain  : satu pegawai × satu tanggal kerja × satu jadwal non-reguler
-Sumber : cur_event_attendance
-Filter : is_nonregular_shift = true
-         AND event_type IN ('MASUK', 'PULANG')
-```
-
-Kolom target:
-
-```text
-pegawai_id
-tanggal_kerja
-jadwal_id_sumber
-shift_id_sumber
-departemen_id_event
-has_masuk
-has_pulang
-checkin_event_count
-checkout_event_count
-first_checkin_at
-last_checkout_at
-has_manual_event
-mode_kerja_event
-is_complete_attendance
-perlu_review
-alasan_review
-source_snapshot_at
-```
-
-```text
-has_masuk  = ada minimal satu event MASUK
-has_pulang = ada minimal satu event PULANG
-is_complete_attendance = has_masuk AND has_pulang
-```
-
-Tanggal kerja memakai aturan pairing yang sama dengan event regular. Event
-manual tetap dihitung. Tabel ini tidak mempunyai `is_expected_workday`,
-`scheduled_regular_days`, `leave_days`, ataupun attendance rate.
-
-Dashboard non-reguler hanya boleh melaporkan metrik event, misalnya pegawai unik
-dengan check-in atau check-out. Tanpa roster penugasan non-reguler, angka itu
-bukan tingkat kepatuhan atau attendance rate.
-
-## 10. Metrik reguler yang ditopang curated
-
-```text
-Check-in Rate =
-  SUM(checkin_days) / SUM(scheduled_regular_days)
-
-Attendance Rate =
-  SUM(complete_attendance_days) / SUM(scheduled_regular_days)
-```
-
-`scheduled_regular_days` mencakup pegawai terjadwal dengan izin penuh maupun
-parsial. `checkin_days` dan `checkout_days` adalah bukti event yang
-independen dari status administratif.
-
+STTM curated ke serving masih perlu diselaraskan. Pipeline Hop raw ke curated
+sudah dipasang sesuai [panduan ETL](../hop/README.md); belum ada pemuatan data
+bisnis atau cutover dashboard.

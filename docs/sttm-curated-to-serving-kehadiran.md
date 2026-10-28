@@ -1,6 +1,14 @@
 # STTM Curated ke Mart dan Serving — Kehadiran
 
-Status: **terkunci untuk implementasi**.
+> **Revisi 28 Oktober 2026:** aturan KPI berbasis keyword regular/reguler,
+> workday, dan pemisahan fakta regular/non-regular di bawah adalah baseline
+> lama. Acuan terbaru: [lineage KPI](data-lineage-dashboard-kpi.md) dan
+> [STTM source ke curated](sttm-source-to-curated-kehadiran.md): seluruh pegawai
+> aktif, semua shift pada grain pegawai × tanggal, masuk pertama/pulang terakhir,
+> serta Tidak Absen Masuk/Pulang terpisah. Isi teknis di bawah belum diselaraskan
+> dan tidak lagi menjadi kontrak implementasi KPI utama.
+
+Status: **baseline lama; perlu revisi sebelum implementasi**.
 
 Dokumen ini menetapkan pemetaan data curated ke fakta mart, agregasi serving,
 dan dataset dashboard. Curated adalah sumber tunggal aturan bisnis; mart dan

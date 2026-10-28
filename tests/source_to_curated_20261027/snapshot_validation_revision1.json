@@ -1,0 +1,13 @@
+{
+  "pegawai": true,
+  "departemen": true,
+  "shift": true,
+  "jadwal": true,
+  "hari_libur": true,
+  "libur_shift": true,
+  "perizinan": true,
+  "jenis_ijin": true,
+  "tipe_ijin": true,
+  "user": true,
+  "previleges": true
+}

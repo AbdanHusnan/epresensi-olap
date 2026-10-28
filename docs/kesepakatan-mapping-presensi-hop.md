@@ -1,5 +1,13 @@
 # Kesepakatan mapping presensi untuk Apache Hop
 
+> **Revisi 28 Oktober 2026:** aturan KPI berbasis keyword regular/reguler,
+> workday, dan pemisahan fakta regular/non-regular di bawah adalah baseline
+> lama. Acuan terbaru: [lineage KPI](data-lineage-dashboard-kpi.md) dan
+> [STTM source ke curated](sttm-source-to-curated-kehadiran.md): seluruh pegawai
+> aktif, semua shift pada grain pegawai × tanggal, masuk pertama/pulang terakhir,
+> serta Tidak Absen Masuk/Pulang terpisah. Isi teknis di bawah belum diselaraskan
+> dan tidak lagi menjadi kontrak implementasi KPI utama.
+
 Acuan diskusi sampai 7 Oktober 2026, waktu Asia/Jakarta. Tujuannya adalah melanjutkan mapping kolom OLTP ke dimensi dan fakta tanpa kehilangan keputusan bisnis, bukti sumber, dan pertanyaan terbuka. Mapping dim_departemen, dim_pegawai, dim_shift gabungan, dan dimensi tanggal (fisik dim_calendar) telah dilanjutkan ke implementasi Hop atas permintaan pengguna. Keputusan final dim_shift pada akhir dokumen menggantikan rancangan pemisahan shift/jadwal; grain aktifnya satu m_jadwal.id. Target terkini adalah epresensi_analytics_hop_dev.public; bagian implementasi lama di bawah disimpan sebagai riwayat dan digantikan oleh pembaruan target pada akhir dokumen.
 
 ## Dasar desain dan prioritas keputusan
