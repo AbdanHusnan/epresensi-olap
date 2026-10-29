@@ -43,3 +43,9 @@ backups/
 
 # Local runtime state (databases, scheduler logs, temporary files)
 /runtime/
+
+# Hybrid dashboard environment
+!deploy/hybrid/.env.example
+/hybrid-dashboard/node_modules/
+/hybrid-dashboard/.next/
+/hybrid-dashboard/*.tsbuildinfo

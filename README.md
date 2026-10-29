@@ -21,12 +21,12 @@ atas permintaan pengguna pada 9 Oktober 2026. Pipeline dimensi tetap tersedia;
 pipeline fakta akan dibuat sendiri oleh pengguna melalui Apache Hop. SQL pendukung,
 data database, checkpoint, dan laporan lama dipertahankan sebagai referensi.
 
-## Dashboard
+## Hybrid dashboard
 
-- [Panduan Superset](deploy/superset/README.md).
-- [Mart agregasi](docs/attendance-marts.md).
-- [Aplikasi Next.js](attendance-dashboard/README.md).
+- [Environment setup and operations](deploy/hybrid/README.md).
+- [Infrastructure and prototype plan](docs/hybrid-dashboard-prototype-plan.md).
+- [Next.js application](hybrid-dashboard/README.md).
 
-Utilitas Python dashboard memakai `scripts/dashboard_db.py` dan konfigurasi
-`OLAP_*` pada `.env`, terpisah dari pipeline Hop. Jalankan utilitas ini sebagai
-modul dari root repository, misalnya `python -m scripts.provision_dashboard`.
+The hybrid project currently contains environment setup only. Start it with
+`docker-compose.hybrid.yml`; the older `docker-compose.dashboard.yml` belongs to the
+separate legacy Superset deployment.

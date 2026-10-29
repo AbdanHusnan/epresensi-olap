@@ -1,0 +1,123 @@
+name: epresensi-hybrid
+x-superset: &superset
+  image: epresensi-hybrid-superset:6.1.0
+  build: ./deploy/hybrid/superset
+  environment: &superset-env
+    SUPERSET_SECRET_KEY: ${SUPERSET_SECRET_KEY:?Run configure.py}
+    SUPERSET_GUEST_TOKEN_SECRET: ${SUPERSET_GUEST_TOKEN_SECRET:?Run configure.py}
+    SUPERSET_METADATA_PASSWORD: ${SUPERSET_METADATA_PASSWORD:?Run configure.py}
+  networks: [frontend, metadata, mart]
+  mem_limit: 2g
+  cpus: 2
+services:
+  web:
+    image: epresensi-hybrid-web:0.1.0
+    build: ./hybrid-dashboard
+    restart: unless-stopped
+    ports: ['127.0.0.1:3100:3000']
+    environment:
+      METABASE_INTERNAL_URL: http://metabase:3000
+      SUPERSET_INTERNAL_URL: http://superset:8088
+    networks: [frontend]
+    mem_limit: 512m
+    cpus: 1
+    healthcheck:
+      test: [CMD, node, -e, 'fetch("http://127.0.0.1:3000/api/health").then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+  metadata:
+    image: postgres:16.14-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: hybrid_admin
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: ${METADATA_ADMIN_PASSWORD:?Run configure.py}
+      METABASE_METADATA_PASSWORD: ${METABASE_METADATA_PASSWORD:?Run configure.py}
+      SUPERSET_METADATA_PASSWORD: ${SUPERSET_METADATA_PASSWORD:?Run configure.py}
+    volumes:
+      - metadata_data:/var/lib/postgresql/data
+      - ./deploy/hybrid/metadata/init.sh:/docker-entrypoint-initdb.d/10-bi.sh:ro
+    networks: [metadata]
+    mem_limit: 768m
+    cpus: 1
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U hybrid_admin -d postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  redis:
+    image: redis:7.4.9-alpine
+    command: [redis-server, --maxmemory, 128mb, --maxmemory-policy, allkeys-lru, --save, '', --appendonly, 'no']
+    restart: unless-stopped
+    networks: [metadata]
+    mem_limit: 256m
+    cpus: 0.5
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  metabase:
+    image: metabase/metabase:v0.64.3
+    restart: unless-stopped
+    ports: ['127.0.0.1:3101:3000']
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_HOST: metadata
+      MB_DB_PORT: 5432
+      MB_DB_DBNAME: hybrid_metabase
+      MB_DB_USER: hybrid_metabase
+      MB_DB_PASS: ${METABASE_METADATA_PASSWORD:?Run configure.py}
+      MB_SITE_URL: http://localhost:3101
+      MB_ANON_TRACKING_ENABLED: 'false'
+      MB_LOAD_SAMPLE_CONTENT: 'false'
+      MB_INSTALL_ANALYTICS_DATABASE: 'false'
+      MB_LOAD_ANALYTICS_CONTENT: 'false'
+      JAVA_OPTS: -Xms256m -Xmx1536m
+      JAVA_TIMEZONE: Asia/Jakarta
+    depends_on:
+      metadata: {condition: service_healthy}
+    networks: [frontend, metadata, mart]
+    mem_limit: 2g
+    cpus: 2
+    healthcheck:
+      test: [CMD-SHELL, 'curl --fail --silent http://localhost:3000/api/health || exit 1']
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 120s
+  superset-init:
+    <<: *superset
+    restart: 'no'
+    environment:
+      <<: *superset-env
+      BI_ADMIN_EMAIL: ${BI_ADMIN_EMAIL:?Run configure.py}
+      BI_ADMIN_PASSWORD: ${BI_ADMIN_PASSWORD:?Run configure.py}
+      SUPERSET_MART_PASSWORD: ${SUPERSET_MART_PASSWORD:?Run configure.py}
+    command: [/bin/sh, -ec, 'superset db upgrade && superset init && python /app/hybrid/bootstrap.py']
+    depends_on:
+      metadata: {condition: service_healthy}
+      redis: {condition: service_healthy}
+  superset:
+    <<: *superset
+    restart: unless-stopped
+    ports: ['127.0.0.1:3102:8088']
+    command: [/app/.venv/bin/gunicorn, --bind, '0.0.0.0:8088', --workers, '2', --threads, '4', --timeout, '120', 'superset.app:create_app()']
+    depends_on:
+      superset-init: {condition: service_completed_successfully}
+    healthcheck:
+      test: [CMD, /app/.venv/bin/python, -c, 'import urllib.request; urllib.request.urlopen("http://127.0.0.1:8088/health", timeout=5)']
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+networks:
+  frontend:
+  metadata:
+    internal: true
+  mart:
+    external: true
+    name: epresensi_mart
+volumes:
+  metadata_data:
