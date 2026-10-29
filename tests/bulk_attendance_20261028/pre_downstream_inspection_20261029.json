@@ -1,0 +1,213 @@
+{
+  "checks": {
+    "event_review": 0,
+    "leave_review": 0,
+    "event_unresolved": 0,
+    "population_mismatch": 0,
+    "duplicate_daily_keys": 0,
+    "missing_cohort_daily": 0,
+    "event_detail_mismatch": 0,
+    "kpi_identity_mismatch": 0,
+    "leave_detail_mismatch": 0,
+    "pending_curated_batches": 0,
+    "scenario_oracle_mismatch": 0,
+    "extra_daily_outside_cohort": 0
+  },
+  "counts": {
+    "daily": 2400,
+    "cohort": 2400,
+    "events": 2400,
+    "leave_rows": 1600,
+    "population": 2400,
+    "event_daily": 1400
+  },
+  "totals": {
+    "active": 2400,
+    "checkin": 1000,
+    "checkout": 1000,
+    "leave_days": 1200,
+    "no_checkin": 1000,
+    "no_checkout": 600,
+    "excused_checkin": 600,
+    "excused_checkout": 1000,
+    "required_checkin": 1800,
+    "required_checkout": 1400,
+    "required_checkin_present": 800,
+    "required_checkout_present": 800
+  },
+  "batches": [
+    {
+      "status": "APPLIED",
+      "batch_id": "BULK_SNAPSHOT"
+    },
+    {
+      "status": "APPLIED",
+      "batch_id": "BULK_BATCH1"
+    },
+    {
+      "status": "APPLIED",
+      "batch_id": "BULK_BATCH2"
+    },
+    {
+      "status": "APPLIED",
+      "batch_id": "BULK_NOOP"
+    },
+    {
+      "status": "APPLIED",
+      "batch_id": "BULK_CORRECTION"
+    }
+  ],
+  "coverage": {
+    "dates": 1,
+    "active": 2400,
+    "date_max": "2026-10-28",
+    "date_min": "2026-10-28",
+    "inactive": 0,
+    "employees": 2400,
+    "final_rows": 0,
+    "departments": 757,
+    "review_rows": 0,
+    "unknown_status": 0,
+    "unknown_department_rows": 0
+  },
+  "database": "staging_bkd_bulk_20261028",
+  "read_only": "on",
+  "scenarios": [
+    {
+      "active": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "scenario": 0,
+      "employees": 200,
+      "leave_days": 0,
+      "no_checkin": 200,
+      "no_checkout": 200
+    },
+    {
+      "active": 200,
+      "checkin": 200,
+      "checkout": 200,
+      "scenario": 1,
+      "employees": 200,
+      "leave_days": 0,
+      "no_checkin": 0,
+      "no_checkout": 0
+    },
+    {
+      "active": 200,
+      "checkin": 200,
+      "checkout": 0,
+      "scenario": 2,
+      "employees": 200,
+      "leave_days": 0,
+      "no_checkin": 0,
+      "no_checkout": 200
+    },
+    {
+      "active": 200,
+      "checkin": 0,
+      "checkout": 200,
+      "scenario": 3,
+      "employees": 200,
+      "leave_days": 0,
+      "no_checkin": 200,
+      "no_checkout": 0
+    },
+    {
+      "active": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "scenario": 4,
+      "employees": 200,
+      "leave_days": 0,
+      "no_checkin": 200,
+      "no_checkout": 200
+    },
+    {
+      "active": 200,
+      "checkin": 0,
+      "checkout": 200,
+      "scenario": 5,
+      "employees": 200,
+      "leave_days": 200,
+      "no_checkin": 0,
+      "no_checkout": 0
+    },
+    {
+      "active": 200,
+      "checkin": 200,
+      "checkout": 0,
+      "scenario": 6,
+      "employees": 200,
+      "leave_days": 200,
+      "no_checkin": 0,
+      "no_checkout": 0
+    },
+    {
+      "active": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "scenario": 7,
+      "employees": 200,
+      "leave_days": 200,
+      "no_checkin": 200,
+      "no_checkout": 0
+    },
+    {
+      "active": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "scenario": 8,
+      "employees": 200,
+      "leave_days": 200,
+      "no_checkin": 200,
+      "no_checkout": 0
+    },
+    {
+      "active": 200,
+      "checkin": 200,
+      "checkout": 200,
+      "scenario": 9,
+      "employees": 200,
+      "leave_days": 200,
+      "no_checkin": 0,
+      "no_checkout": 0
+    },
+    {
+      "active": 200,
+      "checkin": 200,
+      "checkout": 200,
+      "scenario": 10,
+      "employees": 200,
+      "leave_days": 0,
+      "no_checkin": 0,
+      "no_checkout": 0
+    },
+    {
+      "active": 200,
+      "checkin": 0,
+      "checkout": 0,
+      "scenario": 11,
+      "employees": 200,
+      "leave_days": 200,
+      "no_checkin": 0,
+      "no_checkout": 0
+    }
+  ],
+  "checked_at": "2026-10-29T10:03:32.872405+07:00",
+  "daily_hash": "0a4e3dbc82c5ff193c716976142d794c",
+  "population_basis": [
+    {
+      "rows": 2400,
+      "population_basis": "EXTRACTION_SNAPSHOT"
+    }
+  ],
+  "department_distribution": {
+    "partitions": 757,
+    "max_employees": 4,
+    "min_employees": 1,
+    "partitions_with_multiple_employees": 690
+  },
+  "matches_last_small_test_reference_hash": true,
+  "all_consistency_checks_passed": true
+}

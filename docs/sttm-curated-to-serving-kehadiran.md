@@ -226,4 +226,7 @@ Pada 29 Oktober, uji kecil terisolasi sudah lulus dengan 12 sampel bulk, termasu
 snapshot mutasi antar-tanggal, event terlambat, incremental, no-op, rollback/retry,
 immutable payload, UNKNOWN/nonaktif dan delete. Lihat
 [laporan uji kecil](../tests/mart_small_20261029/README.md).
-Target aktif tetap belum dimuat; benchmark volume besar/concurrency belum dilakukan.
+Bulk 2.400 baris curated existing juga telah dijalankan hingga 2.400 fact dan
+757 agregasi tanggal-departemen, tanpa skenario baru; seluruhnya cocok. Lihat
+[laporan bulk downstream](../tests/mart_bulk_20261029/README.md).
+Target aktif tetap belum dimuat; benchmark histori besar/concurrency belum dilakukan.

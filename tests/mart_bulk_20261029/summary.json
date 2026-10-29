@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "source": "staging_bkd_mart_bulk_20261029",
+  "target": "mart_bkd_bulk_20261029",
+  "reference": "staging_bkd_bulk_20261028",
+  "fact_rows": 2400,
+  "aggregate_rows": 757,
+  "scenarios": 12,
+  "new_scenarios_created": false,
+  "totals": {
+    "active_employee_days": 2400,
+    "checkin_days": 1000,
+    "checkout_days": 1000,
+    "no_checkin_days": 1000,
+    "no_checkout_days": 600,
+    "leave_days": 1200,
+    "required_checkin_days": 1800,
+    "required_checkout_days": 1400,
+    "excused_checkin_days": 600,
+    "excused_checkout_days": 1000,
+    "required_checkin_present_days": 800,
+    "required_checkout_present_days": 800
+  },
+  "control": {
+    "batches": 1,
+    "receipts": 1,
+    "not_applied": 0,
+    "last_sequence": 1
+  },
+  "pending": 0,
+  "noop_rows_unchanged": true,
+  "protected_databases_unchanged": true,
+  "hop_load": {
+    "exit_code": 0,
+    "seconds": 11.18,
+    "expected_failure": false
+  },
+  "hop_noop": {
+    "exit_code": 0,
+    "seconds": 9.587,
+    "expected_failure": false
+  },
+  "query_execution_ms": {
+    "institution": 3.03,
+    "departments": 3.606
+  },
+  "all_results_provisional": true
+}

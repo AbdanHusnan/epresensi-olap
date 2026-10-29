@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='utf-8'?>
+<pipeline>
+  <info>
+    <name>ack_committed_mart_batch</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Workflow child only. Independently verify committed mart receipt before acknowledging staging.</description>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters />
+    <unique_connections>N</unique_connections>
+  </info>
+  <order>
+    <hop>
+      <from>Receipt dari workflow</from>
+      <to>Verifikasi commit mart</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Verifikasi commit mart</from>
+      <to>Acknowledge staging</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Acknowledge staging</from>
+      <to>Selesai</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <transform>
+    <name>Receipt dari workflow</name>
+    <type>RowsFromResult</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <fields>
+      <field>
+        <name>delivery_receipt</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+    </fields>
+    <GUI>
+      <xloc>160</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Verifikasi commit mart</name>
+    <type>TableInput</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <connection>bulk_mart_target_20261029</connection>
+    <sql>SELECT etl_control.confirm_mart_delivery(?::jsonb) AS committed_receipt</sql>
+    <limit>0</limit>
+    <lookup>Receipt dari workflow</lookup>
+    <execute_each_row>Y</execute_each_row>
+    <variables_active>N</variables_active>
+    <GUI>
+      <xloc>440</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Acknowledge staging</name>
+    <type>TableInput</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <connection>bulk_mart_source_20261029</connection>
+    <sql>SELECT etl_control.ack_mart_delivery(?::jsonb) AS delivery_status</sql>
+    <limit>0</limit>
+    <lookup>Verifikasi commit mart</lookup>
+    <execute_each_row>Y</execute_each_row>
+    <variables_active>N</variables_active>
+    <GUI>
+      <xloc>720</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Selesai</name>
+    <type>Dummy</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <GUI>
+      <xloc>1000</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform_error_handling />
+  <attributes />
+</pipeline>

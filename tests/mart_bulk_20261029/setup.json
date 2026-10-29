@@ -1,0 +1,11 @@
+{
+  "source": "staging_bkd_mart_bulk_20261029",
+  "target": "mart_bkd_bulk_20261029",
+  "reference": "staging_bkd_bulk_20261028",
+  "rows": 2400,
+  "scenarios": 12,
+  "rows_per_scenario": 200,
+  "departments": 757,
+  "data_changed": false,
+  "copy_verified": true
+}

@@ -6,7 +6,9 @@ bootstrap, aktivasi capture, atau scheduler.** Validasi hanya metadata, definisi
 SQL, EXPLAIN tanpa ANALYZE dan pemeriksaan read-only.
 
 Pembaruan 29 Oktober 2026: [uji kecil terisolasi](../tests/mart_small_20261029/README.md)
-sudah lulus melalui workflow Hop. Database aktif tetap belum dimuat dan
+sudah lulus melalui workflow Hop. [Bulk 2.400 pegawai](../tests/mart_bulk_20261029/README.md)
+juga lulus sampai 757 agregasi departemen-harian menggunakan dataset existing.
+Database aktif tetap belum dimuat dan
 bootstrap/capture produksi belum aktif. Hasil ini tidak menggantikan benchmark.
 
 Kontrak: [STTM terbaru](../docs/sttm-curated-to-serving-kehadiran.md).
