@@ -1,0 +1,6 @@
+{
+  "source": "staging_bkd_mart_small_20261029",
+  "target": "mart_bkd_small_20261029",
+  "rows": 12,
+  "passed": true
+}

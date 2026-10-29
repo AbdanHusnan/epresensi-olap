@@ -1,0 +1,14 @@
+{
+  "source": {
+    "batches": 12,
+    "pending": 0,
+    "last_sequence": 12
+  },
+  "target": {
+    "batches": 12,
+    "receipts": 12,
+    "not_applied": 0,
+    "last_sequence": 12
+  },
+  "passed": true
+}

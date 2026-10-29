@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<pipeline>
+  <info>
+    <name>curated_to_fact_serving_batch</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Read one durable batch, apply fact/serving atomically, return receipt to workflow. Acknowledgement occurs only in the next pipeline after independent committed-receipt verification.</description>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters />
+    <unique_connections>N</unique_connections>
+    <feedback_shown>N</feedback_shown>
+  </info>
+  <order>
+    <hop>
+      <from>Baca outbox committed</from>
+      <to>Terapkan fact dan serving atomik</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Terapkan fact dan serving atomik</from>
+      <to>Receipt untuk workflow</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <transform>
+    <name>Baca outbox committed</name>
+    <type>TableInput</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <connection>presensi_staging</connection>
+    <sql>SELECT batch_payload FROM etl_control.next_mart_delivery()</sql>
+    <limit>0</limit>
+    <lookup />
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <GUI>
+      <xloc>160</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Terapkan fact dan serving atomik</name>
+    <type>TableInput</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <connection>presensi_mart</connection>
+    <sql>SELECT etl_control.apply_mart_delivery(?::jsonb) AS delivery_receipt</sql>
+    <limit>0</limit>
+    <lookup>Baca outbox committed</lookup>
+    <execute_each_row>Y</execute_each_row>
+    <variables_active>N</variables_active>
+    <GUI>
+      <xloc>440</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform_error_handling />
+  <attributes />
+  <transform>
+    <name>Receipt untuk workflow</name>
+    <type>RowsToResult</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <GUI>
+      <xloc>760</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+</pipeline>

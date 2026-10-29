@@ -1,0 +1,29 @@
+ current_database 
+------------------
+ staging_bkd
+(1 row)
+
+ last_sequence | bootstrap_prepared 
+---------------+--------------------
+             0 | f
+(1 row)
+
+    object    | rows 
+--------------+------
+ outbox_batch |    0
+ outbox_item  |    0
+(2 rows)
+
+ capture_triggers 
+------------------
+                0
+(1 row)
+
+        proname         
+------------------------
+ ack_mart_delivery
+ capture_mart_outbox
+ next_mart_delivery
+ prepare_mart_bootstrap
+(4 rows)
+

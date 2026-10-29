@@ -1,0 +1,11 @@
+curated_to_fact_serving_batch: Baca outbox committed => TableInputMeta
+curated_to_fact_serving_batch: Terapkan fact dan serving atomik => TableInputMeta
+curated_to_fact_serving_batch: Receipt untuk workflow => RowsToResultMeta
+ack_committed_mart_batch: Receipt dari workflow => RowsFromResultMeta
+ack_committed_mart_batch: Verifikasi commit mart => TableInputMeta
+ack_committed_mart_batch: Acknowledge staging => TableInputMeta
+ack_committed_mart_batch: Selesai => DummyMeta
+Workflow: Start => ActionStart
+Workflow: Apply fact dan serving => ActionPipeline
+Workflow: Verifikasi commit dan ack => ActionPipeline
+PASS: workflow, both pipelines, plugins and connection metadata loaded. No database connection or execution.

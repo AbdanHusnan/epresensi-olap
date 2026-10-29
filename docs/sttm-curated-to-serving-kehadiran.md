@@ -41,6 +41,12 @@ versi efektif dan memvalidasi ID sumber dengan surrogate key sebelum menulis fac
 Versi dimensi tidak membuktikan histori sebelum snapshot tersedia. Jangan mengisi
 histori dari master sekarang. Nama dimensi boleh belum diketahui.
 
+Mutasi pegawai mengikuti snapshot pada tanggal terkait: perubahan departemen
+pada tanggal baru tidak mengubah fact tanggal sebelumnya. Event terlambat tetap
+mengikuti departemen snapshot tanggal pelaporannya. Dimensi departemen tidak
+menggantikan riwayat penempatan pegawai. Koreksi snapshot historis hanya melalui
+revisi eksplisit dan berjejak, bukan efek otomatis perubahan master terkini.
+
 Departemen NULL/tidak terpetakan memakai key 0 (UNKNOWN); ID sumber tetap disimpan
 pada fact untuk audit. Pegawai harus mempunyai anggota dimensi dengan ID sumber
 terkait, sekalipun nama belum tersedia. Tidak memaksakan satu shift_key harian.
@@ -153,8 +159,8 @@ Agregasi ini tidak mendukung filter atribut lain tanpa grain tambahan.
 ## 5. Kontrak incremental berikutnya
 
 Schema bukan implementasi pipeline. Raw→curated tetap memakai kontraknya.
-`cv2_affected` sekarang temporary; belum menjadi delivery durable. Berikutnya
-perlu outbox pada transaksi curated yang sama: batch/version, key pegawai-tanggal,
+`cv2_affected` tetap temporary. Definisi outbox terpisah menangkap perubahan
+curated daily pada transaksi yang sama, setelah bootstrap diaktifkan: batch/version, key pegawai-tanggal,
 operasi UPSERT/DELETE dan payload konsisten. Payload mewakili versi batch, bukan
 row yang mungkin sudah diubah batch berikutnya. Sertakan key lama dan baru.
 
@@ -171,7 +177,9 @@ Retry tidak menggandakan angka. No-op tidak menulis ulang hasil bisnis.
 Staging dan mart berbeda database: gunakan durable delivery/checkpoint per tahap,
 bukan satu transaksi raw sampai serving. `etl_control.mart_batch` disiapkan
 untuk checkpoint target; APPLIED hanya ditulis bersama commit fact/agregasi.
-Outbox, consumer dan refresh agregasi otomatis belum dipasang oleh migrasi ini.
+Definisi outbox, consumer dan refresh agregasi kini tersedia melalui migrasi
+ETL terpisah; workflow belum dijalankan dan bootstrap/capture belum diaktifkan.
+Lihat [panduan pipeline](../hop/MART_PIPELINE.md).
 Initial load memerlukan snapshot konsisten dan batas batch agar perubahan selama
 pemuatan tidak hilang. Histori populasi tidak dibuat dari master sekarang.
 
@@ -196,3 +204,26 @@ Atribusi lintas malam, kelengkapan populasi/delivery dan kebijakan close harus
 selesai sebelum final. Koreksi tanggal tertutup memerlukan revisi berjejak;
 refresh master tidak menimpa histori diam-diam. Cutover dashboard dan benchmark
 concurrency adalah tahap lanjutan, bukan bukti yang diberikan oleh uji schema.
+
+## 7. Status pembuatan pipeline
+
+Workflow `curated_to_serving.hwf` dan dua child pipeline telah dipasang pada
+proyek Hop epresensi-staging, tanpa menjalankan load. Apply dan ack dipisahkan
+oleh batas penyelesaian pipeline; receipt mart diperiksa melalui koneksi baru
+sebelum staging ditandai delivered. Ini diperlukan karena TableInput menahan
+transaksi query hingga koneksi ditutup.
+
+Bootstrap explicit satu kali mengambil snapshot per tanggal dan memasang capture
+atomik. Sebelum aktivasi, tidak ada capture trigger atau batch outbox sehingga
+ETL curated existing tidak berubah. Dimensi yang belum tersedia dibuat sebagai
+placeholder ID tanpa nama, memakai interval efektif yang tidak overlap; tidak
+mengambil master terbaru untuk mengarang histori. Bukti kelengkapan/finalisasi
+belum disertakan dalam delivery, maka tanggal terdampak tetap provisional.
+
+Bukti: [validasi tanpa load](../tests/mart_pipeline_20261028/README.md).
+Saat pembuatan 28 Oktober, uji integrasi data dan benchmark belum dijalankan.
+Pada 29 Oktober, uji kecil terisolasi sudah lulus dengan 12 sampel bulk, termasuk
+snapshot mutasi antar-tanggal, event terlambat, incremental, no-op, rollback/retry,
+immutable payload, UNKNOWN/nonaktif dan delete. Lihat
+[laporan uji kecil](../tests/mart_small_20261029/README.md).
+Target aktif tetap belum dimuat; benchmark volume besar/concurrency belum dilakukan.

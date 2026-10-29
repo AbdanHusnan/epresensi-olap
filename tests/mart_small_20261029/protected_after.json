@@ -1,0 +1,18 @@
+{
+  "reference": {
+    "hash": "0a4e3dbc82c5ff193c716976142d794c",
+    "rows": 2400
+  },
+  "active_mart": {
+    "agg": 0,
+    "fact": 0,
+    "batches": 0,
+    "receipts": 0
+  },
+  "active_staging": {
+    "daily": 0,
+    "outbox": 0,
+    "sequence": 0,
+    "bootstrap": false
+  }
+}

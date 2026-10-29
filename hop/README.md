@@ -165,3 +165,11 @@ Perintah ini hanya membuat ulang `staging_bkd_leave_v3_test_20261028`, menyalin 
 raw/curated tanpa data, lalu memasukkan fixture sintetis dan menjalankan Hop.
 Hasil berada di [hasil integrasi](../tests/leave_exemptions_20261028/results.txt).
 Database staging aktif dan sumber tidak dipakai sebagai fixture.
+
+## Pipeline curated ke mart dan serving
+
+Workflow downstream dan definisi SQL sudah disiapkan tanpa menjalankan load.
+Lihat [panduan pipeline mart](MART_PIPELINE.md). Entry point adalah
+`workflows/mart/curated_to_serving.hwf`; bootstrap/capture dan scheduler belum
+aktif. Schema fact/serving tetap kosong. Jangan menganggap pemasangan file sebagai
+pemuatan atau cutover dashboard.

@@ -1,0 +1,210 @@
+BEGIN
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+      QUERY PLAN      
+----------------------
+ Insert on mart_batch
+   ->  Result
+(2 rows)
+
+                 QUERY PLAN                  
+---------------------------------------------
+ Insert on mart_incoming
+   ->  Function Scan on jsonb_to_recordset i
+(2 rows)
+
+                   QUERY PLAN                   
+------------------------------------------------
+ Insert on dim_calendar
+   Conflict Resolution: NOTHING
+   ->  Subquery Scan on "*SELECT*"
+         ->  HashAggregate
+               Group Key: mart_incoming.tanggal
+               ->  Seq Scan on mart_incoming
+(6 rows)
+
+                                                                  QUERY PLAN                                                                   
+-----------------------------------------------------------------------------------------------------------------------------------------------
+ Insert on dim_pegawai
+   ->  Subquery Scan on "*SELECT*"
+         ->  GroupAggregate
+               Group Key: missing.source_id, missing.next_start
+               ->  Incremental Sort
+                     Sort Key: missing.source_id, missing.next_start
+                     Presorted Key: missing.source_id
+                     ->  Subquery Scan on missing
+                           ->  Unique
+                                 ->  Sort
+                                       Sort Key: i.pegawai_id, i.tanggal, ((SubPlan 1))
+                                       ->  Hash Right Anti Join
+                                             Hash Cond: (d.pegawai_id_sumber = i.pegawai_id)
+                                             Join Filter: ((i.tanggal >= d.valid_from) AND ((d.valid_to IS NULL) OR (i.tanggal < d.valid_to)))
+                                             ->  Seq Scan on dim_pegawai d
+                                             ->  Hash
+                                                   ->  Seq Scan on mart_incoming i
+                                                         Filter: ((pegawai_id IS NOT NULL) AND (operation = 'UPSERT'::text))
+                                             SubPlan 1
+                                               ->  Aggregate
+                                                     ->  Bitmap Heap Scan on dim_pegawai d_1
+                                                           Recheck Cond: (pegawai_id_sumber = i.pegawai_id)
+                                                           Filter: (valid_from > i.tanggal)
+                                                           ->  Bitmap Index Scan on dim_pegawai_pegawai_id_sumber_daterange_excl
+                                                                 Index Cond: (pegawai_id_sumber = i.pegawai_id)
+(25 rows)
+
+                                                                           QUERY PLAN                                                                            
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Insert on dim_departemen
+   ->  Subquery Scan on "*SELECT*"
+         ->  GroupAggregate
+               Group Key: missing.source_id, missing.next_start
+               ->  Incremental Sort
+                     Sort Key: missing.source_id, missing.next_start
+                     Presorted Key: missing.source_id
+                     ->  Subquery Scan on missing
+                           ->  Unique
+                                 ->  Sort
+                                       Sort Key: (((i.payload ->> 'departemen_id'::text))::integer), i.tanggal, ((SubPlan 1))
+                                       ->  Hash Right Anti Join
+                                             Hash Cond: (d.departemen_id_sumber = ((i.payload ->> 'departemen_id'::text))::integer)
+                                             Join Filter: ((i.tanggal >= d.valid_from) AND ((d.valid_to IS NULL) OR (i.tanggal < d.valid_to)))
+                                             ->  Seq Scan on dim_departemen d
+                                             ->  Hash
+                                                   ->  Seq Scan on mart_incoming i
+                                                         Filter: ((operation = 'UPSERT'::text) AND (((payload ->> 'departemen_id'::text))::integer IS NOT NULL))
+                                             SubPlan 1
+                                               ->  Aggregate
+                                                     ->  Bitmap Heap Scan on dim_departemen d_1
+                                                           Recheck Cond: (departemen_id_sumber = ((i.payload ->> 'departemen_id'::text))::integer)
+                                                           Filter: (valid_from > i.tanggal)
+                                                           ->  Bitmap Index Scan on dim_departemen_departemen_id_sumber_daterange_excl
+                                                                 Index Cond: (departemen_id_sumber = ((i.payload ->> 'departemen_id'::text))::integer)
+(25 rows)
+
+                                                      QUERY PLAN                                                       
+-----------------------------------------------------------------------------------------------------------------------
+ Insert on mart_candidate
+   ->  Nested Loop
+         ->  Nested Loop Left Join
+               ->  Hash Join
+                     Hash Cond: (p.pegawai_id_sumber = i.pegawai_id)
+                     Join Filter: ((i.tanggal >= p.valid_from) AND ((p.valid_to IS NULL) OR (i.tanggal < p.valid_to)))
+                     ->  Seq Scan on dim_pegawai p
+                     ->  Hash
+                           ->  Seq Scan on mart_incoming i
+                                 Filter: (operation = 'UPSERT'::text)
+               ->  Bitmap Heap Scan on dim_departemen d
+                     Recheck Cond: (departemen_id_sumber = ((i.payload ->> 'departemen_id'::text))::integer)
+                     Filter: ((i.tanggal >= valid_from) AND ((valid_to IS NULL) OR (i.tanggal < valid_to)))
+                     ->  Bitmap Index Scan on dim_departemen_departemen_id_sumber_daterange_excl
+                           Index Cond: (departemen_id_sumber = ((i.payload ->> 'departemen_id'::text))::integer)
+         ->  Function Scan on jsonb_populate_record r
+(16 rows)
+
+                                            QUERY PLAN                                             
+---------------------------------------------------------------------------------------------------
+ Insert on mart_dirty
+   ->  HashAggregate
+         Group Key: f.tanggal, f.departemen_key
+         ->  Append
+               ->  Hash Join
+                     Hash Cond: ((i.pegawai_id = f.pegawai_id_sumber) AND (i.tanggal = f.tanggal))
+                     Join Filter: ((i.operation = 'DELETE'::text) OR (hashed SubPlan 2))
+                     ->  Seq Scan on mart_incoming i
+                     ->  Hash
+                           ->  Seq Scan on fact_kehadiran_daily f
+                     SubPlan 2
+                       ->  Seq Scan on mart_changed c
+               ->  Seq Scan on mart_changed
+(13 rows)
+
+                                      QUERY PLAN                                       
+---------------------------------------------------------------------------------------
+ Delete on fact_kehadiran_daily f
+   ->  Hash Join
+         Hash Cond: ((f.pegawai_id_sumber = i.pegawai_id) AND (f.tanggal = i.tanggal))
+         ->  Seq Scan on fact_kehadiran_daily f
+         ->  Hash
+               ->  Seq Scan on mart_incoming i
+                     Filter: (operation = 'DELETE'::text)
+(7 rows)
+
+                      QUERY PLAN                       
+-------------------------------------------------------
+ Insert on fact_kehadiran_daily dst
+   Conflict Resolution: UPDATE
+   Conflict Arbiter Indexes: fact_kehadiran_daily_pkey
+   ->  Seq Scan on mart_changed
+(4 rows)
+
+                                       QUERY PLAN                                       
+----------------------------------------------------------------------------------------
+ Delete on agg_kehadiran_departemen_harian a
+   ->  Hash Join
+         Hash Cond: ((d.tanggal = a.tanggal) AND (d.departemen_key = a.departemen_key))
+         ->  Seq Scan on mart_dirty d
+         ->  Hash
+               ->  Seq Scan on agg_kehadiran_departemen_harian a
+(6 rows)
+
+                                             QUERY PLAN                                              
+-----------------------------------------------------------------------------------------------------
+ Insert on agg_kehadiran_departemen_harian
+   ->  Subquery Scan on "*SELECT*"
+         ->  GroupAggregate
+               Group Key: f.tanggal, f.departemen_key
+               ->  Merge Join
+                     Merge Cond: ((f.tanggal = d.tanggal) AND (f.departemen_key = d.departemen_key))
+                     ->  Sort
+                           Sort Key: f.tanggal, f.departemen_key
+                           ->  Seq Scan on fact_kehadiran_daily f
+                     ->  Sort
+                           Sort Key: d.tanggal, d.departemen_key
+                           ->  Seq Scan on mart_dirty d
+(12 rows)
+
+                       QUERY PLAN                       
+--------------------------------------------------------
+ Insert on attendance_date_state
+   Conflict Resolution: UPDATE
+   Conflict Arbiter Indexes: attendance_date_state_pkey
+   ->  Subquery Scan on "*SELECT*"
+         ->  HashAggregate
+               Group Key: mart_dirty.tanggal
+               ->  Seq Scan on mart_dirty
+(7 rows)
+
+                        QUERY PLAN                        
+----------------------------------------------------------
+ Update on mart_batch
+   ->  Index Scan using mart_batch_pkey on mart_batch
+         Index Cond: (batch_id = 'VALIDATION_ONLY'::text)
+(3 rows)
+
+           QUERY PLAN            
+---------------------------------
+ Insert on mart_delivery_receipt
+   ->  Result
+(2 rows)
+
+                      QUERY PLAN                       
+-------------------------------------------------------
+ Insert on mart_delivery_cursor
+   Conflict Resolution: UPDATE
+   Conflict Arbiter Indexes: mart_delivery_cursor_pkey
+   ->  Result
+(4 rows)
+
+                                                                                                           QUERY PLAN                                                                                                            
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Hash Left Join
+   Hash Cond: ((n.pegawai_id_sumber = o.pegawai_id_sumber) AND (n.tanggal = o.tanggal))
+   Filter: ((o.pegawai_id_sumber IS NULL) OR ((to_jsonb(o.*) - '{source_batch_id,source_snapshot_at,mart_loaded_at}'::text[]) IS DISTINCT FROM (to_jsonb(n.*) - '{source_batch_id,source_snapshot_at,mart_loaded_at}'::text[])))
+   ->  Seq Scan on mart_candidate n
+   ->  Hash
+         ->  Seq Scan on fact_kehadiran_daily o
+(6 rows)
+
+ROLLBACK

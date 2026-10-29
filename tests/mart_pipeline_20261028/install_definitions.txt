@@ -1,0 +1,47 @@
+epresensi-staging-postgres/staging_bkd: sql/staging/20261028_mart_outbox.sql
+BEGIN
+SET
+ pg_advisory_xact_lock 
+-----------------------
+ 
+(1 row)
+
+CREATE TABLE
+INSERT 0 1
+CREATE TABLE
+CREATE TABLE
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+REVOKE
+REVOKE
+REVOKE
+COMMIT
+epresensi-mart-postgres/mart_bkd: sql/mart/20261028_mart_incremental_etl.sql
+BEGIN
+SET
+ pg_advisory_xact_lock 
+-----------------------
+ 
+(1 row)
+
+CREATE TABLE
+CREATE TABLE
+CREATE FUNCTION
+REVOKE
+COMMIT
+Definitions only. Bootstrap, capture activation and all loads remain unexecuted.
+BEGIN
+CREATE FUNCTION
+REVOKE
+COMMIT
+BEGIN
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE TRIGGER
+COMMIT

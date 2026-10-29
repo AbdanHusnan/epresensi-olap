@@ -1,0 +1,5 @@
+{
+  "target_unchanged_after_failure": true,
+  "outbox_remained_pending": true,
+  "retry_passed": true
+}

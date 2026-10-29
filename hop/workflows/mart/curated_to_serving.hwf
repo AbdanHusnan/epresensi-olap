@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow>
+ <name>curated_to_serving</name><name_sync_with_filename>Y</name_sync_with_filename>
+ <description>One committed durable delivery per execution. Never bootstrap automatically. Apply pipeline must finish before independent receipt verification and acknowledgement.</description>
+ <parameters/>
+ <actions>
+  <action><name>Start</name><type>SPECIAL</type><repeat>N</repeat><schedulerType>0</schedulerType><parallel>N</parallel><xloc>120</xloc><yloc>160</yloc></action>
+  <action>
+   <name>Apply fact dan serving</name><type>PIPELINE</type>
+   <filename>${PROJECT_HOME}/pipelines/mart/curated_to_fact_serving_batch.hpl</filename>
+   <params_from_previous>N</params_from_previous><exec_per_row>N</exec_per_row><clear_rows>Y</clear_rows><clear_files>Y</clear_files>
+   <set_logfile>N</set_logfile><loglevel>Basic</loglevel><wait_until_finished>Y</wait_until_finished><run_configuration>local</run_configuration>
+   <parameters><pass_all_parameters>Y</pass_all_parameters></parameters><parallel>N</parallel><xloc>400</xloc><yloc>160</yloc>
+  </action>
+  <action>
+   <name>Verifikasi commit dan ack</name><type>PIPELINE</type>
+   <filename>${PROJECT_HOME}/pipelines/mart/ack_committed_mart_batch.hpl</filename>
+   <params_from_previous>N</params_from_previous><exec_per_row>N</exec_per_row><clear_rows>N</clear_rows><clear_files>N</clear_files>
+   <set_logfile>N</set_logfile><loglevel>Basic</loglevel><wait_until_finished>Y</wait_until_finished><run_configuration>local</run_configuration>
+   <parameters><pass_all_parameters>Y</pass_all_parameters></parameters><parallel>N</parallel><xloc>760</xloc><yloc>160</yloc>
+  </action>
+ </actions>
+ <hops>
+  <hop><from>Start</from><to>Apply fact dan serving</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>Y</unconditional></hop>
+  <hop><from>Apply fact dan serving</from><to>Verifikasi commit dan ack</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+ </hops>
+ <attributes/>
+</workflow>

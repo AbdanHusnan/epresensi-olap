@@ -1,0 +1,14 @@
+{
+  "employee": 27660,
+  "history": [
+    {
+      "date": "2026-10-28",
+      "department": 30181
+    },
+    {
+      "date": "2026-10-29",
+      "department": 2147000001
+    }
+  ],
+  "passed": true
+}
