@@ -1,0 +1,4 @@
+{
+  "committed": false,
+  "failure": "PostgreSQL statement_timeout after 180 seconds; transaction rolled back; sequence values may have been consumed"
+}

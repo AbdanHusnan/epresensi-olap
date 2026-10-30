@@ -1,0 +1,166 @@
+{
+  "employees": {
+    "total": 125832,
+    "active": 82119,
+    "departments": 5104
+  },
+  "indexes": [
+    {
+      "tablename": "m_pegawai",
+      "indexdef": "CREATE UNIQUE INDEX m_pegawai_id ON public.m_pegawai USING btree (id)"
+    },
+    {
+      "tablename": "m_pegawai",
+      "indexdef": "CREATE UNIQUE INDEX m_pegawai_nip ON public.m_pegawai USING btree (nip)"
+    },
+    {
+      "tablename": "t_checkinout",
+      "indexdef": "CREATE UNIQUE INDEX t_checkinout_id ON public.t_checkinout USING btree (id)"
+    },
+    {
+      "tablename": "t_perizinan",
+      "indexdef": "CREATE UNIQUE INDEX t_perizinan_id ON public.t_perizinan USING btree (id)"
+    }
+  ],
+  "event_latest": [
+    {
+      "id": 171380078,
+      "created_at": "2026-10-28T23:00:00",
+      "updated_at": "2026-10-28T11:40:43.336884",
+      "test_marker": true
+    },
+    {
+      "id": 171380077,
+      "created_at": "2026-10-28T23:00:00",
+      "updated_at": "2026-10-28T11:40:43.336884",
+      "test_marker": true
+    },
+    {
+      "id": 171380076,
+      "created_at": "2026-10-28T23:00:00",
+      "updated_at": "2026-10-28T11:40:43.336884",
+      "test_marker": true
+    },
+    {
+      "id": 171380075,
+      "created_at": "2026-10-28T22:00:00",
+      "updated_at": "2026-10-28T11:40:43.336884",
+      "test_marker": true
+    },
+    {
+      "id": 171380074,
+      "created_at": "2026-10-28T16:30:00",
+      "updated_at": "2026-10-28T11:40:43.336884",
+      "test_marker": true
+    },
+    {
+      "id": 171380073,
+      "created_at": "2026-10-28T16:00:00",
+      "updated_at": "2026-10-28T11:40:43.336884",
+      "test_marker": true
+    },
+    {
+      "id": 171380072,
+      "created_at": "2026-10-28T16:00:00",
+      "updated_at": "2026-10-28T11:40:43.336884",
+      "test_marker": true
+    },
+    {
+      "id": 171380071,
+      "created_at": "2026-10-28T16:00:00",
+      "updated_at": "2026-10-28T11:40:43.336884",
+      "test_marker": true
+    }
+  ],
+  "shifts": {
+    "shifts": 15624,
+    "schedules": 106616
+  },
+  "fixture_schemas": [
+    "test_bulk_curated_20261028",
+    "test_curated_v2_20261028",
+    "test_e2e_20261027"
+  ],
+  "leave_columns": [
+    {
+      "column_name": "id",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "user_id",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "nama",
+      "data_type": "character varying"
+    },
+    {
+      "column_name": "departemen",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "tipe_ijin",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "jenis_ijin",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "alasan",
+      "data_type": "text"
+    },
+    {
+      "column_name": "berkas",
+      "data_type": "character varying"
+    },
+    {
+      "column_name": "catatan",
+      "data_type": "text"
+    },
+    {
+      "column_name": "approval",
+      "data_type": "boolean"
+    },
+    {
+      "column_name": "approval_at",
+      "data_type": "timestamp without time zone"
+    },
+    {
+      "column_name": "created_at",
+      "data_type": "timestamp without time zone"
+    },
+    {
+      "column_name": "tgl_ijin",
+      "data_type": "date"
+    },
+    {
+      "column_name": "tgl_ijin_sampai",
+      "data_type": "date"
+    },
+    {
+      "column_name": "pegawai_id",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "updated_at",
+      "data_type": "timestamp without time zone"
+    },
+    {
+      "column_name": "status",
+      "data_type": "smallint"
+    },
+    {
+      "column_name": "updated_user",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "latlong",
+      "data_type": "character varying"
+    },
+    {
+      "column_name": "tgl_emaster",
+      "data_type": "date"
+    }
+  ]
+}

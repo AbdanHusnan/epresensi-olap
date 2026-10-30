@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-30",
+  "timezone": "Asia/Jakarta",
+  "database": "mart_bkd_bulk_20261029",
+  "browser_results": {
+    "metabase_operational": {
+      "query_responses": 9,
+      "errors": []
+    },
+    "metabase_organization": {
+      "query_responses": 9,
+      "errors": []
+    },
+    "superset_operational": {
+      "query_responses": 10,
+      "errors": []
+    },
+    "superset_organization": {
+      "query_responses": 10,
+      "errors": []
+    }
+  },
+  "organization_counts": [
+    2400,
+    1000,
+    1000,
+    1000,
+    600,
+    1200
+  ],
+  "department_30114_counts": [
+    4,
+    1,
+    1,
+    3,
+    2,
+    1
+  ],
+  "department_30187_counts": [
+    4,
+    2,
+    2,
+    1,
+    1,
+    2
+  ],
+  "empty_date": "2026-10-29",
+  "empty_date_passed_both_engines": true
+}

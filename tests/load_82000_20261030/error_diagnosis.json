@@ -1,0 +1,26 @@
+{
+  "epresensi-mart-postgres": {
+    "too many connections for role": 18,
+    "remaining connection slots": 0,
+    "timeout": 0,
+    "OutOfMemoryError": 0,
+    "connection pool": 0,
+    "FATAL": 18,
+    "canceling statement": 0,
+    "connection_limit_messages": [
+      "too many connections for role \"hybrid_metabase_reader\""
+    ]
+  },
+  "epresensi-hybrid-metabase-1": {
+    "too many connections for role": 16,
+    "remaining connection slots": 0,
+    "timeout": 0,
+    "OutOfMemoryError": 0,
+    "connection pool": 0,
+    "FATAL": 16,
+    "canceling statement": 0,
+    "connection_limit_messages": [
+      "too many connections for role \"hybrid_metabase_reader\""
+    ]
+  }
+}

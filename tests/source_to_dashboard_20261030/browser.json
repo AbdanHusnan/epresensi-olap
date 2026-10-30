@@ -1,0 +1,266 @@
+[
+  {
+    "role": "director",
+    "mobile": false,
+    "shellSeconds": 0.697,
+    "renderedSeconds": 8.002,
+    "allChartsSeconds": 6.209,
+    "chartResponses": [
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.215,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.216,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.216,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.216,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.461,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.573,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.67,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.808,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 6.209,
+        "rows": 3829
+      }
+    ],
+    "renderedText": "e-Presensi\nATTENDANCE INSIGHTS\nWORKSPACE\n▥\nOrganization overview\n◎\n\nYour workspace\n\nTop management\nOrganization-wide attendance\nPrototype workspace\nPhase 01\nWorkspace\n/\nAnalytical\nDR\nDirector\nDirector\nSign out ↗\n\nTHE ORGANIZATION AT A GLANCE\n\nAnalytical dashboard\n\nUnderstand attendance across departments, with a shared view of the numbers.\n\n◎All departments\nTest data · 30 October 2026Results are provisional. Department and employee names will be added later.\nPREVIEW\ne-Presensi · Attendance insights\nReporting timezone: Asia/Jakarta\nStart date: \nOctober 30, 2026\nEnd date: \nOctober 30, 2026\nTEST DATA — Provisional\n\nAvailable date: 30 October 2026. Department names are unavailable; use source IDs. Multi-day counts mean employee-days. Missing dates are not zero. Only one date is loaded, so no historical trend can yet be assessed.\n\n72,259\nPegawai Aktif (employee-days)\n67,205\nAbsen Masuk (employee-days)\n65,761\nAbsen Pulang (employee-days)\n1,444\nTidak Absen Masuk (employee-days)\n2,888\nTidak Absen Pulang (employee-days)\n5,054\nPegawai Izin (employee-days)\nDaily attendance trend\nAbsen Masuk\nAbsen Pulang\nDate\n0\n30,000\n60,000\n90,000\n October 30, 2026 \n67,205\nDepartment summary — employee-days\nDepartment ID\nDepartment\nPegawai Aktif\nAbsen Masuk\nAbsen Pulang\nTidak Absen Masuk\nTidak Absen Pulang\nPegawai Izin\nCheck-in %\nCheck-out %\nRequired check-in %\nRequired check-out %\n30001\nDepartment 30001\n1\n1\n1\n0\n0\n0\n100\n100\n100\n100\n30002\nDepartment 30002\n1\n1\n1\n0\n0\n0\n100\n100\n100\n100\n30003\nDepartment 30003\n25\n25\n24\n0\n1\n0\n100\n96\n100\n96\n30004\nDepartment 30004\n10\n10\n10\n0\n0\n0\n100\n100\n100\n100\n30005\nDepartment 30005\n13\n13\n13\n0\n0\n0\n100\n100\n100\n100\n30006\nDepartment 30006\n4\n4\n4\n0\n0\n0\n100\n100\n100\n100\n30008\nDepartment 30008\n3\n3\n2\n0\n1\n0\n100\n66.67\n100\n66.67\n30016\nDepartment 30016\n80\n74\n73\n2\n4\n5\n92.5\n91.25\n97.37\n94.81\n30017\nDepartment 30017\n38\n37\n36\n1\n1\n1\n97.37\n94.74\n97.37\n97.3\n30021\nDepartment 30021\n6\n5\n6\n1\n0\n0\n83.33\n100\n83.33\n100\n3,829 rows\nData coverage and publication status\nStatus\nFirst available date\nLast available date\nAvailable dates\nRequested dates\nPublished data complete\nOldest refresh (Jakarta)\nLatest refresh (Jakarta)\nPROVISIONAL\nOctober 30, 2026\nOctober 30, 2026\n1\n1\nfalse\nOctober 30, 2026, 10:46 AM\nOctober 30, 2026, 10:46 AM\n1 row\nPowered by",
+    "overflow": false,
+    "pageErrors": []
+  },
+  {
+    "role": "manager",
+    "mobile": false,
+    "shellSeconds": 0.216,
+    "renderedSeconds": 5.54,
+    "allChartsSeconds": 4.546,
+    "chartResponses": [
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.299,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.3,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.3,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.3,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.3,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.468,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.555,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.682,
+        "rows": 85
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.546,
+        "rows": 1
+      }
+    ],
+    "renderedText": "e-Presensi\nATTENDANCE INSIGHTS\nWORKSPACE\n▥\nDepartment overview\n◎\n\nYour workspace\n\nMiddle management\nDaily department attendance\nPrototype workspace\nPhase 01\nWorkspace\n/\nOperational\nMG\nDepartment Manager\nManager\nSign out ↗\n\nYOUR DEPARTMENT, IN FOCUS\n\nOperational dashboard\n\nReview daily attendance and find the records that need follow-up.\n\n◎Department 30114\nTest data · 30 October 2026Results are provisional. Department and employee names will be added later.\nPREVIEW\ne-Presensi · Attendance insights\nReporting timezone: Asia/Jakarta\nStart date: \nOctober 30, 2026\nEnd date: \nOctober 30, 2026\nTEST DATA — Provisional\n\nAvailable date: 30 October 2026. Department names are unavailable; use source IDs. Multi-day counts mean employee-days. Missing dates are not zero. Only one date is loaded, so no historical trend can yet be assessed.\n\n85\nPegawai Aktif\n78\nAbsen Masuk\n73\nAbsen Pulang\n4\nTidak Absen Masuk\n9\nTidak Absen Pulang\n4\nPegawai Izin\nDaily attendance trend\nAbsen Masuk\nAbsen Pulang\nDate\n0\n30\n60\n90\n October 30, 2026 \n78\nEmployee daily records — up to 1,000 rows\nEmployee ID\nDate\nDepartment ID\nFirst check-in\nLast check-out\nCheck-in\nCheck-out\nValid leave\nExempt check-in\nExempt check-out\nNeeds review\nProvisional\n29852\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\ntrue\nfalse\nfalse\nfalse\nfalse\ntrue\n32325\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\ntrue\nfalse\nfalse\nfalse\nfalse\ntrue\n40260\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\ntrue\nfalse\nfalse\nfalse\nfalse\ntrue\n40355\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\ntrue\nfalse\nfalse\nfalse\nfalse\ntrue\n40357\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\ntrue\nfalse\nfalse\nfalse\nfalse\ntrue\n40360\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\ntrue\nfalse\nfalse\nfalse\nfalse\ntrue\n40405\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\ntrue\nfalse\nfalse\nfalse\nfalse\ntrue\n40408\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\ntrue\nfalse\nfalse\nfalse\nfalse\ntrue\n40411\nOctober 30, 2026\n30114\nfalse\nfalse\ntrue\ntrue\ntrue\nfalse\ntrue\n40412\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\ntrue\nfalse\nfalse\nfalse\nfalse\ntrue\n85 rows\nData coverage and publication status\nStatus\nFirst available date\nLast available date\nAvailable dates\nRequested dates\nPublished data complete\nOldest refresh (Jakarta)\nLatest refresh (Jakarta)\nPROVISIONAL\nOctober 30, 2026\nOctober 30, 2026\n1\n1\nfalse\nOctober 30, 2026, 10:46 AM\nOctober 30, 2026, 10:46 AM\n1 row\nPowered by",
+    "overflow": false,
+    "pageErrors": []
+  },
+  {
+    "role": "director",
+    "mobile": true,
+    "shellSeconds": 0.291,
+    "renderedSeconds": 6.663,
+    "allChartsSeconds": 5.603,
+    "chartResponses": [
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.416,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.606,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.881,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.967,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.265,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.522,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.523,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.706,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 5.603,
+        "rows": 3829
+      }
+    ],
+    "renderedText": "e-Presensi\nATTENDANCE INSIGHTS\nOrganization overview\nWorkspace\n/\nAnalytical\nDirector\nSign out ↗\n\nTHE ORGANIZATION AT A GLANCE\n\nAnalytical dashboard\n\nUnderstand attendance across departments, with a shared view of the numbers.\n\n◎All departments\nTest data · 30 October 2026\nResults are provisional. Department and employee names will be added later.\ne-Presensi · Attendance insights\nReporting timezone: Asia/Jakarta\nStart date: \nOctober 30, 2026\nEnd date: \nOctober 30, 2026\nTEST DATA — Provisional\n\nAvailable date: 30 October 2026. Department names are unavailable; use source IDs. Multi-day counts mean employee-days. Missing dates are not zero. Only one date is loaded, so no historical trend can yet be assessed.\n\n72,259\nPegawai Aktif (employee-days)\n67,205\nAbsen Masuk (employee-days)\n65,761\nAbsen Pulang (employee-days)\n1,444\nTidak Absen Masuk (employee-days)\n2,888\nTidak Absen Pulang (employee-days)\n5,054\nPegawai Izin (employee-days)\nDaily attendance trend\nAbsen Masuk\nAbsen Pulang\nDate\n0\n30,000\n60,000\n90,000\n October 30, 2026 \n67,205\nDepartment summary — employee-days\nDepartment ID\nDepartment\nPegawai Aktif\nAbsen Masuk\nAbsen Pulang\nTidak Absen Masuk\n30001\nDepartment 30001\n1\n1\n1\n0\n30002\nDepartment 30002\n1\n1\n1\n0\n30003\nDepartment 30003\n25\n25\n24\n0\n30004\nDepartment 30004\n10\n10\n10\n0\n30005\nDepartment 30005\n13\n13\n13\n0\n30006\nDepartment 30006\n4\n4\n4\n0\n30008\nDepartment 30008\n3\n3\n2\n0\n30016\nDepartment 30016\n80\n74\n73\n2\n30017\nDepartment 30017\n38\n37\n36\n1\n30021\nDepartment 30021\n6\n5\n6\n1\n3,829 rows\nData coverage and publication status\nStatus\nFirst available date\nLast available date\nAvailable dates\nRequested dates\nPublished data complete\nPROVISIONAL\nOctober 30, 2026\nOctober 30, 2026\n1\n1\nfalse\n1 row\nPowered by",
+    "overflow": false,
+    "pageErrors": []
+  },
+  {
+    "role": "manager",
+    "mobile": true,
+    "shellSeconds": 0.332,
+    "renderedSeconds": 5.85,
+    "allChartsSeconds": 4.758,
+    "chartResponses": [
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.868,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.871,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.871,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.871,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 3.871,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.018,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.021,
+        "rows": 1
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.758,
+        "rows": 85
+      },
+      {
+        "status": 202,
+        "queryStatus": "completed",
+        "seconds": 4.758,
+        "rows": 1
+      }
+    ],
+    "renderedText": "e-Presensi\nATTENDANCE INSIGHTS\nDepartment overview\nWorkspace\n/\nOperational\nManager\nSign out ↗\n\nYOUR DEPARTMENT, IN FOCUS\n\nOperational dashboard\n\nReview daily attendance and find the records that need follow-up.\n\n◎Department 30114\nTest data · 30 October 2026\nResults are provisional. Department and employee names will be added later.\ne-Presensi · Attendance insights\nReporting timezone: Asia/Jakarta\nStart date: \nOctober 30, 2026\nEnd date: \nOctober 30, 2026\nTEST DATA — Provisional\n\nAvailable date: 30 October 2026. Department names are unavailable; use source IDs. Multi-day counts mean employee-days. Missing dates are not zero. Only one date is loaded, so no historical trend can yet be assessed.\n\n85\nPegawai Aktif\n78\nAbsen Masuk\n73\nAbsen Pulang\n4\nTidak Absen Masuk\n9\nTidak Absen Pulang\n4\nPegawai Izin\nDaily attendance trend\nAbsen Masuk\nAbsen Pulang\nDate\n0\n30\n60\n90\n October 30, 2026 \n78\nEmployee daily records — up to 1,000 rows\nEmployee ID\nDate\nDepartment ID\nFirst check-in\nLast check-out\nCheck-in\n29852\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\n32325\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\n40260\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\n40355\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\n40357\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\n40360\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\n40405\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\n40408\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\n40411\nOctober 30, 2026\n30114\nfalse\n40412\nOctober 30, 2026\n30114\nOctober 30, 2026, 6:30 AM\nOctober 30, 2026, 2:30 PM\ntrue\n85 rows\nData coverage and publication status\nStatus\nFirst available date\nLast available date\nAvailable dates\nRequested dates\nPublished data complete\nPROVISIONAL\nOctober 30, 2026\nOctober 30, 2026\n1\n1\nfalse\n1 row\nPowered by",
+    "overflow": false,
+    "pageErrors": []
+  }
+]

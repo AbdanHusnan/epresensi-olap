@@ -1,0 +1,397 @@
+{
+  "label": "source_daily",
+  "period": {
+    "start_date": "2026-10-30",
+    "end_date": "2026-10-30"
+  },
+  "references": {
+    "director": [
+      72259,
+      67205,
+      65761,
+      1444,
+      2888,
+      5054
+    ],
+    "manager": [
+      85,
+      78,
+      73,
+      4,
+      9,
+      4
+    ]
+  },
+  "stages": [
+    {
+      "users": 1,
+      "chart_fanout_per_user": 3,
+      "elapsed_seconds": 2.42520213406533,
+      "visits_per_second": 1.6493470559894567,
+      "dashboard_seconds": {
+        "count": 4,
+        "p50": 0.3924588500522077,
+        "p95": 1.1557632866315544,
+        "max": 1.1557632866315544
+      },
+      "chart_seconds": {
+        "count": 36,
+        "p50": 0.0993690057657659,
+        "p95": 0.513619159348309,
+        "max": 0.588457880076021
+      },
+      "errors": 2,
+      "cached_chart_responses": 0,
+      "visits": [
+        {
+          "role": "director",
+          "seconds": 1.1557632866315544,
+          "errors": [
+            "department_table_truncated"
+          ],
+          "cards": [
+            {
+              "card_id": 10,
+              "seconds": 0.1841481951996684,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 72259
+            },
+            {
+              "card_id": 11,
+              "seconds": 0.11019416199997067,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 67205
+            },
+            {
+              "card_id": 12,
+              "seconds": 0.1370665393769741,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 65761
+            },
+            {
+              "card_id": 13,
+              "seconds": 0.24369817692786455,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 1444
+            },
+            {
+              "card_id": 14,
+              "seconds": 0.2576787262223661,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 2888
+            },
+            {
+              "card_id": 15,
+              "seconds": 0.513619159348309,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 5054
+            },
+            {
+              "card_id": 16,
+              "seconds": 0.5025271312333643,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1
+            },
+            {
+              "card_id": 17,
+              "seconds": 0.588457880076021,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 2000,
+              "departments_complete": false
+            },
+            {
+              "card_id": 18,
+              "seconds": 0.284041924867779,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1
+            }
+          ]
+        },
+        {
+          "role": "manager",
+          "seconds": 0.3599685369990766,
+          "errors": [],
+          "cards": [
+            {
+              "card_id": 1,
+              "seconds": 0.043867358937859535,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 85
+            },
+            {
+              "card_id": 2,
+              "seconds": 0.03917050501331687,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 78
+            },
+            {
+              "card_id": 3,
+              "seconds": 0.03273817989975214,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 73
+            },
+            {
+              "card_id": 4,
+              "seconds": 0.10282200388610363,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 4
+            },
+            {
+              "card_id": 5,
+              "seconds": 0.10229800874367356,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 9
+            },
+            {
+              "card_id": 6,
+              "seconds": 0.09260885277763009,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 4
+            },
+            {
+              "card_id": 7,
+              "seconds": 0.09254036005586386,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1
+            },
+            {
+              "card_id": 8,
+              "seconds": 0.10026115318760276,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 85,
+              "scope_ok": true
+            },
+            {
+              "card_id": 9,
+              "seconds": 0.09005507780238986,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1
+            }
+          ]
+        },
+        {
+          "role": "director",
+          "seconds": 0.5110398242250085,
+          "errors": [
+            "department_table_truncated"
+          ],
+          "cards": [
+            {
+              "card_id": 10,
+              "seconds": 0.0993690057657659,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 72259
+            },
+            {
+              "card_id": 11,
+              "seconds": 0.051082474179565907,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 67205
+            },
+            {
+              "card_id": 12,
+              "seconds": 0.05269981501623988,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 65761
+            },
+            {
+              "card_id": 13,
+              "seconds": 0.09753631800413132,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 1444
+            },
+            {
+              "card_id": 14,
+              "seconds": 0.0916294981725514,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 2888
+            },
+            {
+              "card_id": 15,
+              "seconds": 0.11645571887493134,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 5054
+            },
+            {
+              "card_id": 16,
+              "seconds": 0.16494260914623737,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1
+            },
+            {
+              "card_id": 17,
+              "seconds": 0.2678283639252186,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 2000,
+              "departments_complete": false
+            },
+            {
+              "card_id": 18,
+              "seconds": 0.1148675624281168,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1
+            }
+          ]
+        },
+        {
+          "role": "manager",
+          "seconds": 0.3924588500522077,
+          "errors": [],
+          "cards": [
+            {
+              "card_id": 1,
+              "seconds": 0.03721572086215019,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 85
+            },
+            {
+              "card_id": 2,
+              "seconds": 0.03932903241366148,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 78
+            },
+            {
+              "card_id": 3,
+              "seconds": 0.040385305881500244,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 73
+            },
+            {
+              "card_id": 4,
+              "seconds": 0.05508076213300228,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 4
+            },
+            {
+              "card_id": 5,
+              "seconds": 0.06502987211570144,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 9
+            },
+            {
+              "card_id": 6,
+              "seconds": 0.061363068874925375,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1,
+              "value": 4
+            },
+            {
+              "card_id": 7,
+              "seconds": 0.09801236912608147,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1
+            },
+            {
+              "card_id": 8,
+              "seconds": 0.16549844667315483,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 85,
+              "scope_ok": true
+            },
+            {
+              "card_id": 9,
+              "seconds": 0.10071213822811842,
+              "http_status": 202,
+              "status": "completed",
+              "cached": null,
+              "rows": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

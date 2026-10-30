@@ -1,0 +1,7 @@
+{
+  "employees": 72259,
+  "departments": 3829,
+  "with_second_schedule": 28462,
+  "date": "2026-10-30",
+  "basis": "Real active source employees with user and same-day Friday department schedule; subset population"
+}

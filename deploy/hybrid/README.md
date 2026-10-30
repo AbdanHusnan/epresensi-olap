@@ -1,14 +1,14 @@
 # Hybrid dashboard environment
 
-Environment-only implementation of [the prototype plan](../../docs/hybrid-dashboard-prototype-plan.md).
-The Next.js page is plain HTML; no KPI, metric, chart, dashboard, styling, preview controls,
-or embedding-token endpoints are implemented. BI administrator accounts are infrastructure
-accounts; application login remains deferred.
+Local implementation of [the prototype plan](../../docs/hybrid-dashboard-prototype-plan.md).
+Next.js now provides a prototype login and role-specific analytical/operational
+pages with signed Metabase guest embeds. BI administrator accounts remain separate
+from the two application demo accounts. Production identity integration is deferred.
 
 ## Start
 
 Run from the repository root. Requires Docker Compose, Python 3, and the existing
-`epresensi-mart-postgres` container (`mart_bkd`) on `epresensi_mart`.
+`epresensi-mart-postgres` container (database selected by `MART_DATABASE` in `.env.hybrid`) on `epresensi_mart`.
 
 ```bash
 python3 deploy/hybrid/configure.py
@@ -28,7 +28,7 @@ an administrator and source connection. No sample content is loaded.
 
 | Service | Browser URL | Administrator |
 |---|---|---|
-| Next.js | http://localhost:3100 | No login |
+| Next.js | http://localhost:3100 | `director` or `manager` prototype account |
 | Metabase | http://localhost:3101 | `BI_ADMIN_EMAIL` in `.env.hybrid` |
 | Superset | http://localhost:3102 | `admin` |
 
@@ -128,3 +128,62 @@ Superset installs explicit PostgreSQL/Redis driver versions in its derived image
 
 Data freshness/completeness and dashboard-scope tests remain part of later analytical
 implementation; these setup checks do not establish data readiness or department isolation.
+
+## Current prototype data source — 30 October 2026
+
+Both BI engines use `mart_bkd_bulk_20261029`, selected by `MART_DATABASE` in
+`.env.hybrid`. The previous synthetic bulk data was deleted and replaced with
+72,259 real source employees and 3,829 department aggregates for 30 October 2026.
+Tagged attendance/leave transactions were generated in `dbabsen_restore` using
+actual department schedules, then loaded through Hop source → raw → curated → mart.
+See [source-to-dashboard results](../../tests/source_to_dashboard_20261030/README.md).
+Correctness passed; ten-user bursts still hit the reader connection limit.
+All results remain provisional test data. The active `mart_bkd` remains empty.
+
+The provisioning and bootstrap scripts honor this setting. Bootstrap updates the
+existing named source in place, preserving its identifier. After changing the
+selected database, provision its reader grants and rerun both BI bootstraps.
+
+## GUI dashboards — 30 October 2026
+
+The operational and organization comparison dashboards are now available in both
+BI GUIs. See [dashboard links, reproducible setup, and verification](dashboards/README.md).
+Next.js now embeds the selected Metabase dashboards; see the website guide below.
+
+## Role-based website — 30 October 2026
+
+Open http://localhost:3100/login. The three pages are `/login`, `/analytical`, and
+`/operational`. Root redirects to login or the account's dashboard.
+
+- `director`: analytical dashboard 2, organization summaries.
+- `manager`: operational dashboard 1, assigned department 30114.
+- Generated passwords are in local `.env.hybrid`, under `DEMO_DIRECTOR_PASSWORD`
+  and `DEMO_MANAGER_PASSWORD`; credentials are not stored in tracked files.
+
+The website uses its own signed HttpOnly session cookie. The backend issues
+10-minute Metabase JWTs and derives dashboard/department scope from the account.
+The manager department is a locked embedding parameter. The browser never receives
+BI administrator credentials or signing keys. This is the requested simple
+prototype login; production identity, rate limiting, session revocation, and
+HTTPS deployment are later work.
+
+After the BI dashboards exist:
+
+```bash
+python3 deploy/hybrid/configure_embed.py
+docker compose --env-file .env.hybrid -f docker-compose.hybrid.yml up -d --build --no-deps web
+python3 tests/hybrid_website_20261030/verify.py
+```
+
+`configure_embed.py` preserves existing app settings, enables the two guest embeds,
+and verifies the operational cards have department mappings. It updates Metabase
+metadata only. For a fresh setup, `configure.py` seeds the required app settings;
+create the BI dashboards before running `configure_embed.py`.
+
+Both ports 3100 and 3101 must be reachable by the browser. By default the app uses
+the same hostname as the website with port 3101 for Metabase. For another address,
+set `METABASE_PUBLIC_URL` and add the website origin to Metabase's allowed SDK
+origins. The configured local origins are localhost:3100 and 127.0.0.1:3100.
+
+Details: [website implementation](../../hybrid-dashboard/README.md) and
+[verification evidence](../../tests/hybrid_website_20261030/README.md).

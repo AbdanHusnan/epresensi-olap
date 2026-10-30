@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "rows": 72259,
+  "hash": "fd2c60c8207dc8eb49831b5c8fb4e252",
+  "projection": "id and pegawai_id only; credentials not copied"
+}

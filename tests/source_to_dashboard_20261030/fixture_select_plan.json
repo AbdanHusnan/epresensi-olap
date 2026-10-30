@@ -1,0 +1,159 @@
+[
+  {
+    "Plan": {
+      "Node Type": "Hash Join",
+      "Parallel Aware": false,
+      "Async Capable": false,
+      "Join Type": "Inner",
+      "Startup Cost": 3630.86,
+      "Total Cost": 14027.87,
+      "Plan Rows": 65047,
+      "Plan Width": 24,
+      "Inner Unique": true,
+      "Hash Cond": "(\"*SELECT* 1\".jid = j.id)",
+      "Plans": [
+        {
+          "Node Type": "Append",
+          "Parent Relationship": "Outer",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Startup Cost": 0.0,
+          "Total Cost": 10226.25,
+          "Plan Rows": 65047,
+          "Plan Width": 8,
+          "Subplans Removed": 0,
+          "Plans": [
+            {
+              "Node Type": "Subquery Scan",
+              "Parent Relationship": "Member",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Alias": "*SELECT* 1",
+              "Startup Cost": 0.0,
+              "Total Cost": 2668.92,
+              "Plan Rows": 40144,
+              "Plan Width": 8,
+              "Plans": [
+                {
+                  "Node Type": "Seq Scan",
+                  "Parent Relationship": "Subquery",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Relation Name": "cohort",
+                  "Alias": "c",
+                  "Startup Cost": 0.0,
+                  "Total Cost": 2267.48,
+                  "Plan Rows": 40144,
+                  "Plan Width": 32,
+                  "Filter": "((((n - 1) % 100) < 91) OR (((n - 1) % 100) >= 98))"
+                }
+              ]
+            },
+            {
+              "Node Type": "Subquery Scan",
+              "Parent Relationship": "Member",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Alias": "*SELECT* 2",
+              "Startup Cost": 0.0,
+              "Total Cost": 3057.49,
+              "Plan Rows": 24807,
+              "Plan Width": 8,
+              "Plans": [
+                {
+                  "Node Type": "Seq Scan",
+                  "Parent Relationship": "Subquery",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Relation Name": "cohort",
+                  "Alias": "c_1",
+                  "Startup Cost": 0.0,
+                  "Total Cost": 2809.42,
+                  "Plan Rows": 24807,
+                  "Plan Width": 32,
+                  "Filter": "((((n - 1) % 100) < 88) OR (((n - 1) % 100) = 91) OR (((n - 1) % 100) = ANY ('{96,97}'::integer[])))"
+                }
+              ]
+            },
+            {
+              "Node Type": "Subquery Scan",
+              "Parent Relationship": "Member",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Alias": "*SELECT* 3",
+              "Startup Cost": 0.0,
+              "Total Cost": 2087.31,
+              "Plan Rows": 48,
+              "Plan Width": 8,
+              "Plans": [
+                {
+                  "Node Type": "Seq Scan",
+                  "Parent Relationship": "Subquery",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Relation Name": "cohort",
+                  "Alias": "c_2",
+                  "Startup Cost": 0.0,
+                  "Total Cost": 2086.83,
+                  "Plan Rows": 48,
+                  "Plan Width": 32,
+                  "Filter": "((j2 IS NOT NULL) AND ((n % 20) = 0) AND (((n - 1) % 100) < 88))"
+                }
+              ]
+            },
+            {
+              "Node Type": "Subquery Scan",
+              "Parent Relationship": "Member",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Alias": "*SELECT* 4",
+              "Startup Cost": 0.0,
+              "Total Cost": 2087.31,
+              "Plan Rows": 48,
+              "Plan Width": 8,
+              "Plans": [
+                {
+                  "Node Type": "Seq Scan",
+                  "Parent Relationship": "Subquery",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Relation Name": "cohort",
+                  "Alias": "c_3",
+                  "Startup Cost": 0.0,
+                  "Total Cost": 2086.83,
+                  "Plan Rows": 48,
+                  "Plan Width": 32,
+                  "Filter": "((j2 IS NOT NULL) AND ((n % 20) = 0) AND (((n - 1) % 100) < 88))"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Node Type": "Hash",
+          "Parent Relationship": "Inner",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Startup Cost": 2298.16,
+          "Total Cost": 2298.16,
+          "Plan Rows": 106616,
+          "Plan Width": 20,
+          "Plans": [
+            {
+              "Node Type": "Seq Scan",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Relation Name": "m_jadwal",
+              "Alias": "j",
+              "Startup Cost": 0.0,
+              "Total Cost": 2298.16,
+              "Plan Rows": 106616,
+              "Plan Width": 20
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

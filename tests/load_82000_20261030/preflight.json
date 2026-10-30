@@ -1,0 +1,1174 @@
+{
+  "configured_dashboard_database": "mart_bkd_bulk_20261029",
+  "protected": {
+    "reference": {
+      "hash": "0a4e3dbc82c5ff193c716976142d794c",
+      "rows": 2400
+    },
+    "active_mart": {
+      "agg": 0,
+      "fact": 0,
+      "batches": 0,
+      "receipts": 0
+    },
+    "active_staging": {
+      "daily": 0,
+      "outbox": 0,
+      "sequence": 0,
+      "bootstrap": false
+    }
+  },
+  "mart": {
+    "bytes": 10853399,
+    "facts": 2400,
+    "database": "mart_bkd_bulk_20261029",
+    "employees": 2400,
+    "last_date": "2026-10-28",
+    "first_date": "2026-10-28",
+    "departments": 757
+  },
+  "curated": {
+    "rows": 2400,
+    "database": "staging_bkd_mart_bulk_20261029",
+    "employees": 2400,
+    "last_date": "2026-10-28",
+    "first_date": "2026-10-28"
+  },
+  "metabase_sources": [
+    {
+      "id": 1,
+      "name": "Attendance mart (read only)",
+      "database": "mart_bkd_bulk_20261029"
+    }
+  ],
+  "sql_baseline": {
+    "institution": {
+      "execution_ms": [
+        1.681,
+        1.853,
+        1.789,
+        1.819,
+        1.657
+      ],
+      "last_plan": {
+        "Plan": {
+          "Node Type": "Subquery Scan",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Alias": "a",
+          "Startup Cost": 110.0,
+          "Total Cost": 110.08,
+          "Plan Rows": 1,
+          "Plan Width": 634,
+          "Actual Startup Time": 1.416,
+          "Actual Total Time": 1.419,
+          "Actual Rows": 1,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 28,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "Plans": [
+            {
+              "Node Type": "Aggregate",
+              "Strategy": "Hashed",
+              "Partial Mode": "Simple",
+              "Parent Relationship": "Subquery",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 110.0,
+              "Total Cost": 110.05,
+              "Plan Rows": 1,
+              "Plan Width": 506,
+              "Actual Startup Time": 1.407,
+              "Actual Total Time": 1.409,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Group Key": [
+                "a_1.tanggal_key"
+              ],
+              "Planned Partitions": 0,
+              "HashAgg Batches": 1,
+              "Peak Memory Usage": 24,
+              "Disk Usage": 0,
+              "Shared Hit Blocks": 28,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Nested Loop",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Join Type": "Left",
+                  "Startup Cost": 22.21,
+                  "Total Cost": 72.15,
+                  "Plan Rows": 757,
+                  "Plan Width": 140,
+                  "Actual Startup Time": 0.303,
+                  "Actual Total Time": 1.004,
+                  "Actual Rows": 757,
+                  "Actual Loops": 1,
+                  "Inner Unique": true,
+                  "Shared Hit Blocks": 28,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "Plans": [
+                    {
+                      "Node Type": "Hash Join",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Join Type": "Inner",
+                      "Startup Cost": 22.05,
+                      "Total Cost": 54.52,
+                      "Plan Rows": 757,
+                      "Plan Width": 137,
+                      "Actual Startup Time": 0.286,
+                      "Actual Total Time": 0.735,
+                      "Actual Rows": 757,
+                      "Actual Loops": 1,
+                      "Inner Unique": true,
+                      "Hash Cond": "(a_1.departemen_key = d.departemen_key)",
+                      "Shared Hit Blocks": 26,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "Plans": [
+                        {
+                          "Node Type": "Seq Scan",
+                          "Parent Relationship": "Outer",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Relation Name": "agg_kehadiran_departemen_harian",
+                          "Alias": "a_1",
+                          "Startup Cost": 0.0,
+                          "Total Cost": 30.46,
+                          "Plan Rows": 757,
+                          "Plan Width": 145,
+                          "Actual Startup Time": 0.007,
+                          "Actual Total Time": 0.143,
+                          "Actual Rows": 757,
+                          "Actual Loops": 1,
+                          "Filter": "(tanggal = '2026-10-28'::date)",
+                          "Rows Removed by Filter": 0,
+                          "Shared Hit Blocks": 21,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0
+                        },
+                        {
+                          "Node Type": "Hash",
+                          "Parent Relationship": "Inner",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Startup Cost": 12.58,
+                          "Total Cost": 12.58,
+                          "Plan Rows": 758,
+                          "Plan Width": 8,
+                          "Actual Startup Time": 0.252,
+                          "Actual Total Time": 0.253,
+                          "Actual Rows": 758,
+                          "Actual Loops": 1,
+                          "Hash Buckets": 1024,
+                          "Original Hash Buckets": 1024,
+                          "Hash Batches": 1,
+                          "Original Hash Batches": 1,
+                          "Peak Memory Usage": 38,
+                          "Shared Hit Blocks": 5,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "Plans": [
+                            {
+                              "Node Type": "Seq Scan",
+                              "Parent Relationship": "Outer",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Relation Name": "dim_departemen",
+                              "Alias": "d",
+                              "Startup Cost": 0.0,
+                              "Total Cost": 12.58,
+                              "Plan Rows": 758,
+                              "Plan Width": 8,
+                              "Actual Startup Time": 0.006,
+                              "Actual Total Time": 0.102,
+                              "Actual Rows": 758,
+                              "Actual Loops": 1,
+                              "Shared Hit Blocks": 5,
+                              "Shared Read Blocks": 0,
+                              "Shared Dirtied Blocks": 0,
+                              "Shared Written Blocks": 0,
+                              "Local Hit Blocks": 0,
+                              "Local Read Blocks": 0,
+                              "Local Dirtied Blocks": 0,
+                              "Local Written Blocks": 0,
+                              "Temp Read Blocks": 0,
+                              "Temp Written Blocks": 0
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "Node Type": "Materialize",
+                      "Parent Relationship": "Inner",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Startup Cost": 0.15,
+                      "Total Cost": 8.18,
+                      "Plan Rows": 1,
+                      "Plan Width": 7,
+                      "Actual Startup Time": 0.0,
+                      "Actual Total Time": 0.0,
+                      "Actual Rows": 1,
+                      "Actual Loops": 757,
+                      "Shared Hit Blocks": 2,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "Plans": [
+                        {
+                          "Node Type": "Index Scan",
+                          "Parent Relationship": "Outer",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Scan Direction": "Forward",
+                          "Index Name": "attendance_date_state_pkey",
+                          "Relation Name": "attendance_date_state",
+                          "Alias": "s",
+                          "Startup Cost": 0.15,
+                          "Total Cost": 8.17,
+                          "Plan Rows": 1,
+                          "Plan Width": 7,
+                          "Actual Startup Time": 0.011,
+                          "Actual Total Time": 0.011,
+                          "Actual Rows": 1,
+                          "Actual Loops": 1,
+                          "Index Cond": "(tanggal = '2026-10-28'::date)",
+                          "Rows Removed by Index Recheck": 0,
+                          "Shared Hit Blocks": 2,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "Planning": {
+          "Shared Hit Blocks": 537,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0
+        },
+        "Planning Time": 2.107,
+        "Triggers": [],
+        "Execution Time": 1.657
+      }
+    },
+    "departments": {
+      "execution_ms": [
+        3.29,
+        3.078,
+        3.339,
+        3.084,
+        3.248
+      ],
+      "last_plan": {
+        "Plan": {
+          "Node Type": "Sort",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Startup Cost": 146.2,
+          "Total Cost": 148.09,
+          "Plan Rows": 757,
+          "Plan Width": 341,
+          "Actual Startup Time": 3.04,
+          "Actual Total Time": 3.09,
+          "Actual Rows": 757,
+          "Actual Loops": 1,
+          "Sort Key": [
+            "a.checkin_days DESC"
+          ],
+          "Sort Method": "quicksort",
+          "Sort Space Used": 217,
+          "Sort Space Type": "Memory",
+          "Shared Hit Blocks": 31,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "Plans": [
+            {
+              "Node Type": "Nested Loop",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Join Type": "Left",
+              "Startup Cost": 22.21,
+              "Total Cost": 110.0,
+              "Plan Rows": 757,
+              "Plan Width": 341,
+              "Actual Startup Time": 0.367,
+              "Actual Total Time": 2.316,
+              "Actual Rows": 757,
+              "Actual Loops": 1,
+              "Inner Unique": true,
+              "Shared Hit Blocks": 28,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Hash Join",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Join Type": "Inner",
+                  "Startup Cost": 22.05,
+                  "Total Cost": 54.52,
+                  "Plan Rows": 757,
+                  "Plan Width": 212,
+                  "Actual Startup Time": 0.341,
+                  "Actual Total Time": 0.839,
+                  "Actual Rows": 757,
+                  "Actual Loops": 1,
+                  "Inner Unique": true,
+                  "Hash Cond": "(a.departemen_key = d.departemen_key)",
+                  "Shared Hit Blocks": 26,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "Plans": [
+                    {
+                      "Node Type": "Seq Scan",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Relation Name": "agg_kehadiran_departemen_harian",
+                      "Alias": "a",
+                      "Startup Cost": 0.0,
+                      "Total Cost": 30.46,
+                      "Plan Rows": 757,
+                      "Plan Width": 191,
+                      "Actual Startup Time": 0.008,
+                      "Actual Total Time": 0.158,
+                      "Actual Rows": 757,
+                      "Actual Loops": 1,
+                      "Filter": "(tanggal = '2026-10-28'::date)",
+                      "Rows Removed by Filter": 0,
+                      "Shared Hit Blocks": 21,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0
+                    },
+                    {
+                      "Node Type": "Hash",
+                      "Parent Relationship": "Inner",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Startup Cost": 12.58,
+                      "Total Cost": 12.58,
+                      "Plan Rows": 758,
+                      "Plan Width": 29,
+                      "Actual Startup Time": 0.311,
+                      "Actual Total Time": 0.311,
+                      "Actual Rows": 758,
+                      "Actual Loops": 1,
+                      "Hash Buckets": 1024,
+                      "Original Hash Buckets": 1024,
+                      "Hash Batches": 1,
+                      "Original Hash Batches": 1,
+                      "Peak Memory Usage": 44,
+                      "Shared Hit Blocks": 5,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "Plans": [
+                        {
+                          "Node Type": "Seq Scan",
+                          "Parent Relationship": "Outer",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Relation Name": "dim_departemen",
+                          "Alias": "d",
+                          "Startup Cost": 0.0,
+                          "Total Cost": 12.58,
+                          "Plan Rows": 758,
+                          "Plan Width": 29,
+                          "Actual Startup Time": 0.007,
+                          "Actual Total Time": 0.122,
+                          "Actual Rows": 758,
+                          "Actual Loops": 1,
+                          "Shared Hit Blocks": 5,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Node Type": "Materialize",
+                  "Parent Relationship": "Inner",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Startup Cost": 0.15,
+                  "Total Cost": 8.18,
+                  "Plan Rows": 1,
+                  "Plan Width": 7,
+                  "Actual Startup Time": 0.0,
+                  "Actual Total Time": 0.0,
+                  "Actual Rows": 1,
+                  "Actual Loops": 757,
+                  "Shared Hit Blocks": 2,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "Plans": [
+                    {
+                      "Node Type": "Index Scan",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Scan Direction": "Forward",
+                      "Index Name": "attendance_date_state_pkey",
+                      "Relation Name": "attendance_date_state",
+                      "Alias": "s",
+                      "Startup Cost": 0.15,
+                      "Total Cost": 8.17,
+                      "Plan Rows": 1,
+                      "Plan Width": 7,
+                      "Actual Startup Time": 0.011,
+                      "Actual Total Time": 0.012,
+                      "Actual Rows": 1,
+                      "Actual Loops": 1,
+                      "Index Cond": "(tanggal = '2026-10-28'::date)",
+                      "Rows Removed by Index Recheck": 0,
+                      "Shared Hit Blocks": 2,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "Planning": {
+          "Shared Hit Blocks": 389,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0
+        },
+        "Planning Time": 1.538,
+        "Triggers": [],
+        "Execution Time": 3.248
+      }
+    },
+    "employee_detail": {
+      "execution_ms": [
+        0.779,
+        0.669,
+        0.674,
+        0.571,
+        0.572
+      ],
+      "last_plan": {
+        "Plan": {
+          "Node Type": "Limit",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Startup Cost": 114.04,
+          "Total Cost": 114.05,
+          "Plan Rows": 4,
+          "Plan Width": 249,
+          "Actual Startup Time": 0.455,
+          "Actual Total Time": 0.457,
+          "Actual Rows": 4,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 81,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "Plans": [
+            {
+              "Node Type": "Sort",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 114.04,
+              "Total Cost": 114.05,
+              "Plan Rows": 4,
+              "Plan Width": 249,
+              "Actual Startup Time": 0.453,
+              "Actual Total Time": 0.454,
+              "Actual Rows": 4,
+              "Actual Loops": 1,
+              "Sort Key": [
+                "pegawai_id_sumber"
+              ],
+              "Sort Method": "quicksort",
+              "Sort Space Used": 26,
+              "Sort Space Type": "Memory",
+              "Shared Hit Blocks": 81,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Seq Scan",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Relation Name": "fact_kehadiran_daily",
+                  "Alias": "fact_kehadiran_daily",
+                  "Startup Cost": 0.0,
+                  "Total Cost": 114.0,
+                  "Plan Rows": 4,
+                  "Plan Width": 249,
+                  "Actual Startup Time": 0.106,
+                  "Actual Total Time": 0.418,
+                  "Actual Rows": 4,
+                  "Actual Loops": 1,
+                  "Filter": "((tanggal = '2026-10-28'::date) AND (departemen_id_sumber = 30114))",
+                  "Rows Removed by Filter": 2396,
+                  "Shared Hit Blocks": 78,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0
+                }
+              ]
+            }
+          ]
+        },
+        "Planning": {
+          "Shared Hit Blocks": 252,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0
+        },
+        "Planning Time": 0.727,
+        "Triggers": [],
+        "Execution Time": 0.572
+      }
+    }
+  },
+  "dashboard_baseline": [
+    {
+      "role": "director",
+      "chart_concurrency": 3,
+      "runs": [
+        {
+          "seconds": 0.3433005837723613,
+          "cards": [
+            {
+              "card_id": 17,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.2816668921150267,
+              "cached": null,
+              "row_count": 757
+            },
+            {
+              "card_id": 14,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.14476527273654938,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 11,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.1504385219886899,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 16,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.051588863134384155,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 12,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.050386658404022455,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 10,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.037138224113732576,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 15,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.08022121619433165,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 18,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.07585463812574744,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 13,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.048195053823292255,
+              "cached": null,
+              "row_count": 1
+            }
+          ]
+        },
+        {
+          "seconds": 0.3939479333348572,
+          "cards": [
+            {
+              "card_id": 17,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.269235507119447,
+              "cached": null,
+              "row_count": 757
+            },
+            {
+              "card_id": 14,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.06712828623130918,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 11,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.08586611412465572,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 16,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.10082333302125335,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 12,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.0912552191875875,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 10,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.08220331417396665,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 15,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.07968592131510377,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 18,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.14052946493029594,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 13,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.08244971511885524,
+              "cached": null,
+              "row_count": 1
+            }
+          ]
+        },
+        {
+          "seconds": 0.38628855207934976,
+          "cards": [
+            {
+              "card_id": 17,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.2540610423311591,
+              "cached": null,
+              "row_count": 757
+            },
+            {
+              "card_id": 14,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.03394714463502169,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 11,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.052444564178586006,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 16,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.05640193214640021,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 12,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.04471315396949649,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 10,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.07629724917933345,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 15,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.07091614417731762,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 18,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.18489763606339693,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 13,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.21255130600184202,
+              "cached": null,
+              "row_count": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "role": "manager",
+      "chart_concurrency": 3,
+      "runs": [
+        {
+          "seconds": 0.33348468830808997,
+          "cards": [
+            {
+              "card_id": 8,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.15292048593983054,
+              "cached": null,
+              "row_count": 4
+            },
+            {
+              "card_id": 6,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.12068646494299173,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 2,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.1202737563289702,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 5,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.09775936603546143,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 4,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.09873386891558766,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 1,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.10135919274762273,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 9,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.0572831816971302,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 3,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.05381332989782095,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 7,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.07783848978579044,
+              "cached": null,
+              "row_count": 1
+            }
+          ]
+        },
+        {
+          "seconds": 0.23905394691973925,
+          "cards": [
+            {
+              "card_id": 8,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.061000469140708447,
+              "cached": null,
+              "row_count": 4
+            },
+            {
+              "card_id": 6,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.05133170494809747,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 2,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.04426745278760791,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 5,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.08568930625915527,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 4,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.07954230066388845,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 1,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.0762497060932219,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 9,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.10423925193026662,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 3,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.08807899756357074,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 7,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.09186873910948634,
+              "cached": null,
+              "row_count": 1
+            }
+          ]
+        },
+        {
+          "seconds": 0.3613454266451299,
+          "cards": [
+            {
+              "card_id": 8,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.14816116588190198,
+              "cached": null,
+              "row_count": 4
+            },
+            {
+              "card_id": 6,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.0849191420711577,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 2,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.07931042090058327,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 5,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.17487301491200924,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 4,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.17385759018361568,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 1,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.11537938006222248,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 9,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.09923141216859221,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 3,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.09938503568992019,
+              "cached": null,
+              "row_count": 1
+            },
+            {
+              "card_id": 7,
+              "http_status": 202,
+              "status": "completed",
+              "seconds": 0.09395587584003806,
+              "cached": null,
+              "row_count": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "protected_unchanged": true
+}

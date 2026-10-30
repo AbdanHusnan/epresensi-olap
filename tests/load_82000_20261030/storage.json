@@ -1,0 +1,75 @@
+{
+  "staging": {
+    "database_bytes": 137034775,
+    "audit_relation_bytes": 98639872
+  },
+  "mart": {
+    "database_bytes": 52460567,
+    "audit_relation_bytes": 5840896
+  },
+  "sizes": [
+    {
+      "bytes": 25427968,
+      "relname": "fact_kehadiran_daily",
+      "n_dead_tup": 0,
+      "n_live_tup": 82000,
+      "last_autoanalyze": "2026-10-30T10:09:33.588931+07:00"
+    },
+    {
+      "bytes": 11526144,
+      "relname": "dim_pegawai",
+      "n_dead_tup": 0,
+      "n_live_tup": 82000,
+      "last_autoanalyze": "2026-10-30T10:09:33.650852+07:00"
+    },
+    {
+      "bytes": 5840896,
+      "relname": "mart_delivery_receipt",
+      "n_dead_tup": 0,
+      "n_live_tup": 4,
+      "last_autoanalyze": null
+    },
+    {
+      "bytes": 573440,
+      "relname": "agg_kehadiran_departemen_harian",
+      "n_dead_tup": 0,
+      "n_live_tup": 757,
+      "last_autoanalyze": "2026-10-30T10:09:33.659086+07:00"
+    },
+    {
+      "bytes": 172032,
+      "relname": "dim_departemen",
+      "n_dead_tup": 0,
+      "n_live_tup": 758,
+      "last_autoanalyze": "2026-10-29T10:08:16.879846+07:00"
+    },
+    {
+      "bytes": 40960,
+      "relname": "dim_calendar",
+      "n_dead_tup": 0,
+      "n_live_tup": 1,
+      "last_autoanalyze": null
+    },
+    {
+      "bytes": 32768,
+      "relname": "mart_batch",
+      "n_dead_tup": 4,
+      "n_live_tup": 4,
+      "last_autoanalyze": null
+    },
+    {
+      "bytes": 32768,
+      "relname": "attendance_date_state",
+      "n_dead_tup": 3,
+      "n_live_tup": 1,
+      "last_autoanalyze": null
+    },
+    {
+      "bytes": 32768,
+      "relname": "mart_delivery_cursor",
+      "n_dead_tup": 3,
+      "n_live_tup": 1,
+      "last_autoanalyze": null
+    }
+  ]
+}

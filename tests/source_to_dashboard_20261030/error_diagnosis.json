@@ -1,0 +1,16 @@
+{
+  "epresensi-mart-postgres": {
+    "connection_limit_errors": 16,
+    "messages": [
+      "too many connections for role \"hybrid_metabase_reader\""
+    ],
+    "oom_errors": 0
+  },
+  "epresensi-hybrid-metabase-1": {
+    "connection_limit_errors": 9,
+    "messages": [
+      "too many connections for role \"hybrid_metabase_reader\""
+    ],
+    "oom_errors": 0
+  }
+}

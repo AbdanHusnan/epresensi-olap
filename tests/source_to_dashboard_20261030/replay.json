@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "before": {
+    "daily": "6cfe9e56d2fbe2f065f99102b55e4f40",
+    "fact": "dccd99461bd8fb3305596dfb009027c1",
+    "aggregate": "fd99c6c69ff71558831e0d959e531aa5"
+  },
+  "after": {
+    "daily": "6cfe9e56d2fbe2f065f99102b55e4f40",
+    "fact": "dccd99461bd8fb3305596dfb009027c1",
+    "aggregate": "fd99c6c69ff71558831e0d959e531aa5"
+  },
+  "result": {
+    "batch_id": "SOURCE_DASHBOARD_20261030_REPLAY",
+    "replayed": false,
+    "date_policy": "SAME_DAY_PROVISIONAL_V1",
+    "leave_policy": "TRANSACTION_TYPE_V3",
+    "event_changes": 0,
+    "leave_changes": 0,
+    "population_changes": 0,
+    "event_daily_changes": 0,
+    "affected_employee_dates": 0,
+    "attendance_daily_changes": 0
+  },
+  "pending": 0,
+  "receipts": 1
+}

@@ -1,0 +1,13 @@
+{
+  "old_source_events_remaining": 0,
+  "old_source_leaves_remaining": 0,
+  "old_raw_database_exists": "0",
+  "fact_dates": [
+    {
+      "tanggal": "2026-10-30",
+      "facts": 72259,
+      "employees": 72259
+    }
+  ],
+  "source_master_fingerprints_unchanged": true
+}

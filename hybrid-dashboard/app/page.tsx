@@ -1,3 +1,3 @@
-export default function Home() {
-  return <main><h1>Hybrid dashboard</h1><p>Project environment is ready.</p></main>;
-}
+import { redirect } from 'next/navigation';
+import { currentUser, homeFor } from '../lib/auth';
+export default async function Home() {const user=await currentUser();redirect(user?homeFor(user.role):'/login');}

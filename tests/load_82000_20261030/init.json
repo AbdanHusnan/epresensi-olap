@@ -1,0 +1,6 @@
+{
+  "target": "mart_bkd_bulk_20261029",
+  "source": "staging_bkd_mart_bulk_20261029",
+  "backups": "/home/piramida/OLAP/backups/load_82000_20261030",
+  "synthetic_id_start": 1000000001
+}

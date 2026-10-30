@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "date_hashes": [
+    {
+      "hash": "945194bd38145164845e11a911ab6518",
+      "rows": 82000,
+      "tanggal": "2026-10-28"
+    }
+  ],
+  "compared_fields": [
+    "pegawai_id",
+    "tanggal",
+    "departemen_id",
+    "is_employee_active",
+    "population_basis",
+    "has_masuk",
+    "has_pulang",
+    "checkin_event_count",
+    "checkout_event_count",
+    "first_checkin_at",
+    "last_checkout_at",
+    "has_manual_event",
+    "has_valid_leave",
+    "has_full_day_leave",
+    "has_partial_day_leave",
+    "active_employee_days",
+    "checkin_days",
+    "checkout_days",
+    "leave_days",
+    "perlu_review",
+    "alasan_review",
+    "is_date_final",
+    "date_assignment_policy",
+    "source_snapshot_at",
+    "has_excused_checkin",
+    "has_excused_checkout",
+    "no_checkin_days",
+    "no_checkout_days",
+    "required_checkin_days",
+    "required_checkout_days",
+    "excused_checkin_days",
+    "excused_checkout_days",
+    "required_checkin_present_days",
+    "required_checkout_present_days"
+  ],
+  "facts": 82000,
+  "partitions": 757,
+  "control": {
+    "batches": 4,
+    "receipts": 4,
+    "not_applied": 0,
+    "last_sequence": 4
+  },
+  "pending": 0,
+  "source_fact_fingerprints_equal": true,
+  "independent_boolean_aggregate_oracle": true,
+  "dimension_mismatches": 0,
+  "original_curated_unchanged": true,
+  "protected_unchanged": true
+}

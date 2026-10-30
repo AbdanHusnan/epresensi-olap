@@ -18,6 +18,14 @@ services:
     environment:
       METABASE_INTERNAL_URL: http://metabase:3000
       SUPERSET_INTERNAL_URL: http://superset:8088
+      APP_SESSION_SECRET: ${APP_SESSION_SECRET:?Run configure_embed.py}
+      METABASE_EMBEDDING_SECRET: ${METABASE_EMBEDDING_SECRET:?Run configure_embed.py}
+      METABASE_ANALYTICAL_DASHBOARD_ID: ${METABASE_ANALYTICAL_DASHBOARD_ID:-2}
+      METABASE_OPERATIONAL_DASHBOARD_ID: ${METABASE_OPERATIONAL_DASHBOARD_ID:-1}
+      METABASE_PUBLIC_URL: ${METABASE_PUBLIC_URL:-}
+      DEMO_DIRECTOR_PASSWORD: ${DEMO_DIRECTOR_PASSWORD:?Run configure_embed.py}
+      DEMO_MANAGER_PASSWORD: ${DEMO_MANAGER_PASSWORD:?Run configure_embed.py}
+      DEMO_MANAGER_DEPARTMENT_ID: ${DEMO_MANAGER_DEPARTMENT_ID:-30114}
     networks: [frontend]
     mem_limit: 512m
     cpus: 1
@@ -95,6 +103,7 @@ services:
       BI_ADMIN_EMAIL: ${BI_ADMIN_EMAIL:?Run configure.py}
       BI_ADMIN_PASSWORD: ${BI_ADMIN_PASSWORD:?Run configure.py}
       SUPERSET_MART_PASSWORD: ${SUPERSET_MART_PASSWORD:?Run configure.py}
+      MART_DATABASE: ${MART_DATABASE:-mart_bkd}
     command: [/bin/sh, -ec, 'superset db upgrade && superset init && python /app/hybrid/bootstrap.py']
     depends_on:
       metadata: {condition: service_healthy}

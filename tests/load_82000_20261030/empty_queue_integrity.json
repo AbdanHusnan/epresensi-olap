@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "before": {
+    "fact": "4976ea1be089b08c97116dc50ef86756",
+    "receipts": 4,
+    "aggregate": "830d0202f2c806c0c8c8e56986eea566"
+  },
+  "after": {
+    "fact": "4976ea1be089b08c97116dc50ef86756",
+    "receipts": 4,
+    "aggregate": "830d0202f2c806c0c8c8e56986eea566"
+  }
+}

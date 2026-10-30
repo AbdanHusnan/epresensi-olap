@@ -9,11 +9,11 @@ env = dict(line.split('=', 1) for line in (ROOT / '.env.hybrid').read_text().spl
 base = 'http://127.0.0.1:3101'
 session = None
 
-def api(path, payload=None):
+def api(path, payload=None, method=None):
     headers = {'Content-Type': 'application/json'}
     if session:
         headers['X-Metabase-Session'] = session
-    request = urllib.request.Request(base + path, data=json.dumps(payload).encode() if payload is not None else None, headers=headers)
+    request = urllib.request.Request(base + path, data=json.dumps(payload).encode() if payload is not None else None, headers=headers, method=method)
     try:
         with urllib.request.urlopen(request, timeout=60) as response:
             return json.load(response)
@@ -30,10 +30,14 @@ if properties.get('setup-token'):
 session = api('/api/session', {'username': env['BI_ADMIN_EMAIL'], 'password': env['BI_ADMIN_PASSWORD']})['id']
 databases = api('/api/database')
 rows = databases.get('data', []) if isinstance(databases, dict) else databases
-if not any(database['name'] == 'Attendance mart (read only)' for database in rows):
-    api('/api/database', {
-        'name': 'Attendance mart (read only)', 'engine': 'postgres',
-        'is_full_sync': False, 'is_on_demand': True, 'auto_run_queries': False,
-        'details': {'host': 'epresensi-mart-postgres', 'port': 5432, 'dbname': 'mart_bkd', 'user': 'hybrid_metabase_reader', 'password': env['METABASE_MART_PASSWORD'], 'ssl': False, 'schema-filters-type': 'inclusion', 'schema-filters-patterns': 'serving,mart_kehadiran'},
-    })
-print('Metabase administrator and read-only source configured; no dashboards or questions created.')
+existing = next((database for database in rows if database['name'] == 'Attendance mart (read only)'), None)
+payload = {
+    'name': 'Attendance mart (read only)', 'engine': 'postgres',
+    'is_full_sync': False, 'is_on_demand': True, 'auto_run_queries': False,
+    'details': {'host': 'epresensi-mart-postgres', 'port': 5432, 'dbname': env.get('MART_DATABASE', 'mart_bkd'), 'user': 'hybrid_metabase_reader', 'password': env['METABASE_MART_PASSWORD'], 'ssl': False, 'schema-filters-type': 'inclusion', 'schema-filters-patterns': 'serving,mart_kehadiran'},
+}
+if existing:
+    api('/api/database/' + str(existing['id']), payload, method='PUT')
+else:
+    api('/api/database', payload)
+print('Metabase read-only source configured for ' + payload['details']['dbname'])

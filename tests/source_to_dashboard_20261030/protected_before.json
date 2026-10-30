@@ -1,0 +1,16 @@
+{
+  "active_stage": {
+    "daily": 0,
+    "outbox": 0,
+    "bootstrap": false
+  },
+  "active_mart": {
+    "facts": 0,
+    "batches": 0
+  },
+  "source_masters": {
+    "employees": "c4e528edd1894dc71eea80a655bdf0b6",
+    "shifts": "1e05213c5968913ae86bfb3f6e27fdbe",
+    "schedules": "5acadf2fd67f4beec5c0871efc907d4b"
+  }
+}

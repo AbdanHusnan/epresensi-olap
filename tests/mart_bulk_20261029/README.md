@@ -1,5 +1,10 @@
 # Bulk curated → fact → agregasi — 29 Oktober 2026
 
+> Superseded: this bulk test dataset and its tagged source fixtures were removed
+> on 30 October 2026 at the user’s request. The current dataset and verification
+> are documented in [the source-to-dashboard rerun](../source_to_dashboard_20261030/README.md).
+> Historical scripts and reports below are audit evidence, not current database state.
+
 **LULUS.** Menggunakan seluruh hasil curated bulk existing, tanpa membuat skenario
 baru atau mengulang raw→curated. Kondisi yang dimuat adalah hasil setelah koreksi
 izin: approval skenario 4 telah dicabut, skenario 7 menjadi izin pulang.

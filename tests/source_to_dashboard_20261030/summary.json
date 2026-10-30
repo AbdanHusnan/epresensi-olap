@@ -1,0 +1,233 @@
+{
+  "correctness_passed": true,
+  "source": "dbabsen_restore",
+  "stage": "staging_bkd_mart_bulk_20261029",
+  "mart": "mart_bkd_bulk_20261029",
+  "cohort": {
+    "employees": 72259,
+    "departments": 3829,
+    "with_second_schedule": 28462,
+    "date": "2026-10-30",
+    "basis": "Real active source employees with user and same-day Friday department schedule; subset population"
+  },
+  "fixtures": {
+    "seconds": 172.45989597635344,
+    "employees": 72259,
+    "events": 135146,
+    "leaves": 5054,
+    "event_min": 171512575,
+    "event_max": 171647720
+  },
+  "cleanup": {
+    "old_source_events_remaining": 0,
+    "old_source_leaves_remaining": 0,
+    "old_raw_database_exists": "0",
+    "fact_dates": [
+      {
+        "tanggal": "2026-10-30",
+        "facts": 72259,
+        "employees": 72259
+      }
+    ],
+    "source_master_fingerprints_unchanged": true
+  },
+  "verification": {
+    "passed": true,
+    "source_oracle": {
+      "rows": 72259,
+      "hash": "283c215ec4c77c59ec5b7e06a146e51a"
+    },
+    "curated_fact_shared_fields": 34,
+    "employees": 72259,
+    "departments": 3829,
+    "totals": {
+      "active_employee_days": 72259,
+      "checkin_days": 67205,
+      "checkout_days": 65761,
+      "no_checkin_days": 1444,
+      "no_checkout_days": 2888,
+      "leave_days": 5054,
+      "required_checkin_days": 68649,
+      "required_checkout_days": 68649,
+      "excused_checkin_days": 3610,
+      "excused_checkout_days": 3610,
+      "required_checkin_present_days": 67205,
+      "required_checkout_present_days": 65761
+    },
+    "control": {
+      "batches": 1,
+      "receipts": 1,
+      "applied": 1
+    },
+    "date": "2026-10-30",
+    "pending": 0,
+    "source_masters_unchanged": true,
+    "active_databases_unchanged": true,
+    "old_synthetic_employee_rows": 0
+  },
+  "timing": {
+    "raw_phase_seconds": {
+      "pegawai": 44.290190503932536,
+      "departemen": 20.9242332871072,
+      "jadwal": 16.911424855235964,
+      "shift": 16.074802285060287,
+      "jenis_ijin": 16.103595740161836,
+      "tipe_ijin": 13.334569723811,
+      "checkinout": 23.30079315416515,
+      "perizinan": 16.756149927154183,
+      "user_remeasurement": 17.01991195930168
+    },
+    "raw_phase_sum_seconds": 184.71567143592983,
+    "curated_seconds": 24.733491581864655,
+    "mart_seconds": 51.909971029963344,
+    "note": "Component-time sum, not uninterrupted end-to-end elapsed time. User identity ingestion measured separately in equivalent scratch table because initial timing capture was interrupted. Excludes fixture preparation, rollback attempt, manifest/bootstrap overhead, verification and pauses.",
+    "measured_phase_sum_seconds": 261.35913404775783
+  },
+  "http_stages": [
+    {
+      "users": 1,
+      "chart_fanout_per_user": 3,
+      "elapsed_seconds": 7.199541227892041,
+      "visits_per_second": 0.5555909568936745,
+      "dashboard_seconds": {
+        "count": 4,
+        "p50": 1.513829203788191,
+        "p95": 2.7864524056203663,
+        "max": 2.7864524056203663
+      },
+      "chart_seconds": {
+        "count": 36,
+        "p50": 0.28547928808256984,
+        "p95": 0.8711044257506728,
+        "max": 1.0829699118621647
+      },
+      "errors": 0,
+      "cached_chart_responses": 0,
+      "failed_charts": 0
+    },
+    {
+      "users": 5,
+      "chart_fanout_per_user": 3,
+      "elapsed_seconds": 13.618501119781286,
+      "visits_per_second": 1.468590399493333,
+      "dashboard_seconds": {
+        "count": 20,
+        "p50": 2.651561983861029,
+        "p95": 4.321754246018827,
+        "max": 4.439273215830326
+      },
+      "chart_seconds": {
+        "count": 180,
+        "p50": 0.5133610139600933,
+        "p95": 1.3891050470992923,
+        "max": 2.0504832691513
+      },
+      "errors": 0,
+      "cached_chart_responses": 0,
+      "failed_charts": 0
+    },
+    {
+      "users": 10,
+      "chart_fanout_per_user": 3,
+      "elapsed_seconds": 37.948200438637286,
+      "visits_per_second": 1.0540684284800408,
+      "dashboard_seconds": {
+        "count": 40,
+        "p50": 8.432915451936424,
+        "p95": 10.6621722583659,
+        "max": 10.880706071853638
+      },
+      "chart_seconds": {
+        "count": 360,
+        "p50": 1.6131848371587694,
+        "p95": 3.8045810689218342,
+        "max": 6.399792673997581
+      },
+      "errors": 8,
+      "cached_chart_responses": 0,
+      "failed_charts": 12
+    }
+  ],
+  "browser": [
+    {
+      "role": "director",
+      "mobile": false,
+      "shellSeconds": 0.697,
+      "renderedSeconds": 8.002,
+      "allChartsSeconds": 6.209,
+      "overflow": false,
+      "pageErrors": []
+    },
+    {
+      "role": "manager",
+      "mobile": false,
+      "shellSeconds": 0.216,
+      "renderedSeconds": 5.54,
+      "allChartsSeconds": 4.546,
+      "overflow": false,
+      "pageErrors": []
+    },
+    {
+      "role": "director",
+      "mobile": true,
+      "shellSeconds": 0.291,
+      "renderedSeconds": 6.663,
+      "allChartsSeconds": 5.603,
+      "overflow": false,
+      "pageErrors": []
+    },
+    {
+      "role": "manager",
+      "mobile": true,
+      "shellSeconds": 0.332,
+      "renderedSeconds": 5.85,
+      "allChartsSeconds": 4.758,
+      "overflow": false,
+      "pageErrors": []
+    }
+  ],
+  "website_checks": 54,
+  "replay": {
+    "passed": true,
+    "before": {
+      "daily": "6cfe9e56d2fbe2f065f99102b55e4f40",
+      "fact": "dccd99461bd8fb3305596dfb009027c1",
+      "aggregate": "fd99c6c69ff71558831e0d959e531aa5"
+    },
+    "after": {
+      "daily": "6cfe9e56d2fbe2f065f99102b55e4f40",
+      "fact": "dccd99461bd8fb3305596dfb009027c1",
+      "aggregate": "fd99c6c69ff71558831e0d959e531aa5"
+    },
+    "result": {
+      "batch_id": "SOURCE_DASHBOARD_20261030_REPLAY",
+      "replayed": false,
+      "date_policy": "SAME_DAY_PROVISIONAL_V1",
+      "leave_policy": "TRANSACTION_TYPE_V3",
+      "event_changes": 0,
+      "leave_changes": 0,
+      "population_changes": 0,
+      "event_daily_changes": 0,
+      "affected_employee_dates": 0,
+      "attendance_daily_changes": 0
+    },
+    "pending": 0,
+    "receipts": 1
+  },
+  "diagnosis": {
+    "epresensi-mart-postgres": {
+      "connection_limit_errors": 16,
+      "messages": [
+        "too many connections for role \"hybrid_metabase_reader\""
+      ],
+      "oom_errors": 0
+    },
+    "epresensi-hybrid-metabase-1": {
+      "connection_limit_errors": 9,
+      "messages": [
+        "too many connections for role \"hybrid_metabase_reader\""
+      ],
+      "oom_errors": 0
+    }
+  }
+}

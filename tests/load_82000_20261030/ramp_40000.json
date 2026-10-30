@@ -1,0 +1,49 @@
+{
+  "phase": "ramp_40000",
+  "passed": true,
+  "fact_rows": 40000,
+  "aggregate_rows": 757,
+  "totals": {
+    "active_employee_days": 40000,
+    "checkin_days": 16683,
+    "checkout_days": 16690,
+    "no_checkin_days": 16653,
+    "no_checkout_days": 9981,
+    "leave_days": 20011,
+    "required_checkin_days": 29997,
+    "required_checkout_days": 23332,
+    "excused_checkin_days": 10003,
+    "excused_checkout_days": 16668,
+    "required_checkin_present_days": 13344,
+    "required_checkout_present_days": 13351
+  },
+  "views": [
+    {
+      "tanggal": "2026-10-28",
+      "fact_rows": 40000,
+      "leave_days": 20011,
+      "review_rows": 0,
+      "tanggal_key": 20261028,
+      "checkin_days": 16683,
+      "checkin_rate": 41.7075,
+      "checkout_days": 16690,
+      "checkout_rate": 41.725,
+      "nonfinal_rows": 40000,
+      "is_provisional": true,
+      "no_checkin_days": 16653,
+      "is_data_complete": false,
+      "no_checkout_days": 9981,
+      "active_employee_days": 40000,
+      "excused_checkin_days": 10003,
+      "excused_checkout_days": 16668,
+      "required_checkin_days": 29997,
+      "required_checkin_rate": 44.48444844484448,
+      "required_checkout_days": 23332,
+      "required_checkout_rate": 57.22184124807132,
+      "latest_partition_refreshed_at": "2026-10-30T10:06:55.590375+07:00",
+      "oldest_partition_refreshed_at": "2026-10-30T10:06:55.590375+07:00",
+      "required_checkin_present_days": 13344,
+      "required_checkout_present_days": 13351
+    }
+  ]
+}

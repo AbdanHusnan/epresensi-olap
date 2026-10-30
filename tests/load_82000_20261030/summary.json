@@ -1,0 +1,355 @@
+{
+  "target": "mart_bkd_bulk_20261029",
+  "source": "staging_bkd_mart_bulk_20261029",
+  "date": "2026-10-28",
+  "employees": 82000,
+  "facts": 82000,
+  "departments": 757,
+  "historical_load_performed": false,
+  "correctness_passed": true,
+  "ten_user_acceptance_passed": false,
+  "ramps": [
+    {
+      "seconds": 2.782016715966165,
+      "inserted": 7600,
+      "employees": 10000,
+      "hop_wall_seconds": 27.755,
+      "workflow_seconds": 8.906,
+      "rows_per_hop_second": 273.8245361196181
+    },
+    {
+      "seconds": 4.448697746731341,
+      "inserted": 30000,
+      "employees": 40000,
+      "hop_wall_seconds": 34.569,
+      "workflow_seconds": 18.057,
+      "rows_per_hop_second": 867.8295582747547
+    },
+    {
+      "seconds": 7.598358871880919,
+      "inserted": 42000,
+      "employees": 82000,
+      "hop_wall_seconds": 53.53,
+      "workflow_seconds": 30.497,
+      "rows_per_hop_second": 784.6067625630487
+    }
+  ],
+  "sum_fixture_seconds": 14.829073334578425,
+  "sum_hop_wall_seconds": 115.854,
+  "http_stages": [
+    {
+      "run": "daily_82000",
+      "users": 1,
+      "chart_fanout_per_user": 3,
+      "elapsed_seconds": 8.216544476803392,
+      "visits_per_second": 0.48682265535014557,
+      "dashboard_seconds": {
+        "count": 4,
+        "p50": 2.081711439881474,
+        "p95": 2.2630895599722862,
+        "max": 2.2630895599722862
+      },
+      "chart_seconds": {
+        "count": 36,
+        "p50": 0.4063769937492907,
+        "p95": 0.9259546855464578,
+        "max": 0.9556416212581098
+      },
+      "errors": 0,
+      "cached_chart_responses": 0,
+      "failed_charts": 0,
+      "cache_status_unreported": 36
+    },
+    {
+      "run": "daily_82000",
+      "users": 5,
+      "chart_fanout_per_user": 3,
+      "elapsed_seconds": 46.16495308605954,
+      "visits_per_second": 0.43322907667027205,
+      "dashboard_seconds": {
+        "count": 20,
+        "p50": 10.154435063246638,
+        "p95": 15.046790107153356,
+        "max": 15.48202733322978
+      },
+      "chart_seconds": {
+        "count": 180,
+        "p50": 1.9980903421528637,
+        "p95": 4.907118988223374,
+        "max": 7.395133392885327
+      },
+      "errors": 0,
+      "cached_chart_responses": 0,
+      "failed_charts": 0,
+      "cache_status_unreported": 180
+    },
+    {
+      "run": "five_user_repeat",
+      "users": 5,
+      "chart_fanout_per_user": 3,
+      "elapsed_seconds": 9.134748213924468,
+      "visits_per_second": 2.1894418468495047,
+      "dashboard_seconds": {
+        "count": 20,
+        "p50": 2.0991901960223913,
+        "p95": 2.4307541931048036,
+        "max": 2.523222242947668
+      },
+      "chart_seconds": {
+        "count": 180,
+        "p50": 0.40213787695392966,
+        "p95": 1.0081988829188049,
+        "max": 1.2311433209106326
+      },
+      "errors": 0,
+      "cached_chart_responses": 0,
+      "failed_charts": 0,
+      "cache_status_unreported": 180
+    },
+    {
+      "run": "ten_user_warm",
+      "users": 10,
+      "chart_fanout_per_user": 3,
+      "elapsed_seconds": 18.409521078225225,
+      "visits_per_second": 2.172788734157348,
+      "dashboard_seconds": {
+        "count": 40,
+        "p50": 3.840178769081831,
+        "p95": 6.255194447003305,
+        "max": 6.313287313096225
+      },
+      "chart_seconds": {
+        "count": 360,
+        "p50": 0.8003861573524773,
+        "p95": 2.298185798805207,
+        "max": 3.211806927807629
+      },
+      "errors": 9,
+      "cached_chart_responses": 0,
+      "failed_charts": 17,
+      "cache_status_unreported": 360
+    }
+  ],
+  "browser": [
+    {
+      "role": "director",
+      "mobile": false,
+      "shellSeconds": 0.353,
+      "renderedSeconds": 5.185,
+      "allChartsSeconds": 4.24,
+      "overflow": false,
+      "pageErrors": []
+    },
+    {
+      "role": "manager",
+      "mobile": false,
+      "shellSeconds": 0.411,
+      "renderedSeconds": 5.587,
+      "allChartsSeconds": 4.642,
+      "overflow": false,
+      "pageErrors": []
+    },
+    {
+      "role": "director",
+      "mobile": true,
+      "shellSeconds": 0.161,
+      "renderedSeconds": 4.699,
+      "allChartsSeconds": 3.766,
+      "overflow": false,
+      "pageErrors": []
+    },
+    {
+      "role": "manager",
+      "mobile": true,
+      "shellSeconds": 0.151,
+      "renderedSeconds": 5.965,
+      "allChartsSeconds": 4.911,
+      "overflow": false,
+      "pageErrors": []
+    }
+  ],
+  "website_checks": 54,
+  "reconciliation": {
+    "passed": true,
+    "date_hashes": [
+      {
+        "hash": "945194bd38145164845e11a911ab6518",
+        "rows": 82000,
+        "tanggal": "2026-10-28"
+      }
+    ],
+    "compared_fields": [
+      "pegawai_id",
+      "tanggal",
+      "departemen_id",
+      "is_employee_active",
+      "population_basis",
+      "has_masuk",
+      "has_pulang",
+      "checkin_event_count",
+      "checkout_event_count",
+      "first_checkin_at",
+      "last_checkout_at",
+      "has_manual_event",
+      "has_valid_leave",
+      "has_full_day_leave",
+      "has_partial_day_leave",
+      "active_employee_days",
+      "checkin_days",
+      "checkout_days",
+      "leave_days",
+      "perlu_review",
+      "alasan_review",
+      "is_date_final",
+      "date_assignment_policy",
+      "source_snapshot_at",
+      "has_excused_checkin",
+      "has_excused_checkout",
+      "no_checkin_days",
+      "no_checkout_days",
+      "required_checkin_days",
+      "required_checkout_days",
+      "excused_checkin_days",
+      "excused_checkout_days",
+      "required_checkin_present_days",
+      "required_checkout_present_days"
+    ],
+    "facts": 82000,
+    "partitions": 757,
+    "control": {
+      "batches": 4,
+      "receipts": 4,
+      "not_applied": 0,
+      "last_sequence": 4
+    },
+    "pending": 0,
+    "source_fact_fingerprints_equal": true,
+    "independent_boolean_aggregate_oracle": true,
+    "dimension_mismatches": 0,
+    "original_curated_unchanged": true,
+    "protected_unchanged": true
+  },
+  "resource_peaks_sampled": {
+    "epresensi-hop-web": {
+      "memory_mib": 1898.496,
+      "cpu_percent": 666.65
+    },
+    "epresensi-mart-postgres": {
+      "memory_mib": 684.0,
+      "cpu_percent": 112.42
+    },
+    "epresensi-staging-postgres": {
+      "memory_mib": 1226.752,
+      "cpu_percent": 124.02
+    },
+    "epresensi-hybrid-metabase-1": {
+      "memory_mib": 1522.688,
+      "cpu_percent": 210.68
+    },
+    "epresensi-hybrid-web-1": {
+      "memory_mib": 61.77,
+      "cpu_percent": 69.98
+    }
+  },
+  "storage": {
+    "staging": {
+      "database_bytes": 137034775,
+      "audit_relation_bytes": 98639872
+    },
+    "mart": {
+      "database_bytes": 52460567,
+      "audit_relation_bytes": 5840896
+    },
+    "sizes": [
+      {
+        "bytes": 25427968,
+        "relname": "fact_kehadiran_daily",
+        "n_dead_tup": 0,
+        "n_live_tup": 82000,
+        "last_autoanalyze": "2026-10-30T10:09:33.588931+07:00"
+      },
+      {
+        "bytes": 11526144,
+        "relname": "dim_pegawai",
+        "n_dead_tup": 0,
+        "n_live_tup": 82000,
+        "last_autoanalyze": "2026-10-30T10:09:33.650852+07:00"
+      },
+      {
+        "bytes": 5840896,
+        "relname": "mart_delivery_receipt",
+        "n_dead_tup": 0,
+        "n_live_tup": 4,
+        "last_autoanalyze": null
+      },
+      {
+        "bytes": 573440,
+        "relname": "agg_kehadiran_departemen_harian",
+        "n_dead_tup": 0,
+        "n_live_tup": 757,
+        "last_autoanalyze": "2026-10-30T10:09:33.659086+07:00"
+      },
+      {
+        "bytes": 172032,
+        "relname": "dim_departemen",
+        "n_dead_tup": 0,
+        "n_live_tup": 758,
+        "last_autoanalyze": "2026-10-29T10:08:16.879846+07:00"
+      },
+      {
+        "bytes": 40960,
+        "relname": "dim_calendar",
+        "n_dead_tup": 0,
+        "n_live_tup": 1,
+        "last_autoanalyze": null
+      },
+      {
+        "bytes": 32768,
+        "relname": "mart_batch",
+        "n_dead_tup": 4,
+        "n_live_tup": 4,
+        "last_autoanalyze": null
+      },
+      {
+        "bytes": 32768,
+        "relname": "attendance_date_state",
+        "n_dead_tup": 3,
+        "n_live_tup": 1,
+        "last_autoanalyze": null
+      },
+      {
+        "bytes": 32768,
+        "relname": "mart_delivery_cursor",
+        "n_dead_tup": 3,
+        "n_live_tup": 1,
+        "last_autoanalyze": null
+      }
+    ]
+  },
+  "failure_diagnosis": {
+    "epresensi-mart-postgres": {
+      "too many connections for role": 18,
+      "remaining connection slots": 0,
+      "timeout": 0,
+      "OutOfMemoryError": 0,
+      "connection pool": 0,
+      "FATAL": 18,
+      "canceling statement": 0,
+      "connection_limit_messages": [
+        "too many connections for role \"hybrid_metabase_reader\""
+      ]
+    },
+    "epresensi-hybrid-metabase-1": {
+      "too many connections for role": 16,
+      "remaining connection slots": 0,
+      "timeout": 0,
+      "OutOfMemoryError": 0,
+      "connection pool": 0,
+      "FATAL": 16,
+      "canceling statement": 0,
+      "connection_limit_messages": [
+        "too many connections for role \"hybrid_metabase_reader\""
+      ]
+    }
+  }
+}

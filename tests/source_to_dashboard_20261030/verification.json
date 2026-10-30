@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "source_oracle": {
+    "rows": 72259,
+    "hash": "283c215ec4c77c59ec5b7e06a146e51a"
+  },
+  "curated_fact_shared_fields": 34,
+  "employees": 72259,
+  "departments": 3829,
+  "totals": {
+    "active_employee_days": 72259,
+    "checkin_days": 67205,
+    "checkout_days": 65761,
+    "no_checkin_days": 1444,
+    "no_checkout_days": 2888,
+    "leave_days": 5054,
+    "required_checkin_days": 68649,
+    "required_checkout_days": 68649,
+    "excused_checkin_days": 3610,
+    "excused_checkout_days": 3610,
+    "required_checkin_present_days": 67205,
+    "required_checkout_present_days": 65761
+  },
+  "control": {
+    "batches": 1,
+    "receipts": 1,
+    "applied": 1
+  },
+  "date": "2026-10-30",
+  "pending": 0,
+  "source_masters_unchanged": true,
+  "active_databases_unchanged": true,
+  "old_synthetic_employee_rows": 0
+}

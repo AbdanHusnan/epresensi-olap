@@ -1,0 +1,16 @@
+{
+  "deleted_source_rows": {
+    "events": 2400,
+    "leaves": 1600
+  },
+  "deleted_test_databases": [
+    "staging_bkd_mart_bulk_20261029",
+    "mart_bkd_bulk_20261029",
+    "staging_bkd_bulk_20261028"
+  ],
+  "new_empty_databases": [
+    "staging_bkd_mart_bulk_20261029",
+    "mart_bkd_bulk_20261029"
+  ],
+  "backups": "/home/piramida/OLAP/backups/source_to_dashboard_20261030"
+}
