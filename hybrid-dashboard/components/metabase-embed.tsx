@@ -38,6 +38,16 @@ function writeFilters(value: Filters) {
   for (const [key,item] of Object.entries(params)) { if (item) url.searchParams.set(key,item); else url.searchParams.delete(key); }
   window.history.pushState(null,'',url);
 }
+const presetLabels: Record<PeriodPreset | 'custom', string> = {
+  '3D': '3 Hari',
+  '7D': '7 Hari',
+  '1M': '1 Bulan',
+  '3M': '3 Bulan',
+  '6M': '6 Bulan',
+  '1Y': '1 Tahun',
+  'custom': 'Kustom',
+};
+
 export function MetabaseEmbed(props: { role: Role; runs: TestRun[]; publicUrl: string }) {
   return props.role === 'director' ? <AnalyticalDashboard runs={props.runs} publicUrl={props.publicUrl}/> : <OperationalDashboard {...props}/>;
 }
@@ -69,38 +79,50 @@ function AnalyticalDashboard({ runs, publicUrl }: { runs: TestRun[]; publicUrl: 
   }
   const common = { role:'director' as const, publicUrl, run:applied.run, department:applied.department };
   return <div className="analytical-dashboard">
-    <div className="page-heading"><div><p className="eyebrow">THE ORGANIZATION AT A GLANCE</p><h1>Analytical Dashboard</h1><p className="page-description">Understand attendance across departments, with a shared view of the numbers.</p></div>
-      <div className="heading-actions"><span className="date-badge">Data per <time dateTime={applied.date}>{applied.date}</time></span><button type="button" className="analytics-button secondary" onClick={()=>{commit({...applied,department:'',departmentName:''});setPickerVersion(v=>v+1);}}>All departments</button></div>
+    <div className="page-heading"><div><p className="eyebrow">RINGKASAN ORGANISASI</p><h1>Dashboard Analitikal</h1><p className="page-description">Memahami rekapitulasi kehadiran lintas departemen dengan visibilitas data terpadu.</p></div>
+      <div className="heading-actions"><span className="date-badge">Data per <time dateTime={applied.date}>{applied.date}</time></span><button type="button" className="analytics-button secondary" onClick={()=>{commit({...applied,department:'',departmentName:''});setPickerVersion(v=>v+1);}}>Semua departemen</button></div>
     </div>
-    {!dismissed&&<aside className="test-run-banner" aria-label="Test run notice"><span className="banner-dot"/><div><strong>Test data · {run.label}</strong><span title={run.note}>{run.note}</span></div><span className="banner-tag">PREVIEW</span><button type="button" aria-label="Dismiss test run banner" onClick={()=>setDismissed(true)}>×</button></aside>}
-    <form id="analytics-filters" className={`analytics-filterbar ${filtersExpanded?'filters-expanded':''}`} onSubmit={apply} aria-label="Dashboard filters">
-      <button className="mobile-filter-toggle" type="button" aria-expanded={filtersExpanded} aria-controls="analytics-filters" onClick={()=>setFiltersExpanded(value=>!value)}><strong>Filters</strong><span>{applied.date} · {filtersExpanded?'Close':'Edit'}</span></button>
-      <label>Test run<select value={draft.run} onChange={event=>{const next=runs.find(item=>item.key===event.target.value)!;setDraft(defaults(next));setPickerVersion(v=>v+1);setDismissed(false);}}>{runs.map(item=><option key={item.key} value={item.key}>{item.label}</option>)}</select></label>
-      <label>Reporting date<input type="date" required value={draft.date} onChange={event=>{const date=event.target.value;setDraft(current=>({...current,date,end:date}));}}/></label>
+    {!dismissed&&<aside className="test-run-banner" aria-label="Pemberitahuan data pengujian"><span className="banner-dot"/><div><strong>Data pengujian · {run.label}</strong><span title={run.note}>{run.note}</span></div><span className="banner-tag">PRATINJAU</span><button type="button" aria-label="Tutup pemberitahuan" onClick={()=>setDismissed(true)}>×</button></aside>}
+    <form id="analytics-filters" className={`analytics-filterbar ${filtersExpanded?'filters-expanded':''}`} onSubmit={apply} aria-label="Filter dashboard">
+      <button className="mobile-filter-toggle" type="button" aria-expanded={filtersExpanded} aria-controls="analytics-filters" onClick={()=>setFiltersExpanded(value=>!value)}><strong>Filter</strong><span>{applied.date} · {filtersExpanded?'Tutup':'Ubah'}</span></button>
+      <label>Skenario pengujian<select value={draft.run} onChange={event=>{const next=runs.find(item=>item.key===event.target.value)!;setDraft(defaults(next));setPickerVersion(v=>v+1);setDismissed(false);}}>{runs.map(item=><option key={item.key} value={item.key}>{item.label}</option>)}</select></label>
+      <label>Tanggal pelaporan<input type="date" required value={draft.date} onChange={event=>{const date=event.target.value;setDraft(current=>({...current,date,end:date}));}}/></label>
       <DepartmentPicker key={`${draft.run}-${pickerVersion}`} run={draft.run} initialName={draft.departmentName} onChange={(department, name)=>setDraft(current=>({...current,department,departmentName:name || ''}))}/>
-      {draft.preset==='custom'&&<label>Period start<input type="date" required max={draft.end} value={draft.start} onChange={event=>setDraft(current=>({...current,start:event.target.value}))}/></label>}
-      <label>Period end<input type="date" required min={draft.preset==='custom'?draft.start:undefined} value={draft.end} onChange={event=>setDraft(current=>({...current,end:event.target.value}))}/></label>
-      <div className="filter-actions"><button className="analytics-button" type="submit" disabled={!ready}>Apply</button><button className="analytics-button secondary" type="button" onClick={reset}>Reset</button></div>
-      {draft.run!==applied.run&&<p className="filter-pending" role="status">Apply to view {previewRun.label}.</p>}
+      {draft.preset==='custom'&&<label>Awal periode<input type="date" required max={draft.end} value={draft.start} onChange={event=>setDraft(current=>({...current,start:event.target.value}))}/></label>}
+      <label>Akhir periode<input type="date" required min={draft.preset==='custom'?draft.start:undefined} value={draft.end} onChange={event=>setDraft(current=>({...current,end:event.target.value}))}/></label>
+      <div className="filter-actions"><button className="analytics-button" type="submit" disabled={!ready}>Terapkan</button><button className="analytics-button secondary" type="button" onClick={reset}>Reset</button></div>
+      {draft.run!==applied.run&&<p className="filter-pending" role="status">Klik Terapkan untuk menampilkan data {previewRun.label}.</p>}
     </form>
     <div className="analytics-grid">
-      <DashboardSection title="Attendance overview" description={`Daily metrics and attendance trends · Daily snapshot · ${applied.date}`} className="overview-section">
+      <DashboardSection title="Ringkasan kehadiran" description={`Metrik harian dan tren kehadiran · Snapshot harian · ${applied.date}`} className="overview-section">
         {ready?<MetabaseFrame {...common} id={run.director.overview} section="overview" startDate={applied.date} endDate={applied.date}/>:<InitialSkeleton section="overview"/>}
       </DashboardSection>
-      <DashboardSection title="Attendance trend" description={`${applied.start} — ${applied.end}`} actions={<div className="period-presets" role="group" aria-label="Trend period">{[...periodPresets,'custom' as const].map(value=><button type="button" key={value} aria-pressed={draft.preset===value} onClick={()=>preset(value)}>{value==='custom'?'Custom':value}</button>)}</div>}>
+      <DashboardSection title="Tren kehadiran" description={`${applied.start} — ${applied.end}`} actions={<div className="period-presets" role="group" aria-label="Periode tren">{[...periodPresets,'custom' as const].map(value=><button type="button" key={value} aria-pressed={draft.preset===value} onClick={()=>preset(value)}>{presetLabels[value]}</button>)}</div>}>
         {ready?<MetabaseFrame {...common} id={run.director.period} section="period" startDate={applied.start} endDate={applied.end}/>:<InitialSkeleton section="period"/>}
       </DashboardSection>
-      <DashboardSection title="Department attendance" description="Department summary and Top 10 departments" actions={<form className="analytics-search" onSubmit={event=>{event.preventDefault();commit({...applied,search:draft.search.trim()});}}>
-        <label className="sr-only" htmlFor="table-search">Find a department in the table</label><input id="table-search" value={draft.search} maxLength={100} placeholder="Department name" onChange={event=>setDraft(current=>({...current,search:event.target.value}))}/><button className="analytics-button secondary" type="submit">Search table</button>{applied.search&&<button className="analytics-button secondary" type="button" onClick={()=>commit({...applied,search:''})}>Clear</button>}
+      <DashboardSection title="Kehadiran per departemen" description="Ringkasan departemen dan peringkat Top 10 departemen" actions={<form className="analytics-search" onSubmit={event=>{event.preventDefault();commit({...applied,search:draft.search.trim()});}}>
+        <label className="sr-only" htmlFor="table-search">Cari departemen pada tabel</label><input id="table-search" value={draft.search} maxLength={100} placeholder="Nama departemen" onChange={event=>setDraft(current=>({...current,search:event.target.value}))}/><button className="analytics-button secondary" type="submit">Cari tabel</button>{applied.search&&<button className="analytics-button secondary" type="button" onClick={()=>commit({...applied,search:''})}>Hapus</button>}
       </form>}>
-        <p className="section-caption">{applied.search&&<>Table matching <strong>“{applied.search}”</strong>. </>}Search applies only to this daily table.</p>
+        <p className="section-caption">{applied.search&&<>Menampilkan data yang cocok dengan <strong>“{applied.search}”</strong>. </>}Pencarian hanya berlaku untuk tabel harian ini.</p>
         {ready?<MetabaseFrame {...common} id={run.director.tables} section="tables" startDate={applied.date} endDate={applied.date} search={applied.search}/>:<InitialSkeleton section="tables"/>}
       </DashboardSection>
     </div>
-    <footer className="analytics-footer"><span>e-Presensi · Attendance insights · Reporting timezone: Asia/Jakarta</span><span>{requestedAt?`Last refresh requested: ${requestedAt} WIB`:'Source: Metabase · Attendance mart'} · Powered by Metabase</span></footer>
+    <footer className="analytics-footer"><span>e-Presensi · Wawasan Kehadiran · Zona waktu pelaporan: Asia/Jakarta</span><span>{requestedAt?`Pembaruan terakhir: ${requestedAt} WIB`:'Sumber data: Mart Kehadiran'}</span></footer>
   </div>;
 }
 
-function InitialSkeleton({section}:{section:string}) {
-  return <div className={`metabase-frame frame-${section}`} aria-busy="true"><div className="embed-skeleton" role="status"><span className="sr-only">Loading {section}</span><div/><div/><div/></div></div>;
+function InitialSkeleton({ section }: { section: string }) {
+  // Number of shimmer strips to render per section — they fill the CSS grid template.
+  // overview: 12 strips → fills 2 rows × 6 columns at wide viewport
+  // period:   3 strips  → fills 3-row template (label / chart area / x-axis)
+  // tables:   7 strips  → fills 7-row template (table header + 6 body rows)
+  const count = section === 'overview' ? 12 : section === 'period' ? 3 : 7;
+  return (
+    <div className={`metabase-frame frame-${section}`} aria-busy="true">
+      <div className="embed-skeleton" role="status">
+        <span className="sr-only">Loading {section}</span>
+        {Array.from({ length: count }, (_, i) => <div key={i} />)}
+      </div>
+    </div>
+  );
 }

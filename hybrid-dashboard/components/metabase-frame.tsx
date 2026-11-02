@@ -25,7 +25,7 @@ export function MetabaseFrame({ id, role, publicUrl, run, section, startDate, en
   useEffect(() => {
     let cancelled = false;
     const controller = new AbortController();
-    const timeout = setTimeout(() => { controller.abort(); if (!cancelled) { setError('The dashboard is taking too long to respond.'); setLoading(false); } }, 45000);
+    const timeout = setTimeout(() => { controller.abort(); if (!cancelled) { setError('Layanan dashboard membutuhkan waktu terlalu lama untuk merespons.'); setLoading(false); } }, 45000);
     setLoading(true);setError('');
     async function load() {
       try {
@@ -34,7 +34,7 @@ export function MetabaseFrame({ id, role, publicUrl, run, section, startDate, en
         const response = await fetch('/api/metabase-token', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({entityType:'dashboard',entityId:id,run,section,startDate,endDate,department,search}), signal:controller.signal });
         if(response.status===401){window.location.assign('/login');return;}
         const data=await response.json();if(!response.ok)throw new Error(data.error);
-        const aborted = new Promise<never>((_,reject)=>controller.signal.addEventListener('abort',()=>reject(new Error('The dashboard is taking too long to respond.')),{once:true}));
+        const aborted = new Promise<never>((_,reject)=>controller.signal.addEventListener('abort',()=>reject(new Error('Layanan dashboard membutuhkan waktu terlalu lama untuk merespons.')),{once:true}));
         await Promise.race([loadScript(instanceUrl),aborted]);
         await Promise.race([customElements.whenDefined('metabase-dashboard'),aborted]);
         if(cancelled || !container.current)return;
@@ -45,15 +45,17 @@ export function MetabaseFrame({ id, role, publicUrl, run, section, startDate, en
         embed.addEventListener('ready', () => { if (!cancelled) { clearTimeout(timeout); setLoading(false); } }, { once: true });
         embed.className=`metabase-view metabase-${section} metabase-${role}`;
         container.current.replaceChildren(embed);
-      } catch(error) { if(!cancelled){clearTimeout(timeout);setLoading(false);setError(error instanceof Error ? error.message : 'Unable to load the dashboard.');} }
+      } catch(error) { if(!cancelled){clearTimeout(timeout);setLoading(false);setError(error instanceof Error ? error.message : 'Gagal memuat dashboard.');} }
 
     }
     void load();
     return () => {cancelled=true;controller.abort();clearTimeout(timeout);container.current?.replaceChildren();};
   },[id,role,publicUrl,run,section,startDate,endDate,department,attempt,search]);
-  return <div className={`metabase-frame frame-${section}`} aria-busy={loading&&!error} aria-label={section === 'tables' ? 'Attendance tables' : section === 'period' ? 'Attendance trend' : 'Daily attendance overview'}>
-    {loading&&!error&&<div className="embed-skeleton" role="status"><span className="sr-only">Loading {section}</span><div/><div/><div/></div>}
-    {error&&<div className="embed-error" role="alert"><h2>We couldn’t load the {section}</h2><p>{error}</p><button className="secondary-button" onClick={()=>setAttempt(attempt+1)}>Try again</button></div>}
+  const skeletonCount = section === 'overview' ? 12 : section === 'period' ? 3 : 7;
+  const sectionLabel = section === 'tables' ? 'Tabel kehadiran' : section === 'period' ? 'Tren kehadiran' : 'Ringkasan kehadiran';
+  return <div className={`metabase-frame frame-${section}`} aria-busy={loading&&!error} aria-label={sectionLabel}>
+    {loading&&!error&&<div className="embed-skeleton" role="status"><span className="sr-only">Memuat {sectionLabel}</span>{Array.from({length: skeletonCount}, (_, i)=><div key={i}/>)}</div>}
+    {error&&<div className="embed-error" role="alert"><h2>Gagal memuat {sectionLabel}</h2><p>{error}</p><button className="secondary-button" onClick={()=>setAttempt(attempt+1)}>Coba lagi</button></div>}
     <div className="embed-mount" ref={container} style={{visibility: loading || error ? 'hidden' : 'visible'}}/>
   </div>;
 }
