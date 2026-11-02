@@ -17,7 +17,8 @@ function validDate(value: string | null): value is string {
 }
 function readFilters(runs: TestRun[]): Filters {
   const params = new URLSearchParams(window.location.search);
-  const run = runs.find(item => item.key === params.get('run')) || runs[0];
+  const defaultRun = runs.find(item => item.key === 'nov02-checkin') || runs[runs.length - 1];
+  const run = runs.find(item => item.key === params.get('run')) || defaultRun;
   const value = defaults(run);
   const date = params.get('date'), start = params.get('start'), end = params.get('end');
   if (validDate(date)) value.date = date;
@@ -48,14 +49,14 @@ const presetLabels: Record<PeriodPreset | 'custom', string> = {
   'custom': 'Kustom',
 };
 
-export function MetabaseEmbed(props: { role: Role; runs: TestRun[]; publicUrl: string }) {
+export function MetabaseEmbed(props: { role: Role; runs: TestRun[]; publicUrl: string; departmentId?: number }) {
   return props.role === 'director' ? <AnalyticalDashboard runs={props.runs} publicUrl={props.publicUrl}/> : <OperationalDashboard {...props}/>;
 }
 function AnalyticalDashboard({ runs, publicUrl }: { runs: TestRun[]; publicUrl: string }) {
-  const [applied,setApplied] = useState<Filters>(()=>defaults(runs[0]));
-  const [draft,setDraft] = useState<Filters>(()=>defaults(runs[0]));
+  const defaultRun = runs.find(item => item.key === 'nov02-checkin') || runs[runs.length - 1];
+  const [applied,setApplied] = useState<Filters>(()=>defaults(defaultRun));
+  const [draft,setDraft] = useState<Filters>(()=>defaults(defaultRun));
   const [ready,setReady] = useState(false);
-  const [dismissed,setDismissed] = useState(false);
   const [filtersExpanded,setFiltersExpanded] = useState(false);
   const [pickerVersion,setPickerVersion] = useState(0);
   const [requestedAt,setRequestedAt] = useState('');
@@ -64,15 +65,14 @@ function AnalyticalDashboard({ runs, publicUrl }: { runs: TestRun[]; publicUrl: 
     restore(); window.addEventListener('popstate',restore);
     return ()=>window.removeEventListener('popstate',restore);
   },[runs]);
-  const run = runs.find(item=>item.key===applied.run)!;
-  const previewRun = runs.find(item=>item.key===draft.run)!;
+  const run = runs.find(item=>item.key===applied.run) || defaultRun;
   function commit(value: Filters) { setApplied(value);setDraft(value);writeFilters(value);setRequestedAt(new Date().toLocaleTimeString('en-GB',{ timeZone:'Asia/Jakarta', hour:'2-digit', minute:'2-digit' })); }
   function apply(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const value = {...draft, start:draft.preset==='custom'?draft.start:periodStartFor(draft.preset,draft.end)};
     if (value.start<=value.end) { commit(value);setFiltersExpanded(false); }
   }
-  function reset() { commit(defaults(runs[0]));setPickerVersion(v=>v+1);setDismissed(false); }
+  function reset() { commit(defaults(defaultRun));setPickerVersion(v=>v+1); }
   function preset(value: Filters['preset']) {
     if(value==='custom'){setDraft(current=>({...current,preset:value}));return;}
     commit({...applied,preset:value,start:periodStartFor(value,applied.end)});
@@ -82,16 +82,13 @@ function AnalyticalDashboard({ runs, publicUrl }: { runs: TestRun[]; publicUrl: 
     <div className="page-heading"><div><p className="eyebrow">RINGKASAN ORGANISASI</p><h1>Dashboard Analitikal</h1><p className="page-description">Memahami rekapitulasi kehadiran lintas departemen dengan visibilitas data terpadu.</p></div>
       <div className="heading-actions"><span className="date-badge">Data per <time dateTime={applied.date}>{applied.date}</time></span><button type="button" className="analytics-button secondary" onClick={()=>{commit({...applied,department:'',departmentName:''});setPickerVersion(v=>v+1);}}>Semua departemen</button></div>
     </div>
-    {!dismissed&&<aside className="test-run-banner" aria-label="Pemberitahuan data pengujian"><span className="banner-dot"/><div><strong>Data pengujian · {run.label}</strong><span title={run.note}>{run.note}</span></div><span className="banner-tag">PRATINJAU</span><button type="button" aria-label="Tutup pemberitahuan" onClick={()=>setDismissed(true)}>×</button></aside>}
     <form id="analytics-filters" className={`analytics-filterbar ${filtersExpanded?'filters-expanded':''}`} onSubmit={apply} aria-label="Filter dashboard">
       <button className="mobile-filter-toggle" type="button" aria-expanded={filtersExpanded} aria-controls="analytics-filters" onClick={()=>setFiltersExpanded(value=>!value)}><strong>Filter</strong><span>{applied.date} · {filtersExpanded?'Tutup':'Ubah'}</span></button>
-      <label>Skenario pengujian<select value={draft.run} onChange={event=>{const next=runs.find(item=>item.key===event.target.value)!;setDraft(defaults(next));setPickerVersion(v=>v+1);setDismissed(false);}}>{runs.map(item=><option key={item.key} value={item.key}>{item.label}</option>)}</select></label>
       <label>Tanggal pelaporan<input type="date" required value={draft.date} onChange={event=>{const date=event.target.value;setDraft(current=>({...current,date,end:date}));}}/></label>
       <DepartmentPicker key={`${draft.run}-${pickerVersion}`} run={draft.run} initialName={draft.departmentName} onChange={(department, name)=>setDraft(current=>({...current,department,departmentName:name || ''}))}/>
       {draft.preset==='custom'&&<label>Awal periode<input type="date" required max={draft.end} value={draft.start} onChange={event=>setDraft(current=>({...current,start:event.target.value}))}/></label>}
       <label>Akhir periode<input type="date" required min={draft.preset==='custom'?draft.start:undefined} value={draft.end} onChange={event=>setDraft(current=>({...current,end:event.target.value}))}/></label>
       <div className="filter-actions"><button className="analytics-button" type="submit" disabled={!ready}>Terapkan</button><button className="analytics-button secondary" type="button" onClick={reset}>Reset</button></div>
-      {draft.run!==applied.run&&<p className="filter-pending" role="status">Klik Terapkan untuk menampilkan data {previewRun.label}.</p>}
     </form>
     <div className="analytics-grid">
       <DashboardSection title="Ringkasan kehadiran" description={`Metrik harian dan tren kehadiran · Snapshot harian · ${applied.date}`} className="overview-section">

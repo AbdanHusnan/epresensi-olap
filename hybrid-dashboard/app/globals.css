@@ -169,6 +169,23 @@ body { --font: var(--font-inter), system-ui, sans-serif; }
   border-radius: 8px;
   padding: 8px 12px;
 }
+.heading-actions .scope-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--analytics-text);
+  background: var(--analytics-card);
+  border: 1px solid var(--analytics-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-top: 0;
+}
+.heading-actions .scope-badge span {
+  color: var(--analytics-primary);
+  margin-right: 0;
+}
 
 /* ── Buttons ────────────────────────────────────────────────── */
 .analytics-button {
@@ -232,7 +249,7 @@ body { --font: var(--font-inter), system-ui, sans-serif; }
   box-shadow: var(--analytics-shadow);
 }
 .analytics-filterbar > label {
-  flex: 1 1 144px;
+  flex: 1 1 150px;
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -240,8 +257,7 @@ body { --font: var(--font-inter), system-ui, sans-serif; }
   font-size: 12px;
   font-weight: 600;
 }
-.analytics-filterbar > label:first-of-type { flex: 1.6 1 220px; }
-.analytics-filterbar .department-picker { flex: 1.5 1 220px; min-width: 0; max-width: none; }
+.analytics-filterbar .department-picker { flex: 1.8 1 240px; min-width: 0; max-width: none; }
 .analytics-filterbar .department-picker > label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; }
 .analytics-filterbar select,
 .analytics-filterbar input,
@@ -349,6 +365,7 @@ body { --font: var(--font-inter), system-ui, sans-serif; }
 .metabase-frame.frame-overview { --embed-height: 1440px; }
 .metabase-frame.frame-period   { --embed-height:  820px; }
 .metabase-frame.frame-tables   { --embed-height: 2000px; }
+.metabase-frame.frame-tables:has(.metabase-manager) { --embed-height: 720px; }
 
 .metabase-frame .embed-mount { min-width: 0; }
 .metabase-frame .metabase-view {
@@ -470,6 +487,7 @@ body { --font: var(--font-inter), system-ui, sans-serif; }
   .metabase-frame.frame-overview { --embed-height: 560px; }
   .metabase-frame.frame-period   { --embed-height: 420px; }
   .metabase-frame.frame-tables   { --embed-height: 1640px; }
+  .metabase-frame.frame-tables:has(.metabase-manager) { --embed-height: 680px; }
   .embed-skeleton {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-rows: 88px 88px;
