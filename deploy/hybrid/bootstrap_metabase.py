@@ -36,6 +36,8 @@ payload = {
     'is_full_sync': False, 'is_on_demand': True, 'auto_run_queries': False,
     'details': {'host': 'epresensi-mart-postgres', 'port': 5432, 'dbname': env.get('MART_DATABASE', 'mart_bkd'), 'user': 'hybrid_metabase_reader', 'password': env['METABASE_MART_PASSWORD'], 'ssl': False, 'schema-filters-type': 'inclusion', 'schema-filters-patterns': 'serving,mart_kehadiran'},
 }
+if existing and existing['details'].get('dbname') != payload['details']['dbname']:
+    raise SystemExit('Refusing to repoint an existing reporting connection. Use dashboards/configure_test_runs.py to preserve test history.')
 if existing:
     api('/api/database/' + str(existing['id']), payload, method='PUT')
 else:

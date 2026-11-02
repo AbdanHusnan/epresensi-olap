@@ -34,7 +34,7 @@ def run(start_date,end_date,label,levels=(1,5,10)):
                 rec={'card_id':c['card_id'],'seconds':time.monotonic()-begin,'http_status':r.status_code,'status':body.get('status'),'cached':body.get('cached'),'rows':len(rows)}
                 if c['card']['display']=='scalar':rec['value']=rows[0][0] if rows else None
                 if role=='director' and 'Department summary' in c['card']['name']:rec['departments_complete']=len(rows)==department_count
-                if role=='manager' and 'Employee daily records' in c['card']['name']:rec['scope_ok']=all(x[2]==30114 for x in rows) and len(rows)<=1000
+                if role=='manager' and 'Employee daily records' in c['card']['name']:rec['scope_ok']=all(x[3]==30114 and x[1] for x in rows) and len(rows)<=1000
                 return rec
             with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:records=list(pool.map(chart,cards))
             if len(cards)!=9:errors.append('wrong_chart_count')

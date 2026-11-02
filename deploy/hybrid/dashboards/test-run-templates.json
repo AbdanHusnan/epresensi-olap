@@ -1,0 +1,2734 @@
+{
+  "director": {
+    "dashcards": [
+      {
+        "size_x": 24,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {},
+        "updated_at": "2026-10-30T08:32:17.248738Z",
+        "col": 0,
+        "id": 11,
+        "parameter_mappings": [],
+        "card_id": null,
+        "entity_id": "9M5bOzMj8X2GAGQBC6rR-",
+        "visualization_settings": {
+          "virtual_card": {
+            "display": "text",
+            "visualization_settings": {},
+            "dataset_query": {}
+          },
+          "text": "## TEST DATA \u2014 Provisional\nSimulated attendance date: **2026-11-02**. Current employee and schedule snapshots, not proof of future assignments. Check-in-only checkpoint; checkout has not been loaded. Multi-day attendance counts mean **employee-days**. Missing dates are not zero."
+        },
+        "size_y": 3,
+        "dashboard_id": 2,
+        "created_at": "2026-10-30T01:51:10.260276Z",
+        "row": 0
+      },
+      {
+        "size_x": 8,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Organization | Absen Masuk (employee-days)",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "type": "number",
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "required": false
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT SUM(f.checkin_days) AS \"Absen Masuk\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]]"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 11,
+          "display": "scalar",
+          "visualization_settings": {}
+        },
+        "updated_at": "2026-10-30T08:32:17.248738Z",
+        "col": 8,
+        "id": 13,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 11,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 11,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 11,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 11,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 11,
+        "entity_id": "DJSe24zJhnBUMdfy2BgDf",
+        "visualization_settings": {
+          "card.title": "Absen Masuk (employee-days)"
+        },
+        "size_y": 3,
+        "dashboard_id": 2,
+        "created_at": "2026-10-30T01:51:10.260276Z",
+        "row": 3
+      },
+      {
+        "size_x": 24,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Organization | Department summary \u2014 employee-days",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "type": "number",
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "required": false
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT f.departemen_id_sumber AS \"Department ID\",COALESCE(MAX(d.nama),'Department '||f.departemen_id_sumber::text,'UNKNOWN') AS \"Department\",SUM(f.active_employee_days) AS \"Pegawai Aktif\",SUM(f.checkin_days) AS \"Absen Masuk\",SUM(f.checkout_days) AS \"Absen Pulang\",SUM(f.no_checkin_days) AS \"Tidak Absen Masuk\",SUM(f.no_checkout_days) AS \"Tidak Absen Pulang\",SUM(f.leave_days) AS \"Pegawai Izin\",ROUND(100.0*SUM(f.checkin_days)/NULLIF(SUM(f.active_employee_days),0),2) AS \"Check-in %\",ROUND(100.0*SUM(f.checkout_days)/NULLIF(SUM(f.active_employee_days),0),2) AS \"Check-out %\",ROUND(100.0*SUM(f.required_checkin_present_days)/NULLIF(SUM(f.required_checkin_days),0),2) AS \"Required check-in %\",ROUND(100.0*SUM(f.required_checkout_present_days)/NULLIF(SUM(f.required_checkout_days),0),2) AS \"Required check-out %\",BOOL_OR(f.perlu_review OR NOT f.is_date_final) AS \"Provisional\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]] GROUP BY f.departemen_id_sumber ORDER BY f.departemen_id_sumber NULLS LAST LIMIT 5000"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 17,
+          "display": "table",
+          "visualization_settings": {
+            "column_settings": {
+              "[\"name\",\"Department ID\"]": {
+                "number_style": "decimal",
+                "number_separators": ".",
+                "decimals": 0
+              }
+            }
+          }
+        },
+        "updated_at": "2026-10-30T08:32:44.962316Z",
+        "col": 0,
+        "id": 19,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 17,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 17,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 17,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 17,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 17,
+        "entity_id": "egcJQj43J0_bM2FGbpzt2",
+        "visualization_settings": {
+          "card.title": "Department summary \u2014 employee-days"
+        },
+        "size_y": 14,
+        "dashboard_id": 2,
+        "created_at": "2026-10-30T01:51:10.260276Z",
+        "row": 35
+      },
+      {
+        "size_x": 24,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Organization | Data coverage and publication status",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "type": "number",
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "required": false
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT CASE WHEN COUNT(*)=0 THEN 'NO DATA' WHEN BOOL_OR(f.perlu_review OR NOT f.is_date_final) THEN 'PROVISIONAL' ELSE 'FINAL' END AS \"Status\",MIN(f.tanggal) AS \"First available date\",MAX(f.tanggal) AS \"Last available date\",COUNT(DISTINCT f.tanggal) AS \"Available dates\",CAST({{end_date}} AS date)-CAST({{start_date}} AS date)+1 AS \"Requested dates\",BOOL_AND(COALESCE(s.population_complete AND s.curated_delivery_complete,false)) AS \"Published data complete\",MIN(s.updated_at) AT TIME ZONE 'Asia/Jakarta' AS \"Oldest refresh (Jakarta)\",MAX(s.updated_at) AT TIME ZONE 'Asia/Jakarta' AS \"Latest refresh (Jakarta)\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]]"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 18,
+          "display": "table",
+          "visualization_settings": {}
+        },
+        "updated_at": "2026-10-30T08:32:44.962316Z",
+        "col": 0,
+        "id": 20,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 18,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 18,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 18,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 18,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 18,
+        "entity_id": "uZ-aoaPxItVAJdNq44ZfM",
+        "visualization_settings": {
+          "card.title": "Data coverage and publication status"
+        },
+        "size_y": 4,
+        "dashboard_id": 2,
+        "created_at": "2026-10-30T01:51:10.260276Z",
+        "row": 63
+      },
+      {
+        "size_x": 8,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Organization | Pegawai Aktif (employee-days)",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "type": "number",
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "required": false
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT SUM(f.active_employee_days) AS \"Pegawai Aktif\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]]"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 10,
+          "display": "scalar",
+          "visualization_settings": {}
+        },
+        "updated_at": "2026-10-30T08:32:17.248738Z",
+        "col": 0,
+        "id": 12,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 10,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 10,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 10,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 10,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 10,
+        "entity_id": "kO9ZcuXp8scwDQPiQLCFc",
+        "visualization_settings": {
+          "card.title": "Pegawai Aktif (employee-days)"
+        },
+        "size_y": 3,
+        "dashboard_id": 2,
+        "created_at": "2026-10-30T01:51:10.260276Z",
+        "row": 3
+      },
+      {
+        "size_x": 8,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Organization | Pegawai Izin (employee-days)",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "type": "number",
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "required": false
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT SUM(f.leave_days) AS \"Pegawai Izin\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]]"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 15,
+          "display": "scalar",
+          "visualization_settings": {}
+        },
+        "updated_at": "2026-10-30T08:32:17.248738Z",
+        "col": 16,
+        "id": 17,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 15,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 15,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 15,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 15,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 15,
+        "entity_id": "qxXqe-lWUd7ePRN9ofXB2",
+        "visualization_settings": {
+          "card.title": "Pegawai Izin (employee-days)"
+        },
+        "size_y": 3,
+        "dashboard_id": 2,
+        "created_at": "2026-10-30T01:51:10.260276Z",
+        "row": 6
+      },
+      {
+        "size_x": 24,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Organization | Daily attendance trend",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "type": "number",
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "required": false
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT f.tanggal AS \"Date\",SUM(f.checkin_days) AS \"Absen Masuk\",SUM(f.checkout_days) AS \"Absen Pulang\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]] GROUP BY f.tanggal ORDER BY f.tanggal"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 16,
+          "display": "line",
+          "visualization_settings": {
+            "graph.dimensions": [
+              "Date"
+            ],
+            "graph.show_values": true,
+            "graph.show_points": true,
+            "graph.x_axis.scale": "ordinal",
+            "graph.metrics": [
+              "Absen Masuk",
+              "Absen Pulang"
+            ]
+          }
+        },
+        "updated_at": "2026-10-30T08:32:17.248738Z",
+        "col": 0,
+        "id": 18,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 16,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 16,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 16,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 16,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 16,
+        "entity_id": "hlH-qHo1JKFQKxiJqyLFm",
+        "visualization_settings": {
+          "card.title": "Daily attendance trend"
+        },
+        "size_y": 5,
+        "dashboard_id": 2,
+        "created_at": "2026-10-30T01:51:10.260276Z",
+        "row": 9
+      },
+      {
+        "size_x": 8,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Organization | Tidak Absen Pulang (employee-days)",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "type": "number",
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "required": false
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT SUM(f.no_checkout_days) AS \"Tidak Absen Pulang\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]]"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 14,
+          "display": "scalar",
+          "visualization_settings": {}
+        },
+        "updated_at": "2026-10-30T08:32:17.248738Z",
+        "col": 8,
+        "id": 16,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 14,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 14,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 14,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 14,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 14,
+        "entity_id": "Td6Bto67MWGLfHwG9gvWK",
+        "visualization_settings": {
+          "card.title": "Tidak Absen Pulang (employee-days)"
+        },
+        "size_y": 3,
+        "dashboard_id": 2,
+        "created_at": "2026-10-30T01:51:10.260276Z",
+        "row": 6
+      },
+      {
+        "size_x": 8,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Organization | Tidak Absen Masuk (employee-days)",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "type": "number",
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "required": false
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT SUM(f.no_checkin_days) AS \"Tidak Absen Masuk\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]]"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 13,
+          "display": "scalar",
+          "visualization_settings": {}
+        },
+        "updated_at": "2026-10-30T08:32:17.248738Z",
+        "col": 0,
+        "id": 15,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 13,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 13,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 13,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 13,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 13,
+        "entity_id": "QKwMWpZA_pZ25iV8uFt7F",
+        "visualization_settings": {
+          "card.title": "Tidak Absen Masuk (employee-days)"
+        },
+        "size_y": 3,
+        "dashboard_id": 2,
+        "created_at": "2026-10-30T01:51:10.260276Z",
+        "row": 6
+      },
+      {
+        "size_x": 8,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Organization | Absen Pulang (employee-days)",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "type": "number",
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "required": false
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT SUM(f.checkout_days) AS \"Absen Pulang\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]]"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 12,
+          "display": "scalar",
+          "visualization_settings": {}
+        },
+        "updated_at": "2026-10-30T08:32:17.248738Z",
+        "col": 16,
+        "id": 14,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 12,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 12,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 12,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 12,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 12,
+        "entity_id": "EBnr5--jaX2ibZHRYwSgO",
+        "visualization_settings": {
+          "card.title": "Absen Pulang (employee-days)"
+        },
+        "size_y": 3,
+        "dashboard_id": 2,
+        "created_at": "2026-10-30T01:51:10.260276Z",
+        "row": 3
+      },
+      {
+        "size_x": 24,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Organization | Employee daily records \u2014 up to 1,000 rows",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "type": "number",
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "required": false
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT f.pegawai_id_sumber AS \"Employee ID\",COALESCE(p.nama,'Employee '||f.pegawai_id_sumber::text) AS \"Employee\",f.tanggal AS \"Date\",f.departemen_id_sumber AS \"Department ID\",COALESCE(d.nama,'Department '||f.departemen_id_sumber::text) AS \"Department\",first_checkin_at AS \"First check-in\",last_checkout_at AS \"Last check-out\",has_masuk AS \"Check-in\",has_pulang AS \"Check-out\",has_valid_leave AS \"Valid leave\",has_excused_checkin AS \"Exempt check-in\",has_excused_checkout AS \"Exempt check-out\",perlu_review AS \"Needs review\",NOT is_date_final AS \"Provisional\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]] AND f.active_employee_days=1 ORDER BY f.tanggal,f.pegawai_id_sumber LIMIT 1000"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 22,
+          "display": "table",
+          "visualization_settings": {
+            "column_settings": {
+              "[\"name\",\"Employee ID\"]": {
+                "number_style": "decimal",
+                "number_separators": ".",
+                "decimals": 0
+              },
+              "[\"name\",\"Department ID\"]": {
+                "number_style": "decimal",
+                "number_separators": ".",
+                "decimals": 0
+              }
+            }
+          }
+        },
+        "updated_at": "2026-10-30T08:32:44.962316Z",
+        "col": 0,
+        "id": 24,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 22,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 22,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 22,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 22,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 22,
+        "entity_id": "1QGmY5jSdmge8-x4oRfL8",
+        "visualization_settings": {
+          "card.title": "Employee daily records \u2014 up to 1,000 rows"
+        },
+        "size_y": 14,
+        "dashboard_id": 2,
+        "created_at": "2026-10-30T08:32:17.248738Z",
+        "row": 49
+      },
+      {
+        "size_x": 24,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "Distinct active employees with at least one valid approved leave in the selected period, divided by distinct active employees in the same department and period. A person can appear in more than one department after a transfer. Test data is provisional.",
+          "name": "Organization | Departments ranked by employees with leave",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "type": "date",
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "type": "date",
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "display-name": "Department source ID",
+                    "type": "number",
+                    "id": "department",
+                    "name": "department",
+                    "required": false
+                  },
+                  {
+                    "display-name": "Employee or department",
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT COALESCE(MAX(d.nama), 'Department ' || f.departemen_id_sumber::text, 'UNKNOWN')\n           || ' (' || COALESCE(f.departemen_id_sumber::text, 'UNKNOWN') || ')' AS \"Department\",\n       ROUND(100.0 * COUNT(DISTINCT f.pegawai_id_sumber) FILTER (WHERE f.leave_days = 1)\n             / NULLIF(COUNT(DISTINCT f.pegawai_id_sumber) FILTER (WHERE f.active_employee_days = 1), 0), 2) AS \"Leave %\"\nFROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING (pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING (departemen_key)\nWHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n    OR COALESCE(p.nama, '') ILIKE '%' || {{search}} || '%'\n    OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n    OR COALESCE(d.nama, '') ILIKE '%' || {{search}} || '%')]]\nGROUP BY f.departemen_id_sumber\nHAVING COUNT(DISTINCT f.pegawai_id_sumber) FILTER (WHERE f.active_employee_days = 1) > 0\nORDER BY \"Leave %\" DESC, \"Department\" ASC\nLIMIT 10"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 19,
+          "display": "row",
+          "visualization_settings": {
+            "graph.dimensions": [
+              "Department"
+            ],
+            "graph.show_values": true,
+            "graph.metrics": [
+              "Leave %"
+            ]
+          }
+        },
+        "updated_at": "2026-10-30T08:32:42.185374Z",
+        "col": 0,
+        "id": 25,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 19,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 19,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 19,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 19,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 19,
+        "entity_id": "Pq4rPrhzGFd6meMp-gBfO",
+        "visualization_settings": {
+          "card.title": "Top 10 departments by employees with izin (%)"
+        },
+        "size_y": 9,
+        "dashboard_id": 2,
+        "created_at": "2026-10-30T08:32:42.185374Z",
+        "row": 14
+      },
+      {
+        "size_x": 24,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "Distinct employees late on their first recorded shift at least once, divided by distinct employees assessed at least once in the selected department and period. Excused, unassessed and unknown employee-days are excluded. Provisional test data; missing evidence is not on time.",
+          "name": "Organization | Departments ranked by first-shift lateness",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "type": "date",
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "type": "date",
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "display-name": "Department source ID",
+                    "type": "number",
+                    "id": "department",
+                    "name": "department",
+                    "required": false
+                  },
+                  {
+                    "display-name": "Employee or department",
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT COALESCE(MAX(v.nama_departemen),'UNKNOWN') || ' (' ||\n       COALESCE(v.departemen_id_sumber::text,'UNKNOWN') || ')' AS \"Department\",\n       ROUND(100.0 * COUNT(DISTINCT v.pegawai_id_sumber) FILTER (WHERE v.is_employee_active AND NOT v.has_excused_checkin AND v.lateness_status='LATE') /\n         NULLIF(COUNT(DISTINCT v.pegawai_id_sumber) FILTER (WHERE v.is_employee_active AND NOT v.has_excused_checkin AND v.lateness_status IN ('LATE','ON_TIME')),0),2) AS \"Late %\"\nFROM serving.v_lateness_employee_daily v\nJOIN mart_kehadiran.dim_pegawai p USING (pegawai_key)\nWHERE v.tanggal >= {{start_date}} AND v.tanggal <= {{end_date}}\n[[AND v.departemen_id_sumber = {{department}}]][[AND (CAST(v.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n  OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n  OR CAST(v.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n  OR COALESCE(v.nama_departemen,'') ILIKE '%' || {{search}} || '%')]]\nGROUP BY v.departemen_id_sumber\nHAVING COUNT(DISTINCT v.pegawai_id_sumber) FILTER (WHERE v.is_employee_active AND NOT v.has_excused_checkin AND v.lateness_status IN ('LATE','ON_TIME')) > 0\nORDER BY \"Late %\" DESC,\"Department\" ASC LIMIT 10"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 20,
+          "display": "row",
+          "visualization_settings": {
+            "graph.dimensions": [
+              "Department"
+            ],
+            "graph.show_values": true,
+            "graph.metrics": [
+              "Late %"
+            ]
+          }
+        },
+        "updated_at": "2026-10-30T08:32:44.962316Z",
+        "col": 0,
+        "id": 26,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 20,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 20,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 20,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 20,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 20,
+        "entity_id": "zrhLOIhzCGqigwNhdJHbg",
+        "visualization_settings": {
+          "card.title": "Top 10 departments by first-shift lateness (%)"
+        },
+        "size_y": 9,
+        "dashboard_id": 2,
+        "created_at": "2026-10-30T08:32:44.962316Z",
+        "row": 23
+      },
+      {
+        "size_x": 24,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "Distinct people per status during the selected period; categories may overlap across dates.",
+          "name": "Organization | Lateness assessment coverage",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "type": "date",
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "type": "date",
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "display-name": "Department source ID",
+                    "type": "number",
+                    "id": "department",
+                    "name": "department",
+                    "required": false
+                  },
+                  {
+                    "display-name": "Employee or department",
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT 'Assessed: ' || COUNT(DISTINCT v.pegawai_id_sumber) FILTER (WHERE v.is_employee_active AND NOT v.has_excused_checkin AND v.lateness_status IN ('LATE','ON_TIME'))\n  || ' \u00b7 Pending or unknown: ' || COUNT(DISTINCT v.pegawai_id_sumber) FILTER (WHERE v.is_employee_active AND NOT v.has_excused_checkin AND v.checkin_event_count>0 AND v.lateness_status='UNKNOWN')\n  || ' \u00b7 Excused: ' || COUNT(DISTINCT v.pegawai_id_sumber) FILTER (WHERE v.is_employee_active AND v.has_excused_checkin)\n  || ' \u00b7 No check-in: ' || COUNT(DISTINCT v.pegawai_id_sumber) FILTER (WHERE v.is_employee_active AND NOT v.has_excused_checkin AND v.checkin_event_count=0) AS \"Coverage\"\nFROM serving.v_lateness_employee_daily v\nJOIN mart_kehadiran.dim_pegawai p USING (pegawai_key)\nWHERE v.tanggal >= {{start_date}} AND v.tanggal <= {{end_date}}\n[[AND v.departemen_id_sumber = {{department}}]][[AND (CAST(v.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n  OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n  OR CAST(v.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n  OR COALESCE(v.nama_departemen,'') ILIKE '%' || {{search}} || '%')]]"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 21,
+          "display": "scalar",
+          "visualization_settings": {}
+        },
+        "updated_at": "2026-10-30T08:32:44.962316Z",
+        "col": 0,
+        "id": 27,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 21,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 21,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 21,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 21,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 21,
+        "entity_id": "NGiGbpuM8C4b7JTLwht6h",
+        "visualization_settings": {
+          "card.title": "Lateness assessment coverage"
+        },
+        "size_y": 3,
+        "dashboard_id": 2,
+        "created_at": "2026-10-30T08:32:44.962316Z",
+        "row": 32
+      }
+    ],
+    "collection_id": 3,
+    "parameters": [
+      {
+        "id": "start_date",
+        "name": "Start date",
+        "slug": "start_date",
+        "type": "date/single",
+        "default": "2026-11-02"
+      },
+      {
+        "id": "end_date",
+        "name": "End date",
+        "slug": "end_date",
+        "type": "date/single",
+        "default": "2026-11-02"
+      },
+      {
+        "id": "department",
+        "name": "Department source ID",
+        "slug": "department",
+        "type": "number/="
+      },
+      {
+        "id": "search",
+        "name": "Employee or department",
+        "slug": "search",
+        "type": "string/contains"
+      }
+    ]
+  },
+  "manager": {
+    "dashcards": [
+      {
+        "size_x": 8,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Operational | Tidak Absen Masuk",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": false,
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "type": "number",
+                    "default": 30114
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT SUM(f.no_checkin_days) AS \"Tidak Absen Masuk\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]]"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 4,
+          "display": "scalar",
+          "visualization_settings": {}
+        },
+        "updated_at": "2026-10-30T08:32:13.422264Z",
+        "col": 0,
+        "id": 5,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 4,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 4,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 4,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 4,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 4,
+        "entity_id": "Q7IlVrm-K-iC9XmxwGJ96",
+        "visualization_settings": {
+          "card.title": "Tidak Absen Masuk"
+        },
+        "size_y": 3,
+        "dashboard_id": 1,
+        "created_at": "2026-10-30T01:51:03.597772Z",
+        "row": 6
+      },
+      {
+        "size_x": 8,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Operational | Pegawai Izin",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": false,
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "type": "number",
+                    "default": 30114
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT SUM(f.leave_days) AS \"Pegawai Izin\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]]"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 6,
+          "display": "scalar",
+          "visualization_settings": {}
+        },
+        "updated_at": "2026-10-30T08:32:13.422264Z",
+        "col": 16,
+        "id": 7,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 6,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 6,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 6,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 6,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 6,
+        "entity_id": "X0qJXLMNr-2EnBKegtv85",
+        "visualization_settings": {
+          "card.title": "Pegawai Izin"
+        },
+        "size_y": 3,
+        "dashboard_id": 1,
+        "created_at": "2026-10-30T01:51:03.597772Z",
+        "row": 6
+      },
+      {
+        "size_x": 8,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Operational | Pegawai Aktif",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": false,
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "type": "number",
+                    "default": 30114
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT SUM(f.active_employee_days) AS \"Pegawai Aktif\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]]"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 1,
+          "display": "scalar",
+          "visualization_settings": {}
+        },
+        "updated_at": "2026-10-30T08:32:13.422264Z",
+        "col": 0,
+        "id": 2,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 1,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 1,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 1,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 1,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 1,
+        "entity_id": "RlIvt_mM_nKlVaDQpOt6n",
+        "visualization_settings": {
+          "card.title": "Pegawai Aktif"
+        },
+        "size_y": 3,
+        "dashboard_id": 1,
+        "created_at": "2026-10-30T01:51:03.597772Z",
+        "row": 3
+      },
+      {
+        "size_x": 24,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Operational | Daily attendance trend",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": false,
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "type": "number",
+                    "default": 30114
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT f.tanggal AS \"Date\",SUM(f.checkin_days) AS \"Absen Masuk\",SUM(f.checkout_days) AS \"Absen Pulang\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]] GROUP BY f.tanggal ORDER BY f.tanggal"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 7,
+          "display": "line",
+          "visualization_settings": {
+            "graph.dimensions": [
+              "Date"
+            ],
+            "graph.show_values": true,
+            "graph.show_points": true,
+            "graph.x_axis.scale": "ordinal",
+            "graph.metrics": [
+              "Absen Masuk",
+              "Absen Pulang"
+            ]
+          }
+        },
+        "updated_at": "2026-10-30T08:32:13.422264Z",
+        "col": 0,
+        "id": 8,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 7,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 7,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 7,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 7,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 7,
+        "entity_id": "HiB7oT6-2GTWcTIvzQGCW",
+        "visualization_settings": {
+          "card.title": "Daily attendance trend"
+        },
+        "size_y": 5,
+        "dashboard_id": 1,
+        "created_at": "2026-10-30T01:51:03.597772Z",
+        "row": 9
+      },
+      {
+        "size_x": 8,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Operational | Absen Pulang",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": false,
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "type": "number",
+                    "default": 30114
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT SUM(f.checkout_days) AS \"Absen Pulang\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]]"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 3,
+          "display": "scalar",
+          "visualization_settings": {}
+        },
+        "updated_at": "2026-10-30T08:32:13.422264Z",
+        "col": 16,
+        "id": 4,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 3,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 3,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 3,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 3,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 3,
+        "entity_id": "qb65LLM-GIO57nOBV-rZu",
+        "visualization_settings": {
+          "card.title": "Absen Pulang"
+        },
+        "size_y": 3,
+        "dashboard_id": 1,
+        "created_at": "2026-10-30T01:51:03.597772Z",
+        "row": 3
+      },
+      {
+        "size_x": 24,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Operational | Employee daily records \u2014 up to 1,000 rows",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": false,
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "type": "number",
+                    "default": 30114
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT f.pegawai_id_sumber AS \"Employee ID\",COALESCE(p.nama,'Employee '||f.pegawai_id_sumber::text) AS \"Employee\",f.tanggal AS \"Date\",f.departemen_id_sumber AS \"Department ID\",COALESCE(d.nama,'Department '||f.departemen_id_sumber::text) AS \"Department\",first_checkin_at AS \"First check-in\",last_checkout_at AS \"Last check-out\",has_masuk AS \"Check-in\",has_pulang AS \"Check-out\",has_valid_leave AS \"Valid leave\",has_excused_checkin AS \"Exempt check-in\",has_excused_checkout AS \"Exempt check-out\",perlu_review AS \"Needs review\",NOT is_date_final AS \"Provisional\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]] AND f.active_employee_days=1 ORDER BY f.tanggal,f.pegawai_id_sumber LIMIT 1000"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 8,
+          "display": "table",
+          "visualization_settings": {
+            "column_settings": {
+              "[\"name\",\"Employee ID\"]": {
+                "number_style": "decimal",
+                "number_separators": ".",
+                "decimals": 0
+              },
+              "[\"name\",\"Department ID\"]": {
+                "number_style": "decimal",
+                "number_separators": ".",
+                "decimals": 0
+              }
+            }
+          }
+        },
+        "updated_at": "2026-10-30T08:32:13.422264Z",
+        "col": 0,
+        "id": 9,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 8,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 8,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 8,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 8,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 8,
+        "entity_id": "Gk01Qe5IpOAGPGLwSvCYf",
+        "visualization_settings": {
+          "card.title": "Employee daily records \u2014 up to 1,000 rows"
+        },
+        "size_y": 14,
+        "dashboard_id": 1,
+        "created_at": "2026-10-30T01:51:03.597772Z",
+        "row": 14
+      },
+      {
+        "size_x": 24,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Operational | Data coverage and publication status",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": false,
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "type": "number",
+                    "default": 30114
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT CASE WHEN COUNT(*)=0 THEN 'NO DATA' WHEN BOOL_OR(f.perlu_review OR NOT f.is_date_final) THEN 'PROVISIONAL' ELSE 'FINAL' END AS \"Status\",MIN(f.tanggal) AS \"First available date\",MAX(f.tanggal) AS \"Last available date\",COUNT(DISTINCT f.tanggal) AS \"Available dates\",CAST({{end_date}} AS date)-CAST({{start_date}} AS date)+1 AS \"Requested dates\",BOOL_AND(COALESCE(s.population_complete AND s.curated_delivery_complete,false)) AS \"Published data complete\",MIN(s.updated_at) AT TIME ZONE 'Asia/Jakarta' AS \"Oldest refresh (Jakarta)\",MAX(s.updated_at) AT TIME ZONE 'Asia/Jakarta' AS \"Latest refresh (Jakarta)\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]]"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 9,
+          "display": "table",
+          "visualization_settings": {}
+        },
+        "updated_at": "2026-10-30T08:32:13.422264Z",
+        "col": 0,
+        "id": 10,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 9,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 9,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 9,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 9,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 9,
+        "entity_id": "o7ZVNSl4vUsE7_uQ9OoYH",
+        "visualization_settings": {
+          "card.title": "Data coverage and publication status"
+        },
+        "size_y": 4,
+        "dashboard_id": 1,
+        "created_at": "2026-10-30T01:51:03.597772Z",
+        "row": 28
+      },
+      {
+        "size_x": 8,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Operational | Absen Masuk",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": false,
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "type": "number",
+                    "default": 30114
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT SUM(f.checkin_days) AS \"Absen Masuk\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]]"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 2,
+          "display": "scalar",
+          "visualization_settings": {}
+        },
+        "updated_at": "2026-10-30T08:32:13.422264Z",
+        "col": 8,
+        "id": 3,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 2,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 2,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 2,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 2,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 2,
+        "entity_id": "iGM0rjyV89IuSPjAOhb7J",
+        "visualization_settings": {
+          "card.title": "Absen Masuk"
+        },
+        "size_y": 3,
+        "dashboard_id": 1,
+        "created_at": "2026-10-30T01:51:03.597772Z",
+        "row": 3
+      },
+      {
+        "size_x": 8,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {
+          "description": "ATTENDANCE_DAILY_V1. Test data only. Period counts are employee-days. NULL means unavailable or undefined, not zero.",
+          "name": "Operational | Tidak Absen Pulang",
+          "dataset_query": {
+            "stages": [
+              {
+                "template-tags": [
+                  {
+                    "required": true,
+                    "id": "start_date",
+                    "name": "start_date",
+                    "display-name": "Start date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": true,
+                    "id": "end_date",
+                    "name": "end_date",
+                    "display-name": "End date",
+                    "type": "date",
+                    "default": "2026-11-02"
+                  },
+                  {
+                    "required": false,
+                    "id": "department",
+                    "name": "department",
+                    "display-name": "Department source ID",
+                    "type": "number",
+                    "default": 30114
+                  },
+                  {
+                    "type": "text",
+                    "id": "search",
+                    "name": "search",
+                    "display-name": "Employee or department",
+                    "required": false
+                  }
+                ],
+                "lib/type": "mbql.stage/native",
+                "native": "SELECT SUM(f.no_checkout_days) AS \"Tidak Absen Pulang\" FROM mart_kehadiran.fact_kehadiran_daily f\nJOIN mart_kehadiran.dim_pegawai p USING(pegawai_key)\nJOIN mart_kehadiran.dim_departemen d USING(departemen_key)\nLEFT JOIN serving.attendance_date_state s USING(tanggal) WHERE f.tanggal >= {{start_date}} AND f.tanggal <= {{end_date}}\n[[AND f.departemen_id_sumber = {{department}}]]\n[[AND (CAST(f.pegawai_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(p.nama,'') ILIKE '%' || {{search}} || '%'\n        OR CAST(f.departemen_id_sumber AS text) ILIKE '%' || {{search}} || '%'\n        OR COALESCE(d.nama,'') ILIKE '%' || {{search}} || '%')]]"
+              }
+            ],
+            "lib/type": "mbql/query",
+            "database": 1
+          },
+          "id": 5,
+          "display": "scalar",
+          "visualization_settings": {}
+        },
+        "updated_at": "2026-10-30T08:32:13.422264Z",
+        "col": 8,
+        "id": 6,
+        "parameter_mappings": [
+          {
+            "parameter_id": "start_date",
+            "card_id": 5,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "start_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "end_date",
+            "card_id": 5,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "end_date"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "department",
+            "card_id": 5,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "department"
+              ]
+            ]
+          },
+          {
+            "parameter_id": "search",
+            "card_id": 5,
+            "target": [
+              "variable",
+              [
+                "template-tag",
+                "search"
+              ]
+            ]
+          }
+        ],
+        "card_id": 5,
+        "entity_id": "yzBC8UKxc2dTbpyehf9HK",
+        "visualization_settings": {
+          "card.title": "Tidak Absen Pulang"
+        },
+        "size_y": 3,
+        "dashboard_id": 1,
+        "created_at": "2026-10-30T01:51:03.597772Z",
+        "row": 6
+      },
+      {
+        "size_x": 24,
+        "dashboard_tab_id": null,
+        "series": [],
+        "inline_parameters": [],
+        "action_id": null,
+        "collection_authority_level": null,
+        "card": {},
+        "updated_at": "2026-10-30T08:32:13.422264Z",
+        "col": 0,
+        "id": 1,
+        "parameter_mappings": [],
+        "card_id": null,
+        "entity_id": "InSVyKUWjZJQ5nMl0KEP0",
+        "visualization_settings": {
+          "virtual_card": {
+            "display": "text",
+            "visualization_settings": {},
+            "dataset_query": {}
+          },
+          "text": "## TEST DATA \u2014 Provisional\nSimulated attendance date: **2026-11-02**. Current employee and schedule snapshots, not proof of future assignments. Check-in-only checkpoint; checkout has not been loaded. Multi-day attendance counts mean **employee-days**. Missing dates are not zero."
+        },
+        "size_y": 3,
+        "dashboard_id": 1,
+        "created_at": "2026-10-30T01:51:03.597772Z",
+        "row": 0
+      }
+    ],
+    "collection_id": 3,
+    "parameters": [
+      {
+        "id": "start_date",
+        "name": "Start date",
+        "slug": "start_date",
+        "type": "date/single",
+        "default": "2026-11-02"
+      },
+      {
+        "id": "end_date",
+        "name": "End date",
+        "slug": "end_date",
+        "type": "date/single",
+        "default": "2026-11-02"
+      },
+      {
+        "id": "department",
+        "name": "Department source ID",
+        "slug": "department",
+        "type": "number/=",
+        "default": 30114
+      },
+      {
+        "id": "search",
+        "name": "Employee or department",
+        "slug": "search",
+        "type": "string/contains"
+      }
+    ]
+  }
+}

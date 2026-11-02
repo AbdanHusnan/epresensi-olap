@@ -120,12 +120,12 @@ BEGIN
 CREATE TEMP TABLE cv2_events (LIKE curated.cur_event_attendance INCLUDING DEFAULTS INCLUDING GENERATED) ON COMMIT DROP;
 INSERT INTO cv2_events
 (checkinout_id_sumber,pegawai_id,tanggal_event,waktu_event,checktype,departemen_id_event,
- jadwal_id_sumber,work_code_sumber,jam_masuk_sumber,jam_keluar_sumber,is_manual,is_wfh_sumber,
- event_updated_at,shift_id_sumber,nama_shift_snapshot,tanggal,date_assignment_status,
+ jadwal_id_sumber,work_code_sumber,jam_masuk_sumber,jam_masuk_awal_sumber,jam_keluar_sumber,jam_keluar_akhir_sumber,is_manual,is_wfh_sumber,
+ event_updated_at,shift_id_sumber,nama_shift_snapshot,shift_is_active_sumber,tanggal,date_assignment_status,
  date_assignment_reason,date_assignment_policy,perlu_review,alasan_review,source_snapshot_at)
 SELECT r.id,r.pegawai_id,r.created_at::date,r.created_at,r.checktype,r.departemen,
- r.jadwal_id,r.work_code,r.jam_masuk,r.jam_keluar,r.is_manual,r.is_wfh,r.updated_at,
- j.jenis,s.nama,
+ r.jadwal_id,r.work_code,r.jam_masuk,r.jam_masuk_awal,r.jam_keluar,r.jam_keluar_akhir,r.is_manual,r.is_wfh,r.updated_at,
+ j.jenis,s.nama,s.status,
  CASE WHEN a.unresolved THEN NULL ELSE r.created_at::date END,
  CASE WHEN a.unresolved THEN 'UNRESOLVED' ELSE 'PROVISIONAL' END,
  CASE WHEN r.pegawai_id IS NULL OR r.created_at IS NULL THEN 'MISSING_IDENTITY_OR_TIME'
@@ -144,6 +144,9 @@ CROSS JOIN LATERAL (SELECT r.pegawai_id IS NULL OR r.created_at IS NULL OR
                 OR COALESCE(r.jam_keluar,j.jam_keluar) IS NULL
                 OR COALESCE(r.jam_keluar,j.jam_keluar)<=COALESCE(r.jam_masuk,j.jam_masuk))) AS unresolved) a
 WHERE i.batch_id=p_batch_id AND i.entity='EVENT' AND i.operation='UPSERT';
+UPDATE cv2_events SET
+ checkin_window_status=CASE WHEN checktype=1 THEN etl_control.classify_checkin_window(waktu_event::time,jam_masuk_awal_sumber,jam_masuk_sumber) END,
+ checkout_window_status=CASE WHEN checktype=2 THEN etl_control.classify_checkout_window(waktu_event::time,jam_keluar_sumber,jam_keluar_akhir_sumber) END;
 CREATE TEMP TABLE cv2_changed_event ON COMMIT DROP AS
 SELECT n.checkinout_id_sumber id FROM cv2_events n
 LEFT JOIN curated.cur_event_attendance o USING(checkinout_id_sumber)
@@ -164,8 +167,8 @@ SELECT pegawai_id,d FROM (
 DELETE FROM curated.cur_event_attendance e USING etl_control.curated_batch_item i
 WHERE i.batch_id=p_batch_id AND i.entity='EVENT' AND i.operation='DELETE'
 AND e.checkinout_id_sumber=i.source_id;
-INSERT INTO curated.cur_event_attendance AS dst (checkinout_id_sumber,pegawai_id,tanggal_event,waktu_event,checktype,departemen_id_event,jadwal_id_sumber,work_code_sumber,jam_masuk_sumber,jam_keluar_sumber,is_manual,is_wfh_sumber,event_updated_at,shift_id_sumber,nama_shift_snapshot,tanggal,date_assignment_status,date_assignment_reason,date_assignment_policy,paired_checkin_id_sumber,perlu_review,alasan_review,source_snapshot_at)
- SELECT checkinout_id_sumber,pegawai_id,tanggal_event,waktu_event,checktype,departemen_id_event,jadwal_id_sumber,work_code_sumber,jam_masuk_sumber,jam_keluar_sumber,is_manual,is_wfh_sumber,event_updated_at,shift_id_sumber,nama_shift_snapshot,tanggal,date_assignment_status,date_assignment_reason,date_assignment_policy,paired_checkin_id_sumber,perlu_review,alasan_review,source_snapshot_at FROM cv2_events
+INSERT INTO curated.cur_event_attendance AS dst (checkinout_id_sumber,pegawai_id,tanggal_event,waktu_event,checktype,departemen_id_event,jadwal_id_sumber,work_code_sumber,jam_masuk_sumber,jam_masuk_awal_sumber,jam_keluar_sumber,jam_keluar_akhir_sumber,checkin_window_status,checkout_window_status,is_manual,is_wfh_sumber,event_updated_at,shift_id_sumber,nama_shift_snapshot,shift_is_active_sumber,tanggal,date_assignment_status,date_assignment_reason,date_assignment_policy,paired_checkin_id_sumber,perlu_review,alasan_review,source_snapshot_at)
+ SELECT checkinout_id_sumber,pegawai_id,tanggal_event,waktu_event,checktype,departemen_id_event,jadwal_id_sumber,work_code_sumber,jam_masuk_sumber,jam_masuk_awal_sumber,jam_keluar_sumber,jam_keluar_akhir_sumber,checkin_window_status,checkout_window_status,is_manual,is_wfh_sumber,event_updated_at,shift_id_sumber,nama_shift_snapshot,shift_is_active_sumber,tanggal,date_assignment_status,date_assignment_reason,date_assignment_policy,paired_checkin_id_sumber,perlu_review,alasan_review,source_snapshot_at FROM cv2_events
  ON CONFLICT (checkinout_id_sumber) DO UPDATE SET pegawai_id=EXCLUDED.pegawai_id,
  tanggal_event=EXCLUDED.tanggal_event,
  waktu_event=EXCLUDED.waktu_event,
@@ -174,12 +177,17 @@ INSERT INTO curated.cur_event_attendance AS dst (checkinout_id_sumber,pegawai_id
  jadwal_id_sumber=EXCLUDED.jadwal_id_sumber,
  work_code_sumber=EXCLUDED.work_code_sumber,
  jam_masuk_sumber=EXCLUDED.jam_masuk_sumber,
+ jam_masuk_awal_sumber=EXCLUDED.jam_masuk_awal_sumber,
  jam_keluar_sumber=EXCLUDED.jam_keluar_sumber,
+ jam_keluar_akhir_sumber=EXCLUDED.jam_keluar_akhir_sumber,
+ checkin_window_status=EXCLUDED.checkin_window_status,
+ checkout_window_status=EXCLUDED.checkout_window_status,
  is_manual=EXCLUDED.is_manual,
  is_wfh_sumber=EXCLUDED.is_wfh_sumber,
  event_updated_at=EXCLUDED.event_updated_at,
  shift_id_sumber=EXCLUDED.shift_id_sumber,
  nama_shift_snapshot=EXCLUDED.nama_shift_snapshot,
+ shift_is_active_sumber=EXCLUDED.shift_is_active_sumber,
  tanggal=EXCLUDED.tanggal,
  date_assignment_status=EXCLUDED.date_assignment_status,
  date_assignment_reason=EXCLUDED.date_assignment_reason,
@@ -353,12 +361,58 @@ LEFT JOIN LATERAL (
  WHERE u.pegawai_id=a.pegawai_id AND u.tanggal IS NULL AND u.tanggal_event=a.tanggal
 ) u ON true
 WHERE p.pegawai_id IS NOT NULL OR e.pegawai_id IS NOT NULL OR l.n>0 OR u.n>0;
+-- First shift is determined by its recorded scheduled start, then the earliest
+-- check-in for that shift. Missing starts sort first because they could belong
+-- to an earlier shift. Tied different shift IDs are not guessed.
+UPDATE cv2_daily d SET
+ lateness_status = CASE
+   WHEN d.is_employee_active IS NOT TRUE THEN 'NOT_ASSESSED'
+   WHEN d.has_excused_checkin THEN 'EXCUSED'
+   WHEN d.checkin_event_count=0 THEN 'NOT_ASSESSED'
+   WHEN e.checkinout_id_sumber IS NULL AND e.all_inactive THEN 'NOT_ASSESSED'
+   WHEN e.checkinout_id_sumber IS NULL OR e.shift_is_active_sumber IS NOT TRUE OR e.perlu_review OR e.shift_id_sumber IS NULL
+        OR e.jam_masuk_sumber IS NULL OR e.jam_masuk_awal_sumber IS NULL
+        OR e.shift_ties > 1 THEN 'UNKNOWN'
+   ELSE etl_control.classify_checkin_window(e.waktu_event::time,e.jam_masuk_awal_sumber,e.jam_masuk_sumber)
+ END,
+ lateness_event_id=e.checkinout_id_sumber,
+ lateness_schedule_id=e.jadwal_id_sumber,
+ lateness_reason=CASE
+   WHEN d.is_employee_active IS NOT TRUE THEN 'EMPLOYEE_ACTIVE_STATUS_NOT_TRUE'
+   WHEN d.has_excused_checkin THEN 'EXCUSED_CHECKIN'
+   WHEN d.checkin_event_count=0 THEN 'NO_CHECKIN'
+   WHEN e.checkinout_id_sumber IS NULL AND e.all_inactive THEN 'INACTIVE_SHIFT_ONLY'
+   WHEN e.checkinout_id_sumber IS NULL THEN 'CHECKIN_NOT_FOUND'
+   WHEN e.shift_is_active_sumber IS NOT TRUE THEN 'SHIFT_ACTIVE_STATUS_UNKNOWN'
+   WHEN e.perlu_review THEN 'EVENT_REQUIRES_REVIEW'
+   WHEN e.shift_id_sumber IS NULL THEN 'SHIFT_UNRESOLVED'
+   WHEN e.jam_masuk_sumber IS NULL OR e.jam_masuk_awal_sumber IS NULL THEN 'WINDOW_MISSING'
+   WHEN e.shift_ties > 1 THEN 'FIRST_SHIFT_AMBIGUOUS'
+   WHEN e.jam_masuk_awal_sumber > e.jam_masuk_sumber THEN 'WINDOW_CROSSES_MIDNIGHT_OR_INVALID'
+   ELSE NULL END
+FROM LATERAL (
+ SELECT d0.pegawai_id,d0.tanggal,x.checkinout_id_sumber,x.jadwal_id_sumber,
+        x.shift_id_sumber,x.shift_is_active_sumber,x.perlu_review,x.jam_masuk_sumber,x.jam_masuk_awal_sumber,x.waktu_event,
+   (SELECT bool_and(e3.shift_is_active_sumber IS FALSE) FROM curated.cur_event_attendance e3
+    WHERE e3.pegawai_id=d0.pegawai_id AND e3.tanggal=d0.tanggal AND e3.checktype=1) AS all_inactive,
+   (SELECT count(DISTINCT e2.shift_id_sumber) FROM curated.cur_event_attendance e2
+    WHERE e2.pegawai_id=d0.pegawai_id AND e2.tanggal=d0.tanggal AND e2.checktype=1
+    AND e2.shift_is_active_sumber IS TRUE
+    AND e2.jam_masuk_sumber IS NOT DISTINCT FROM x.jam_masuk_sumber) AS shift_ties
+ FROM cv2_daily d0
+ LEFT JOIN LATERAL (
+  SELECT e1.* FROM curated.cur_event_attendance e1
+  WHERE e1.pegawai_id=d0.pegawai_id AND e1.tanggal=d0.tanggal AND e1.checktype=1
+  AND e1.shift_is_active_sumber IS DISTINCT FROM FALSE
+  ORDER BY (e1.shift_is_active_sumber IS NULL) DESC,e1.jam_masuk_sumber ASC NULLS FIRST,e1.waktu_event,e1.checkinout_id_sumber LIMIT 1
+ ) x ON true
+) e WHERE d.pegawai_id=e.pegawai_id AND d.tanggal=e.tanggal;
 DELETE FROM curated.cur_attendance_daily d USING cv2_affected a
 WHERE d.pegawai_id=a.pegawai_id AND d.tanggal=a.tanggal
 AND NOT EXISTS(SELECT 1 FROM cv2_daily n WHERE n.pegawai_id=d.pegawai_id AND n.tanggal=d.tanggal);
 GET DIAGNOSTICS v_removed=ROW_COUNT;
-INSERT INTO curated.cur_attendance_daily AS dst (pegawai_id,tanggal,departemen_id,is_employee_active,population_basis,checkin_event_count,checkout_event_count,first_checkin_at,last_checkout_at,has_manual_event,has_valid_leave,has_full_day_leave,has_partial_day_leave,has_excused_checkin,has_excused_checkout,perlu_review,alasan_review,is_date_final,date_assignment_policy,source_snapshot_at)
- SELECT pegawai_id,tanggal,departemen_id,is_employee_active,population_basis,checkin_event_count,checkout_event_count,first_checkin_at,last_checkout_at,has_manual_event,has_valid_leave,has_full_day_leave,has_partial_day_leave,has_excused_checkin,has_excused_checkout,perlu_review,alasan_review,is_date_final,date_assignment_policy,source_snapshot_at FROM cv2_daily
+INSERT INTO curated.cur_attendance_daily AS dst (pegawai_id,tanggal,departemen_id,is_employee_active,population_basis,checkin_event_count,checkout_event_count,first_checkin_at,last_checkout_at,has_manual_event,has_valid_leave,has_full_day_leave,has_partial_day_leave,has_excused_checkin,has_excused_checkout,lateness_status,lateness_event_id,lateness_schedule_id,lateness_reason,perlu_review,alasan_review,is_date_final,date_assignment_policy,source_snapshot_at)
+ SELECT pegawai_id,tanggal,departemen_id,is_employee_active,population_basis,checkin_event_count,checkout_event_count,first_checkin_at,last_checkout_at,has_manual_event,has_valid_leave,has_full_day_leave,has_partial_day_leave,has_excused_checkin,has_excused_checkout,lateness_status,lateness_event_id,lateness_schedule_id,lateness_reason,perlu_review,alasan_review,is_date_final,date_assignment_policy,source_snapshot_at FROM cv2_daily
  ON CONFLICT (pegawai_id,tanggal) DO UPDATE SET departemen_id=EXCLUDED.departemen_id,
  is_employee_active=EXCLUDED.is_employee_active,
  population_basis=EXCLUDED.population_basis,
@@ -372,6 +426,10 @@ INSERT INTO curated.cur_attendance_daily AS dst (pegawai_id,tanggal,departemen_i
  has_partial_day_leave=EXCLUDED.has_partial_day_leave,
  has_excused_checkin=EXCLUDED.has_excused_checkin,
  has_excused_checkout=EXCLUDED.has_excused_checkout,
+ lateness_status=EXCLUDED.lateness_status,
+ lateness_event_id=EXCLUDED.lateness_event_id,
+ lateness_schedule_id=EXCLUDED.lateness_schedule_id,
+ lateness_reason=EXCLUDED.lateness_reason,
  perlu_review=EXCLUDED.perlu_review,
  alasan_review=EXCLUDED.alasan_review,
  is_date_final=EXCLUDED.is_date_final,

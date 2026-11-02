@@ -78,6 +78,14 @@ scenarios. Ordered fingerprints compare 34 shared curated/fact fields. All 3,829
 source-derived department aggregates and percentage formulas match serving data.
 Dimension business IDs/effective intervals and population assignment also pass.
 
+On 30 October the mart dimensions were refreshed from the raw source snapshot:
+all **72,259** `dim_pegawai` rows now contain the source employee name and all
+**3,829** `dim_departemen` rows contain the source department name. The refresh
+changed dimension display fields only; fact and serving-aggregate fingerprints
+and KPIs remained unchanged. Metabase employee detail now displays employee
+names and the department summaries display department names. The website
+verification confirms names in the manager-scoped employee rows.
+
 One mart batch and receipt are APPLIED, with zero pending deliveries. A second
 curated manifest containing the same source IDs produced zero event, leave,
 population, summary, or daily changes. The empty mart rerun and curated replay

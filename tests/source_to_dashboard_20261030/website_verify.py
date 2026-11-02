@@ -44,7 +44,8 @@ for role,dashboard,expected in [('director',2,reference['director']),('manager',
             attack=requests.get(url,params={'parameters':json.dumps({**params,'department':30187})},timeout=60)
             ok(attack.status_code in [400,403],f"manager chart {c['card_id']} rejects department override")
             if 'Employee daily records' in c['card']['name']:
-                rows=result['data']['rows'];ok(len(rows)==manager_count and all(x[2]==30114 for x in rows),'manager employee rows stay in assigned department')
+                rows=result['data']['rows'];ok(len(rows)==manager_count and all(x[3]==30114 for x in rows),'manager employee rows stay in assigned department')
+                ok(all(x[1] for x in rows),'manager employee rows include source employee names')
                 export=requests.get(url+'/csv',params={'parameters':json.dumps(params)},timeout=90);export.raise_for_status()
                 exported=list(csv.DictReader(io.StringIO(export.text.lstrip('\ufeff'))));ok(len(exported)==manager_count and all(x['Department ID']=='30114' for x in exported),'manager CSV export stays in assigned department')
                 bad_export=requests.get(url+'/csv',params={'parameters':json.dumps({**params,'department':30187})},timeout=60);ok(bad_export.status_code in [400,403],'manager export rejects department override')

@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "date": "2026-11-02",
+  "weekday": "Monday",
+  "population": 82119,
+  "population_basis": "All currently active source employees; simulated future date",
+  "departments": 4298,
+  "assessed": 69102,
+  "late": 27647,
+  "late_percentage": 40.01,
+  "excused": 3570,
+  "unassessed": 9447,
+  "events": {
+    "events": 84599,
+    "phase1": 72249,
+    "phase2": 12350,
+    "last_date": "2026-11-02",
+    "first_date": "2026-11-02",
+    "checkout_events": 0,
+    "phase2_extracted_epoch": 1793349348.089934,
+    "non_active_shift_events": 0
+  },
+  "first_dashboard_verified_before_additional_events": true,
+  "checkout_loaded": false,
+  "replay": {
+    "passed": true,
+    "mart_versions_unchanged": true
+  },
+  "http": true,
+  "browser": true,
+  "stage_database": "staging_bkd_checkin_20261102",
+  "mart_database": "mart_bkd_checkin_20261102"
+}

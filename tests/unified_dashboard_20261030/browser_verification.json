@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "role": "director",
+      "passed": true,
+      "unifiedContainer": true,
+      "presets": [
+        "3D",
+        "1M",
+        "3M",
+        "6M",
+        "1Y",
+        "7D"
+      ],
+      "dailyAndTrendIndependent": true,
+      "roleAppropriateTable": true,
+      "tableSearchIsolated": true,
+      "mobileOverflow": false,
+      "pageErrors": []
+    },
+    {
+      "role": "manager",
+      "passed": true,
+      "unifiedContainer": true,
+      "presets": [
+        "3D",
+        "1M",
+        "3M",
+        "6M",
+        "1Y",
+        "7D"
+      ],
+      "dailyAndTrendIndependent": true,
+      "roleAppropriateTable": true,
+      "tableSearchIsolated": true,
+      "mobileOverflow": false,
+      "pageErrors": []
+    }
+  ]
+}

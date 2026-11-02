@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "date": "2026-11-02",
+  "results": {
+    "leave": 3570,
+    "active": 82119,
+    "checkins": 72249,
+    "statuses": {
+      "LATE": 27647,
+      "EXCUSED": 3570,
+      "ON_TIME": 41455,
+      "NOT_ASSESSED": 9447
+    },
+    "checkouts": 0,
+    "population": 82119
+  },
+  "departments": 4298,
+  "checkouts": 0
+}

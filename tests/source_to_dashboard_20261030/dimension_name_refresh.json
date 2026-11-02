@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "effective_date": "2026-10-30",
+  "employee_import": {
+    "loaded": 72259,
+    "changed": 72259
+  },
+  "department_import": {
+    "loaded": 3829,
+    "changed": 3829
+  },
+  "coverage": {
+    "employee_dimensions": 72259,
+    "named_employee_dimensions": 72259,
+    "department_dimensions": 3829,
+    "named_department_dimensions": 3829,
+    "facts_with_employee_name": 72259,
+    "aggregates_with_department_name": 3829
+  },
+  "facts_and_kpis_unchanged": true
+}

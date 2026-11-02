@@ -1,0 +1,101 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "role": "director",
+      "run": "oct30-31-gradual",
+      "passed": true,
+      "metrics": [
+        82119,
+        72260,
+        0,
+        9437,
+        82119,
+        3570
+      ],
+      "overview_cards": 10,
+      "detail_tables": 2,
+      "table_search_isolated": true
+    },
+    {
+      "role": "director",
+      "run": "oct30-original",
+      "passed": true,
+      "metrics": [
+        72259,
+        67205,
+        65761,
+        1444,
+        2888,
+        5054
+      ],
+      "overview_cards": 10,
+      "detail_tables": 2,
+      "table_search_isolated": true
+    },
+    {
+      "role": "director",
+      "run": "nov02-checkin",
+      "passed": true,
+      "metrics": [
+        82119,
+        72249,
+        0,
+        9447,
+        82119,
+        3570
+      ],
+      "overview_cards": 10,
+      "detail_tables": 2,
+      "table_search_isolated": true
+    },
+    {
+      "role": "manager",
+      "run": "oct30-31-gradual",
+      "passed": true,
+      "metrics": [
+        85,
+        85,
+        0,
+        0,
+        85,
+        4
+      ],
+      "overview_cards": 8,
+      "detail_tables": 1,
+      "table_search_isolated": true
+    },
+    {
+      "role": "manager",
+      "run": "oct30-original",
+      "passed": true,
+      "metrics": [
+        85,
+        78,
+        73,
+        4,
+        9,
+        4
+      ],
+      "overview_cards": 8,
+      "detail_tables": 1,
+      "table_search_isolated": true
+    },
+    {
+      "role": "manager",
+      "run": "nov02-checkin",
+      "passed": true,
+      "metrics": [
+        85,
+        85,
+        0,
+        0,
+        85,
+        4
+      ],
+      "overview_cards": 8,
+      "detail_tables": 1,
+      "table_search_isolated": true
+    }
+  ]
+}

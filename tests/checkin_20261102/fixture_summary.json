@@ -1,0 +1,14 @@
+{
+  "checkouts": 0,
+  "population": 82119,
+  "expected_status": {
+    "LATE": 27647,
+    "EXCUSED": 3570,
+    "ON_TIME": 41455,
+    "NOT_ASSESSED": 9447
+  },
+  "phase1_checkins": 72249,
+  "checkin_exemptions": 3570,
+  "direct_usable_schedule": 72249,
+  "without_usable_schedule": 9870
+}

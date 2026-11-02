@@ -25,7 +25,7 @@ with app.app_context():
    if c.column_name in ('tanggal','reporting_timestamp'):c.is_dttm=True
   return t
  summary=dataset('attendance_comparison_summary_test',"SELECT *, CAST(tanggal AS timestamp) AS reporting_timestamp, COALESCE(nama_departemen, 'Department ' || departemen_id_sumber::text, 'UNKNOWN') AS department_label, CASE WHEN is_provisional THEN 'PROVISIONAL' ELSE 'FINAL' END AS publication_status FROM serving.v_kehadiran_departemen_harian")
- detail=dataset('attendance_comparison_employees_test',"SELECT *, CAST(tanggal AS timestamp) AS reporting_timestamp, CASE WHEN NOT is_date_final OR perlu_review THEN 'PROVISIONAL' ELSE 'FINAL' END AS publication_status FROM mart_kehadiran.fact_kehadiran_daily WHERE active_employee_days=1")
+ detail=dataset('attendance_comparison_employees_test',"SELECT f.*, COALESCE(p.nama, 'Employee ' || f.pegawai_id_sumber::text) AS nama_pegawai, CAST(f.tanggal AS timestamp) AS reporting_timestamp, CASE WHEN NOT f.is_date_final OR f.perlu_review THEN 'PROVISIONAL' ELSE 'FINAL' END AS publication_status FROM mart_kehadiran.fact_kehadiran_daily f JOIN mart_kehadiran.dim_pegawai p USING(pegawai_key) WHERE f.active_employee_days=1")
  for name,label in METRICS:
   m=next((m for m in summary.metrics if m.metric_name==name),None)
   if m is None:m=SqlMetric(metric_name=name);summary.metrics.append(m)
@@ -42,7 +42,7 @@ with app.app_context():
    specs.append((label+(' (employee-days)' if role=='Organization' else ''),summary,'big_number_total',{'metric':m,'subheader':'TEST • Provisional','y_axis_format':',.0f','header_font_size':0.35,'subheader_font_size':0.13},4,24))
   specs.append(('Daily attendance trend',summary,'echarts_timeseries_line',{'metrics':['checkin_days','checkout_days'],'groupby':[],'time_grain_sqla':'P1D','x_axis':'reporting_timestamp','show_legend':True,'show_value':True,'markerEnabled':True,'markerSize':7,'rich_tooltip':True,'x_axis_time_format':'%d %b','y_axis_format':',.0f'},12,38))
   if role=='Operational':
-   settings={'query_mode':'raw','all_columns':['pegawai_id_sumber','tanggal','departemen_id_sumber','first_checkin_at','last_checkout_at','has_masuk','has_pulang','has_valid_leave','has_excused_checkin','has_excused_checkout','perlu_review','publication_status'],'order_by_cols':['["tanggal", true]','["pegawai_id_sumber", true]'],'server_pagination':True,'server_page_length':25,'page_length':25,'include_search':True}
+   settings={'query_mode':'raw','all_columns':['pegawai_id_sumber','nama_pegawai','tanggal','departemen_id_sumber','first_checkin_at','last_checkout_at','has_masuk','has_pulang','has_valid_leave','has_excused_checkin','has_excused_checkout','perlu_review','publication_status'],'order_by_cols':['["tanggal", true]','["pegawai_id_sumber", true]'],'server_pagination':True,'server_page_length':25,'page_length':25,'include_search':True}
    specs.append(('Employee daily records — up to 1,000 rows',detail,'table',settings,12,50))
   else:
    rates=[metric('100.0*SUM(checkin_days)/NULLIF(SUM(active_employee_days),0)','Check-in %'),metric('100.0*SUM(checkout_days)/NULLIF(SUM(active_employee_days),0)','Check-out %'),metric('100.0*SUM(required_checkin_present_days)/NULLIF(SUM(required_checkin_days),0)','Required check-in %'),metric('100.0*SUM(required_checkout_present_days)/NULLIF(SUM(required_checkout_days),0)','Required check-out %')]
@@ -65,7 +65,7 @@ with app.app_context():
    pos['GRID_ID']['children'].append(rowid)
    pos[rowid]={'id':rowid,'type':'ROW','children':children,'parents':['ROOT_ID','GRID_ID'],'meta':{'background':'BACKGROUND_TRANSPARENT'}}
   addrow('ROW-NOTICE',['MARKDOWN-NOTICE'])
-  pos['MARKDOWN-NOTICE']={'id':'MARKDOWN-NOTICE','type':'MARKDOWN','children':[],'parents':['ROOT_ID','GRID_ID','ROW-NOTICE'],'meta':{'width':12,'height':22,'code':'### TEST DATA — Provisional\nAvailable date: **30 October 2026** only. Missing department names use source IDs. Period totals are **employee-days**. Missing dates are not zero; compare selected range with available dates below. One date cannot establish a historical trend. GUI filters are preview controls, not authorization.'}}
+  pos['MARKDOWN-NOTICE']={'id':'MARKDOWN-NOTICE','type':'MARKDOWN','children':[],'parents':['ROOT_ID','GRID_ID','ROW-NOTICE'],'meta':{'width':12,'height':22,'code':'### TEST DATA — Provisional\nAvailable date: **30 October 2026** only. Employee and department names use the source snapshot. Period totals are **employee-days**. Missing dates are not zero; compare selected range with available dates below. One date cannot establish a historical trend. GUI filters are preview controls, not authorization.'}}
   groups=[charts[:3],charts[3:6],charts[6:7],charts[7:8],charts[8:9]]
   for i,group in enumerate(groups):
    rid=f'ROW-{i}';ids=[f'CHART-{c.id}' for c,w,h in group];addrow(rid,ids)

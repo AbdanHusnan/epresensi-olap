@@ -1,0 +1,101 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "role": "director",
+      "run": "oct30-31-gradual",
+      "passed": true,
+      "daily_metrics": [
+        82119,
+        72260,
+        0,
+        9437,
+        82119,
+        3570
+      ],
+      "daily_range_rejected": true,
+      "period_range_accepted": true,
+      "department_name_search": true
+    },
+    {
+      "role": "director",
+      "run": "oct30-original",
+      "passed": true,
+      "daily_metrics": [
+        72259,
+        67205,
+        65761,
+        1444,
+        2888,
+        5054
+      ],
+      "daily_range_rejected": true,
+      "period_range_accepted": true,
+      "department_name_search": true
+    },
+    {
+      "role": "director",
+      "run": "nov02-checkin",
+      "passed": true,
+      "daily_metrics": [
+        82119,
+        72249,
+        0,
+        9447,
+        82119,
+        3570
+      ],
+      "daily_range_rejected": true,
+      "period_range_accepted": true,
+      "department_name_search": true
+    },
+    {
+      "role": "manager",
+      "run": "oct30-31-gradual",
+      "passed": true,
+      "daily_metrics": [
+        85,
+        85,
+        0,
+        0,
+        85,
+        4
+      ],
+      "daily_range_rejected": true,
+      "period_range_accepted": true,
+      "department_name_search": true
+    },
+    {
+      "role": "manager",
+      "run": "oct30-original",
+      "passed": true,
+      "daily_metrics": [
+        85,
+        78,
+        73,
+        4,
+        9,
+        4
+      ],
+      "daily_range_rejected": true,
+      "period_range_accepted": true,
+      "department_name_search": true
+    },
+    {
+      "role": "manager",
+      "run": "nov02-checkin",
+      "passed": true,
+      "daily_metrics": [
+        85,
+        85,
+        0,
+        0,
+        85,
+        4
+      ],
+      "daily_range_rejected": true,
+      "period_range_accepted": true,
+      "department_name_search": true
+    }
+  ]
+}

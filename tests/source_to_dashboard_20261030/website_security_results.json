@@ -46,6 +46,7 @@
     "manager chart 8 completes",
     "manager chart 8 rejects department override",
     "manager employee rows stay in assigned department",
+    "manager employee rows include source employee names",
     "manager CSV export stays in assigned department",
     "manager export rejects department override",
     "manager chart 9 completes",

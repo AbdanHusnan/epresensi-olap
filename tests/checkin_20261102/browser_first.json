@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "date": "2026-11-02",
+  "firstCheckpointPopulation": 82119,
+  "results": [
+    {
+      "role": "director",
+      "passed": true,
+      "date": "2026-11-02",
+      "pageErrors": []
+    },
+    {
+      "role": "manager",
+      "passed": true,
+      "date": "2026-11-02",
+      "pageErrors": []
+    }
+  ]
+}

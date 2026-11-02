@@ -1,0 +1,90 @@
+[
+  {
+    "page": "login",
+    "width": 90,
+    "loaded": true,
+    "right": 370,
+    "top": 19,
+    "screen": 390,
+    "overflow": false,
+    "primary": "#2563eb",
+    "pageErrors": []
+  },
+  {
+    "page": "manager",
+    "width": 104,
+    "loaded": true,
+    "right": 372,
+    "top": 82,
+    "screen": 390,
+    "overflow": false,
+    "primary": "#2563eb",
+    "pageErrors": []
+  },
+  {
+    "page": "login",
+    "width": 90,
+    "loaded": true,
+    "right": 370,
+    "top": 19,
+    "screen": 390,
+    "overflow": false,
+    "primary": "#2563eb",
+    "pageErrors": []
+  },
+  {
+    "page": "director",
+    "width": 104,
+    "loaded": true,
+    "right": 372,
+    "top": 82,
+    "screen": 390,
+    "overflow": false,
+    "primary": "#2563eb",
+    "pageErrors": []
+  },
+  {
+    "page": "login",
+    "width": 144,
+    "loaded": true,
+    "right": 1546,
+    "top": 27,
+    "screen": 1600,
+    "overflow": false,
+    "primary": "#2563eb",
+    "pageErrors": []
+  },
+  {
+    "page": "manager",
+    "width": 128,
+    "loaded": true,
+    "right": 1564,
+    "top": 12.671875,
+    "screen": 1600,
+    "overflow": false,
+    "primary": "#2563eb",
+    "pageErrors": []
+  },
+  {
+    "page": "login",
+    "width": 144,
+    "loaded": true,
+    "right": 1546,
+    "top": 27,
+    "screen": 1600,
+    "overflow": false,
+    "primary": "#2563eb",
+    "pageErrors": []
+  },
+  {
+    "page": "director",
+    "width": 128,
+    "loaded": true,
+    "right": 1564,
+    "top": 12.671875,
+    "screen": 1600,
+    "overflow": false,
+    "primary": "#2563eb",
+    "pageErrors": []
+  }
+]

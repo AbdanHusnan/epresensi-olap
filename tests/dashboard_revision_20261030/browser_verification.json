@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "role": "director",
+      "passed": true,
+      "runs": [
+        "oct30-31-gradual",
+        "oct30-original",
+        "nov02-checkin"
+      ],
+      "searchDidNotRefreshOverview": true,
+      "mobileOverflow": false,
+      "pageErrors": []
+    },
+    {
+      "role": "manager",
+      "passed": true,
+      "runs": [
+        "oct30-31-gradual",
+        "oct30-original",
+        "nov02-checkin"
+      ],
+      "searchDidNotRefreshOverview": true,
+      "mobileOverflow": false,
+      "pageErrors": []
+    }
+  ]
+}

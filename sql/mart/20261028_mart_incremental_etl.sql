@@ -108,6 +108,14 @@ BEGIN
  'departemen_key',COALESCE(d.departemen_key,0),'source_batch_id',v_batch,
  'contract_version','ATTENDANCE_DAILY_V1','mart_loaded_at',current_timestamp)) r
  WHERE i.operation='UPSERT';
+ -- Older immutable V1 payloads have no lateness fields; retain UNKNOWN instead
+ -- of interpreting absent evidence as an on-time employee.
+ UPDATE mart_candidate n SET
+   lateness_status=COALESCE(i.payload->>'lateness_status','UNKNOWN'),
+   lateness_event_id=(i.payload->>'lateness_event_id')::integer,
+   lateness_schedule_id=(i.payload->>'lateness_schedule_id')::integer,
+   lateness_reason=i.payload->>'lateness_reason'
+ FROM mart_incoming i WHERE (i.pegawai_id,i.tanggal)=(n.pegawai_id_sumber,n.tanggal);
  IF (SELECT count(*) FROM mart_candidate)<>(SELECT count(*) FROM mart_incoming WHERE operation='UPSERT') THEN
   RAISE EXCEPTION 'Dimension resolution lost or duplicated rows';
  END IF;
@@ -144,6 +152,10 @@ BEGIN
  has_partial_day_leave=EXCLUDED.has_partial_day_leave,
  has_excused_checkin=EXCLUDED.has_excused_checkin,
  has_excused_checkout=EXCLUDED.has_excused_checkout,
+ lateness_status=EXCLUDED.lateness_status,
+ lateness_event_id=EXCLUDED.lateness_event_id,
+ lateness_schedule_id=EXCLUDED.lateness_schedule_id,
+ lateness_reason=EXCLUDED.lateness_reason,
  active_employee_days=EXCLUDED.active_employee_days,
  checkin_days=EXCLUDED.checkin_days,
  checkout_days=EXCLUDED.checkout_days,
@@ -164,6 +176,10 @@ BEGIN
  source_batch_id=EXCLUDED.source_batch_id,
  contract_version=EXCLUDED.contract_version,
  mart_loaded_at=EXCLUDED.mart_loaded_at;
+ UPDATE mart_kehadiran.fact_kehadiran_daily f SET
+   lateness_status=c.lateness_status, lateness_event_id=c.lateness_event_id,
+   lateness_schedule_id=c.lateness_schedule_id, lateness_reason=c.lateness_reason
+ FROM mart_changed c WHERE (f.pegawai_id_sumber,f.tanggal)=(c.pegawai_id_sumber,c.tanggal);
  DELETE FROM serving.agg_kehadiran_departemen_harian a USING mart_dirty d
  WHERE (a.tanggal,a.departemen_key)=(d.tanggal,d.departemen_key);
  INSERT INTO serving.agg_kehadiran_departemen_harian(tanggal,departemen_key,

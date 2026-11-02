@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "batch": 1,
+  "date": "2026-10-30",
+  "totals": {
+    "leave": 3570,
+    "active": 82119,
+    "checkins": 72260,
+    "checkouts": 0,
+    "last_date": "2026-10-30",
+    "first_date": "2026-10-30",
+    "population": 82119,
+    "departments": 4298
+  },
+  "next": "Batch 2: 30 October afternoon checkout; wait for user review"
+}

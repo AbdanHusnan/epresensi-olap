@@ -38,6 +38,9 @@ for role,key in [('manager','METABASE_OPERATIONAL_DASHBOARD_ID'),('director','ME
         for card in dashboard['dashcards']:
             if card.get('card_id') and not any(m['parameter_id']=='department' for m in card.get('parameter_mappings',[])):
                 raise SystemExit('Operational card has no department mapping; refusing to enable embedding.')
-    api('PUT',f'/dashboard/{dashboard_id}',{'enable_embedding':True,'embedding_params':{'start_date':'enabled','end_date':'enabled','department':'locked' if role=='manager' else 'enabled'}})
+    embedding_params={'start_date':'enabled','end_date':'enabled','department':'locked' if role=='manager' else 'enabled'}
+    if any(p.get('slug')=='search' for p in dashboard['parameters']):
+        embedding_params['search']='locked'
+    api('PUT',f'/dashboard/{dashboard_id}',{'enable_embedding':True,'embedding_params':embedding_params})
     print(f'{role}: dashboard {dashboard_id} guest embedding configured.')
 print('Prototype app settings preserved in .env.hybrid. No attendance data changed.')

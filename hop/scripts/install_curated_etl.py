@@ -9,12 +9,16 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def installation_sql():
     schema = (ROOT / 'sql/staging/20261028_curated_leave_exemptions.sql').read_text()
+    windows = (ROOT / 'sql/staging/20261030_curated_window_columns.sql').read_text()
+    assert windows.count('\nBEGIN;\n') == 1 and windows.endswith('COMMIT;\n')
+    windows = windows.replace('\nBEGIN;\n', '\n', 1).removesuffix('COMMIT;\n')
+    rules = (ROOT / 'sql/staging/20261030_attendance_window_rules.sql').read_text()
     etl = (ROOT / 'sql/staging/20261028_curated_incremental_etl.sql').read_text()
     # Retain exactly one transaction spanning schema and replacement functions.
     assert etl.count('\nBEGIN;\n') == 1 and etl.endswith('COMMIT;\n')
     etl = etl.replace('\nBEGIN;\n', '\n', 1).removesuffix('COMMIT;\n')
     return ("\\set ON_ERROR_STOP on\nBEGIN;\nSET LOCAL lock_timeout='5s';\n"
-            + schema + '\n' + etl + '\nCOMMIT;\n')
+            + schema + '\n' + windows + '\n' + rules + '\n' + etl + '\nCOMMIT;\n')
 
 
 def main():

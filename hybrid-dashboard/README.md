@@ -1,3 +1,23 @@
+Current layout uses **one dashboard container** with daily KPI cards, a trend
+with **3D / 7D / 1M / 3M / 6M / 1Y / Custom** controls, and the daily table below.
+Daily and trend filters remain independent. Top management sees its department
+summary and department rankings; employee daily records remain only in the
+manager view. [Current layout and checks](../tests/unified_dashboard_20261030/README.md).
+Earlier layout notes below are retained for context.
+
+Current filters are separated into **Daily attendance** (one date for cards,
+rankings and detail tables) and **Attendance over time** (a date range for the
+line chart). Each section has an independent department-name search. Table
+search remains local to the daily detail tables. See the
+[filter update and evidence](../tests/daily_period_filters_20261030/README.md).
+Earlier shared-date notes below describe the preceding layout.
+
+The dashboard now has an explicit test-run selector for the original 30 October,
+2 November check-in, and gradual 30–31 October simulations. Shared date controls
+apply to overview and detail; search appears above, and filters only, the detail
+tables. The first gradual morning batch is the current checkpoint. See
+[repair and test evidence](../tests/dashboard_revision_20261030/README.md).
+
 # e-Presensi website prototype
 
 Three pages backed by the existing Metabase dashboards:
@@ -12,9 +32,11 @@ Open http://localhost:3100. The local usernames are `director` and `manager`.
 Passwords are generated and stored only in gitignored `.env.hybrid`, under
 `DEMO_DIRECTOR_PASSWORD` and `DEMO_MANAGER_PASSWORD`. Roles and manager department
 are assigned on the server; there is no client role selector or self-registration.
-Dimension name loading is deferred. Test date defaults to 30 October 2026. The current dataset contains 72,259 real
-source employees with tagged simulated transactions loaded through the full Hop
-pipeline; see [source-to-dashboard evidence](../tests/source_to_dashboard_20261030/README.md).
+The test date is configured with `DASHBOARD_TEST_DATE`, currently 2 November 2026.
+The current dataset retains all 82,119 active source employees and their display
+names. The check-in-only simulation has 72,249 employees with active Monday
+schedules and check-ins; checkout remains zero. See the
+[November test evidence](../tests/checkin_20261102/README.md).
 
 ## Implementation
 

@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "role": "director",
+      "allSixKpiCardsFit": true,
+      "lastKpi": {
+        "bottom": 179.53125,
+        "height": 1650
+      },
+      "mobileOverflow": false
+    },
+    {
+      "role": "manager",
+      "allSixKpiCardsFit": true,
+      "lastKpi": {
+        "bottom": 1179.53125,
+        "height": 1650
+      },
+      "mobileOverflow": false
+    }
+  ]
+}

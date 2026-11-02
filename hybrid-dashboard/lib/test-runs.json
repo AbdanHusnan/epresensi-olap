@@ -1,0 +1,53 @@
+[
+  {
+    "key": "oct30-31-gradual",
+    "label": "30\u201331 October 2026 \u00b7 gradual test",
+    "startDate": "2026-10-30",
+    "endDate": "2026-10-31",
+    "note": "Batch 1 of 4: 30 October morning check-ins. Awaiting review before afternoon checkouts. 31 October has not been loaded; missing dates are not zero.",
+    "director": {
+      "overview": 3,
+      "tables": 4,
+      "period": 15
+    },
+    "manager": {
+      "overview": 5,
+      "tables": 6,
+      "period": 16
+    }
+  },
+  {
+    "key": "oct30-original",
+    "label": "30 October 2026 \u00b7 original test",
+    "startDate": "2026-10-30",
+    "endDate": "2026-10-30",
+    "note": "Preserved original test: 72,259 employees in the Friday-schedule cohort. Lateness is unavailable where the original event lacked window evidence.",
+    "director": {
+      "overview": 7,
+      "tables": 8,
+      "period": 17
+    },
+    "manager": {
+      "overview": 9,
+      "tables": 10,
+      "period": 18
+    }
+  },
+  {
+    "key": "nov02-checkin",
+    "label": "2 November 2026 \u00b7 check-in test",
+    "startDate": "2026-11-02",
+    "endDate": "2026-11-02",
+    "note": "Preserved check-in-only test: 82,119 currently active employees. Zero checkouts.",
+    "director": {
+      "overview": 11,
+      "tables": 12,
+      "period": 19
+    },
+    "manager": {
+      "overview": 13,
+      "tables": 14,
+      "period": 20
+    }
+  }
+]
