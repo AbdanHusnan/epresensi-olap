@@ -1,5 +1,7 @@
 # Hop curated → fact → serving
 
+> Current operation (4 November 2026): actual staging_bkd / mart_bkd November simulation load is managed by [monthly loading guide](operations/README.md). Earlier empty-target and test-source status below is historical.
+
 Status 28 Oktober 2026: workflow, dua pipeline, koneksi mart, definisi outbox dan
 consumer terpasang. **Belum dijalankan. Tidak ada load curated→fact→serving,
 bootstrap, aktivasi capture, atau scheduler.** Validasi hanya metadata, definisi

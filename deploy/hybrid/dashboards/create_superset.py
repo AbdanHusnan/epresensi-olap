@@ -1,5 +1,7 @@
 """Run inside the Superset container; writes only BI metadata, never mart data."""
 import json
+import os
+from sqlalchemy.engine import make_url
 from superset.app import create_app
 from superset import db
 app=create_app()
@@ -8,13 +10,13 @@ from superset.models.core import Database
 from superset.models.dashboard import Dashboard
 from superset.models.slice import Slice
 METRICS=[('active_employee_days','Pegawai Aktif'),('checkin_days','Absen Masuk'),('checkout_days','Absen Pulang'),('no_checkin_days','Tidak Absen Masuk'),('no_checkout_days','Tidak Absen Pulang'),('leave_days','Pegawai Izin')]
-TIME='2026-10-30 : 2026-10-31'
+TIME='2026-11-01 : 2026-12-01'
 def metric(expression,label):
  return {'expressionType':'SQL','sqlExpression':expression,'label':label,'optionName':label}
 with app.app_context():
  admin=app.appbuilder.sm.find_user(username='admin')
  source=db.session.query(Database).filter_by(database_name='Attendance mart (read only)').one()
- assert 'mart_bkd_bulk_20261029' in source.sqlalchemy_uri_decrypted
+ assert make_url(source.sqlalchemy_uri_decrypted).database==os.environ.get('MART_DATABASE','mart_bkd')
  def dataset(name,sql):
   t=db.session.query(SqlaTable).filter_by(database_id=source.id,table_name=name).first()
   if not t:
@@ -33,13 +35,13 @@ with app.app_context():
  db.session.commit()
  out={}
  for role in ['Operational','Organization']:
-  title=f'{role} Attendance — TEST'; slug='attendance-'+role.lower()+'-test'
+  title=f'{role} Attendance — November 2026'; slug='attendance-'+role.lower()+'-test'
   dash=db.session.query(Dashboard).filter_by(slug=slug).first()
   if not dash:dash=Dashboard(slug=slug,owners=[admin]);db.session.add(dash)
   dash.dashboard_title=title;dash.published=True
   specs=[]
   for m,label in METRICS:
-   specs.append((label+(' (employee-days)' if role=='Organization' else ''),summary,'big_number_total',{'metric':m,'subheader':'TEST • Provisional','y_axis_format':',.0f','header_font_size':0.35,'subheader_font_size':0.13},4,24))
+   specs.append((label+(' (employee-days)' if role=='Organization' else ''),summary,'big_number_total',{'metric':m,'subheader':'SIMULATED • Provisional','y_axis_format':',.0f','header_font_size':0.35,'subheader_font_size':0.13},4,24))
   specs.append(('Daily attendance trend',summary,'echarts_timeseries_line',{'metrics':['checkin_days','checkout_days'],'groupby':[],'time_grain_sqla':'P1D','x_axis':'reporting_timestamp','show_legend':True,'show_value':True,'markerEnabled':True,'markerSize':7,'rich_tooltip':True,'x_axis_time_format':'%d %b','y_axis_format':',.0f'},12,38))
   if role=='Operational':
    settings={'query_mode':'raw','all_columns':['pegawai_id_sumber','nama_pegawai','tanggal','departemen_id_sumber','first_checkin_at','last_checkout_at','has_masuk','has_pulang','has_valid_leave','has_excused_checkin','has_excused_checkout','perlu_review','publication_status'],'order_by_cols':['["tanggal", true]','["pegawai_id_sumber", true]'],'server_pagination':True,'server_page_length':25,'page_length':25,'include_search':True}
@@ -56,7 +58,7 @@ with app.app_context():
    chart=db.session.query(Slice).filter_by(slice_name=name).first()
    if not chart:chart=Slice(slice_name=name,owners=[admin],datasource_type='table',datasource_id=t.id,datasource_name=t.table_name,viz_type=viz);db.session.add(chart)
    chart.datasource_id=t.id;chart.datasource_type='table';chart.datasource_name=t.table_name;chart.viz_type=viz;chart.cache_timeout=-1
-   chart.description='ATTENDANCE_DAILY_V1. Test data only. Counts across dates are employee-days. GUI filters are not authorization.'
+   chart.description='ATTENDANCE_DAILY_V1. Simulated November attendance with actual master data. Counts across dates are employee-days. GUI filters are not authorization.'
    base={'datasource':f'{t.id}__table','viz_type':viz,'granularity_sqla':'reporting_timestamp','time_range':TIME,'adhoc_filters':[],'row_limit':1000,'color_scheme':'supersetColors','extra_form_data':{},'show_cell_bars':False}
    base.update(settings);chart.params=json.dumps(base);db.session.flush();base['slice_id']=chart.id;chart.params=json.dumps(base);charts.append((chart,w,h))
   dash.slices=[c for c,w,h in charts];db.session.flush()
@@ -65,7 +67,7 @@ with app.app_context():
    pos['GRID_ID']['children'].append(rowid)
    pos[rowid]={'id':rowid,'type':'ROW','children':children,'parents':['ROOT_ID','GRID_ID'],'meta':{'background':'BACKGROUND_TRANSPARENT'}}
   addrow('ROW-NOTICE',['MARKDOWN-NOTICE'])
-  pos['MARKDOWN-NOTICE']={'id':'MARKDOWN-NOTICE','type':'MARKDOWN','children':[],'parents':['ROOT_ID','GRID_ID','ROW-NOTICE'],'meta':{'width':12,'height':22,'code':'### TEST DATA — Provisional\nAvailable date: **30 October 2026** only. Employee and department names use the source snapshot. Period totals are **employee-days**. Missing dates are not zero; compare selected range with available dates below. One date cannot establish a historical trend. GUI filters are preview controls, not authorization.'}}
+  pos['MARKDOWN-NOTICE']={'id':'MARKDOWN-NOTICE','type':'MARKDOWN','children':[],'parents':['ROOT_ID','GRID_ID','ROW-NOTICE'],'meta':{'width':12,'height':22,'code':'### SIMULATED ATTENDANCE — Provisional\nAvailable period: **1–30 November 2026**. Employee and department names use the source snapshot. Period totals are **employee-days**. Missing dates are not zero; compare selected range with available dates below. Transactions are generated scenarios, not observed attendance. GUI filters are preview controls, not authorization.'}}
   groups=[charts[:3],charts[3:6],charts[6:7],charts[7:8],charts[8:9]]
   for i,group in enumerate(groups):
    rid=f'ROW-{i}';ids=[f'CHART-{c.id}' for c,w,h in group];addrow(rid,ids)

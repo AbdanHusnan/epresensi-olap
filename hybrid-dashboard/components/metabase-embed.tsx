@@ -10,14 +10,14 @@ import type { Role } from '../lib/auth';
 
 type Filters = { run: string; date: string; department: string; departmentName: string; preset: PeriodPreset | 'custom'; start: string; end: string; search: string };
 function defaults(run: TestRun): Filters {
-  return { run: run.key, date: run.startDate, department: '', departmentName: '', preset: '7D', start: periodStartFor('7D', run.endDate), end: run.endDate, search: '' };
+  return { run: run.key, date: run.startDate, department: '', departmentName: '', preset: 'custom', start: run.startDate, end: run.endDate, search: '' };
 }
 function validDate(value: string | null): value is string {
   return !!value && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0,10) === value;
 }
 function readFilters(runs: TestRun[]): Filters {
   const params = new URLSearchParams(window.location.search);
-  const defaultRun = runs.find(item => item.key === 'nov02-checkin') || runs[runs.length - 1];
+  const defaultRun = runs.find(item => item.key === 'november-2026') || runs[runs.length - 1];
   const run = runs.find(item => item.key === params.get('run')) || defaultRun;
   const value = defaults(run);
   const date = params.get('date'), start = params.get('start'), end = params.get('end');
@@ -29,7 +29,7 @@ function readFilters(runs: TestRun[]): Filters {
   const preset = params.get('preset');
   if (preset === 'custom' || periodPresets.includes(preset as PeriodPreset)) value.preset = preset as Filters['preset'];
   if (validDate(end)) value.end = end;
-  value.start = value.preset === 'custom' && validDate(start) && start <= value.end ? start : periodStartFor(value.preset === 'custom' ? '7D' : value.preset, value.end);
+  value.start = value.preset === 'custom' ? (validDate(start) && start <= value.end ? start : run.startDate) : periodStartFor(value.preset, value.end);
   value.search = (params.get('search') || '').slice(0,100);
   return value;
 }
@@ -53,7 +53,7 @@ export function MetabaseEmbed(props: { role: Role; runs: TestRun[]; publicUrl: s
   return props.role === 'director' ? <AnalyticalDashboard runs={props.runs} publicUrl={props.publicUrl}/> : <OperationalDashboard {...props}/>;
 }
 function AnalyticalDashboard({ runs, publicUrl }: { runs: TestRun[]; publicUrl: string }) {
-  const defaultRun = runs.find(item => item.key === 'nov02-checkin') || runs[runs.length - 1];
+  const defaultRun = runs.find(item => item.key === 'november-2026') || runs[runs.length - 1];
   const [applied,setApplied] = useState<Filters>(()=>defaults(defaultRun));
   const [draft,setDraft] = useState<Filters>(()=>defaults(defaultRun));
   const [ready,setReady] = useState(false);
@@ -90,6 +90,7 @@ function AnalyticalDashboard({ runs, publicUrl }: { runs: TestRun[]; publicUrl: 
       <label>Akhir periode<input type="date" required min={draft.preset==='custom'?draft.start:undefined} value={draft.end} onChange={event=>setDraft(current=>({...current,end:event.target.value}))}/></label>
       <div className="filter-actions"><button className="analytics-button" type="submit" disabled={!ready}>Terapkan</button><button className="analytics-button secondary" type="button" onClick={reset}>Reset</button></div>
     </form>
+    <p className="section-caption">Data simulasi presensi · 1–30 November 2026</p>
     <div className="analytics-grid">
       <DashboardSection title="Ringkasan kehadiran" description={`Metrik harian dan tren kehadiran · Snapshot harian · ${applied.date}`} className="overview-section">
         {ready?<MetabaseFrame {...common} id={run.director.overview} section="overview" startDate={applied.date} endDate={applied.date}/>:<InitialSkeleton section="overview"/>}

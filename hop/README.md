@@ -1,5 +1,7 @@
 # Apache Hop — raw ke curated v2
 
+> Current operation (4 November 2026): actual staging_bkd / mart_bkd November simulation load is managed by [monthly loading guide](operations/README.md). Earlier empty-target and test-source status below is historical.
+
 Pipeline aktif: [curated_incremental_batch.hpl](pipelines/curated/curated_incremental_batch.hpl).
 Implementasi SQL: [20261028_curated_incremental_etl.sql](../sql/staging/20261028_curated_incremental_etl.sql).
 

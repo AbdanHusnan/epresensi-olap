@@ -9,7 +9,7 @@ import type { Role } from '../lib/auth';
 type Filters = { run: string; date: string; preset: PeriodPreset | 'custom'; start: string; end: string; search: string };
 
 function defaults(run: TestRun): Filters {
-  return { run: run.key, date: run.startDate, preset: '7D', start: periodStartFor('7D', run.endDate), end: run.endDate, search: '' };
+  return { run: run.key, date: run.startDate, preset: 'custom', start: run.startDate, end: run.endDate, search: '' };
 }
 
 function validDate(value: string | null): value is string {
@@ -18,7 +18,7 @@ function validDate(value: string | null): value is string {
 
 function readFilters(runs: TestRun[]): Filters {
   const params = new URLSearchParams(window.location.search);
-  const defaultRun = runs.find(item => item.key === 'nov02-checkin') || runs[runs.length - 1];
+  const defaultRun = runs.find(item => item.key === 'november-2026') || runs[runs.length - 1];
   const run = runs.find(item => item.key === params.get('run')) || defaultRun;
   const value = defaults(run);
   const date = params.get('date'), start = params.get('start'), end = params.get('end');
@@ -26,7 +26,7 @@ function readFilters(runs: TestRun[]): Filters {
   const preset = params.get('preset');
   if (preset === 'custom' || periodPresets.includes(preset as PeriodPreset)) value.preset = preset as Filters['preset'];
   if (validDate(end)) value.end = end;
-  value.start = value.preset === 'custom' && validDate(start) && start <= value.end ? start : periodStartFor(value.preset === 'custom' ? '7D' : value.preset, value.end);
+  value.start = value.preset === 'custom' ? (validDate(start) && start <= value.end ? start : run.startDate) : periodStartFor(value.preset, value.end);
   value.search = (params.get('search') || '').slice(0,100);
   return value;
 }
@@ -49,7 +49,7 @@ const presetLabels: Record<PeriodPreset | 'custom', string> = {
 };
 
 export function OperationalDashboard({ role, runs, publicUrl, departmentId }: { role: Role; runs: TestRun[]; publicUrl: string; departmentId?: number }) {
-  const defaultRun = runs.find(item => item.key === 'nov02-checkin') || runs[runs.length - 1];
+  const defaultRun = runs.find(item => item.key === 'november-2026') || runs[runs.length - 1];
   const [applied,setApplied] = useState<Filters>(()=>defaults(defaultRun));
   const [draft,setDraft] = useState<Filters>(()=>defaults(defaultRun));
   const [ready,setReady] = useState(false);
@@ -105,6 +105,7 @@ export function OperationalDashboard({ role, runs, publicUrl, departmentId }: { 
       <div className="filter-actions"><button className="analytics-button" type="submit" disabled={!ready}>Terapkan</button><button className="analytics-button secondary" type="button" onClick={reset}>Reset</button></div>
     </form>
 
+    <p className="section-caption">Data simulasi presensi · 1–30 November 2026</p>
     <div className="analytics-grid">
       <DashboardSection title="Ringkasan kehadiran" description={`Metrik harian dan tren kehadiran departemen · Snapshot harian · ${applied.date}`} className="overview-section">
         {ready?<MetabaseFrame {...common} id={run.manager.overview} section="overview" startDate={applied.date} endDate={applied.date}/>:<InitialSkeleton section="overview"/>}

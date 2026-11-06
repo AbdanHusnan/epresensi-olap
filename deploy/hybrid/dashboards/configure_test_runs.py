@@ -3,6 +3,7 @@
 Never repoints an existing database connection. Writes a public, secret-free
 website registry only after every dashboard has been provisioned successfully.
 """
+import argparse
 import copy
 import json
 from pathlib import Path
@@ -52,9 +53,15 @@ FROM rates ORDER BY rate DESC,affected DESC,eligible DESC,department,department_
 
 
 def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    mode=parser.add_mutually_exclusive_group()
+    mode.add_argument('--actual-month',dest='actual_month',action='store_true',help='Bind actual mart_bkd for November 2026 (default)')
+    mode.add_argument('--legacy-tests',dest='actual_month',action='store_false',help='Explicitly provision archived test sources, if they still exist')
+    parser.set_defaults(actual_month=True)
+    args=parser.parse_args()
     S.headers['X-Metabase-Session'] = api('POST','/session',{'username':ENV['BI_ADMIN_EMAIL'],'password':ENV['BI_ADMIN_PASSWORD']})['id']
     databases = api('GET','/database')['data']
-    connection = copy.deepcopy(next(d for d in databases if d['name']=='Attendance mart (read only)'))
+    connection = {'details':{'host':'epresensi-mart-postgres','port':5432,'user':'hybrid_metabase_reader','ssl':False,'schema-filters-type':'inclusion','schema-filters-patterns':'serving,mart_kehadiran'}}
     templates = {role:api('GET',f'/dashboard/{ENV[key]}') for role,key in [('director','METABASE_ANALYTICAL_DASHBOARD_ID'),('manager','METABASE_OPERATIONAL_DASHBOARD_ID')]}
     # Persist source definitions once: regeneration must not clone our own split layouts.
     snapshot = ROOT/'deploy/hybrid/dashboards/test-run-templates.json'
@@ -73,13 +80,15 @@ def main():
       {'key':'oct30-original','label':'30 October 2026 · original test','startDate':'2026-10-30','endDate':'2026-10-30','database':'mart_bkd_bulk_20261029','note':'Preserved original test: 72,259 employees in the Friday-schedule cohort. Lateness is unavailable where the original event lacked window evidence.'},
       {'key':'nov02-checkin','label':'2 November 2026 · check-in test','startDate':'2026-11-02','endDate':'2026-11-02','database':'mart_bkd_checkin_20261102','note':'Preserved check-in-only test: 82,119 currently active employees. Zero checkouts.'},
     ]
+    if args.actual_month:
+        runs=[{'key':'november-2026','label':'November 2026','startDate':'2026-11-01','endDate':'2026-11-30','database':'mart_bkd','note':'Simulated attendance for all November days using actual employee and schedule masters. Provisional data; not observed attendance.'}]
     registry=[]
     department_options={}
     for run in runs:
         source=next((d for d in databases if d['details'].get('dbname')==run['database']),None)
         if not source:
             details={**connection['details'],'dbname':run['database'],'password':ENV['METABASE_MART_PASSWORD']}
-            source=api('POST','/database',{'name':'Attendance test · '+run['key'],'engine':'postgres','details':details,'is_full_sync':False})
+            source=api('POST','/database',{'name':('Attendance month · ' if args.actual_month else 'Attendance test · ')+run['key'],'engine':'postgres','details':details,'is_full_sync':False})
             databases.append(source)
         # No existing connection is mutated, even when default test changes.
         query = "SELECT COALESCE(jsonb_agg(jsonb_build_object('id',id,'name',name) ORDER BY name,id),'[]'::jsonb) FROM (SELECT f.departemen_id_sumber AS id,COALESCE(MAX(d.nama),'Unnamed department') AS name FROM mart_kehadiran.fact_kehadiran_daily f JOIN mart_kehadiran.dim_departemen d USING(departemen_key) WHERE f.departemen_id_sumber IS NOT NULL GROUP BY f.departemen_id_sumber) x"
@@ -94,6 +103,9 @@ def main():
                 params=copy.deepcopy(template['parameters'])
                 for p in params:
                     p.pop('default',None)
+                    if args.actual_month and p['id']=='start_date':p['default']=run['startDate']
+                    if args.actual_month and p['id']=='end_date':p['default']=run['endDate'] if section=='period' else run['startDate']
+                    if args.actual_month and role=='manager' and p['id']=='department':p['default']=ENV['DEMO_MANAGER_DEPARTMENT_ID']
                 params=[p for p in params if p['id']!='search' or section=='tables']
                 embedding={'start_date':'locked','end_date':'locked','department':'locked'}
                 if section=='tables': embedding['search']='locked'
@@ -150,6 +162,9 @@ def main():
         registry.append(item)
     (ROOT/'hybrid-dashboard/lib/department-options.json').write_text(json.dumps(department_options,ensure_ascii=False,separators=(',',':'))+'\n')
     (ROOT/'hybrid-dashboard/lib/test-runs.json').write_text(json.dumps(registry,indent=2)+'\n')
+    if args.actual_month:
+        manifest={'database':'mart_bkd','startDate':runs[0]['startDate'],'endDate':runs[0]['endDate'],'dashboards':registry[0]}
+        (ROOT/'deploy/hybrid/dashboards/actual-month-manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
 
 
 if __name__=='__main__': main()

@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<pipeline>
+  <info>
+    <name>verify_actual_connections</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Read-only validation of actual source, staging and mart database targets.</description>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters />
+  </info>
+  <order />
+  <transform>
+    <name>Verify presensi_source</name>
+    <type>TableInput</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <connection>presensi_source</connection>
+    <sql>SELECT current_database() AS connected_database, 1/(current_database()='dbabsen_restore')::integer AS connection_valid</sql>
+    <limit>0</limit>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <GUI>
+      <xloc>160</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Verify presensi_staging</name>
+    <type>TableInput</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <connection>presensi_staging</connection>
+    <sql>SELECT current_database() AS connected_database, 1/(current_database()='staging_bkd')::integer AS connection_valid</sql>
+    <limit>0</limit>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <GUI>
+      <xloc>460</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Verify presensi_mart</name>
+    <type>TableInput</type>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <connection>presensi_mart</connection>
+    <sql>SELECT current_database() AS connected_database, 1/(current_database()='mart_bkd')::integer AS connection_valid</sql>
+    <limit>0</limit>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <GUI>
+      <xloc>760</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform_error_handling />
+  <attributes />
+</pipeline>

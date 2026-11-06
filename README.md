@@ -1,5 +1,7 @@
 # ePresensi OLAP — Apache Hop
 
+> Current dashboard dataset: November 1–30, 2026 simulation in actual `staging_bkd` and `mart_bkd`, using real master data. See [loading operations](hop/operations/README.md). The older development-target notes below are historical.
+
 Pipeline dimensi dan fakta presensi menggunakan Apache Hop dengan PostgreSQL.
 Sumber aktif: `dbabsen_restore`; target pengembangan: `epresensi_analytics_hop_dev`.
 

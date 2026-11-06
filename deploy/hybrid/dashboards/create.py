@@ -4,7 +4,7 @@ from pathlib import Path
 import subprocess
 import sys
 HERE=Path(__file__).resolve().parent
-subprocess.run([sys.executable,str(HERE/'create_metabase.py')],check=True)
+subprocess.run([sys.executable,str(HERE/'configure_test_runs.py'),'--actual-month'],check=True)
 r=subprocess.run(['docker','exec','-i','epresensi-hybrid-superset-1','/app/.venv/bin/python','-'],input=(HERE/'create_superset.py').read_text(),text=True,capture_output=True)
 if r.returncode:
     print(r.stderr[-6000:],file=sys.stderr)

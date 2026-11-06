@@ -1,0 +1,22 @@
+{
+  "database": "mart_bkd",
+  "startDate": "2026-11-01",
+  "endDate": "2026-11-30",
+  "dashboards": {
+    "key": "november-2026",
+    "label": "November 2026",
+    "startDate": "2026-11-01",
+    "endDate": "2026-11-30",
+    "note": "Simulated attendance for all November days using actual employee and schedule masters. Provisional data; not observed attendance.",
+    "director": {
+      "overview": 21,
+      "tables": 22,
+      "period": 23
+    },
+    "manager": {
+      "overview": 24,
+      "tables": 25,
+      "period": 26
+    }
+  }
+}

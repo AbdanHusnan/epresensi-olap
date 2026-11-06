@@ -1,3 +1,10 @@
+> Current dataset (4 November 2026): simulated attendance for all 30 November days
+> in actual `mart_bkd`, with 82,119 active employees from the real source master.
+> Website: http://localhost:3100. Metabase daily views: [organization](http://localhost:3101/dashboard/21), [operational](http://localhost:3101/dashboard/24).
+> November trends: [organization](http://localhost:3101/dashboard/23), [operational](http://localhost:3101/dashboard/26).
+> Run `python3 deploy/hybrid/dashboards/configure_test_runs.py --actual-month` to restore the current views.
+> [Loading mechanism and verification](../../../hop/operations/README.md). Earlier dataset notes below are historical.
+
 Current layout uses **one dashboard container** with daily KPI cards, a trend
 with **3D / 7D / 1M / 3M / 6M / 1Y / Custom** controls, and the daily table below.
 Daily and trend filters remain independent. Top management sees its department

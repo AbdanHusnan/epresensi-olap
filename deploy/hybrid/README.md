@@ -1,5 +1,7 @@
 # Hybrid dashboard environment
 
+> Current operation (4 November 2026): actual staging_bkd / mart_bkd November simulation load is managed by [monthly loading guide](../../hop/operations/README.md). Earlier empty-target and test-source status below is historical.
+
 Local implementation of [the prototype plan](../../docs/hybrid-dashboard-prototype-plan.md).
 Next.js now provides a prototype login and role-specific analytical/operational
 pages with signed Metabase guest embeds. BI administrator accounts remain separate
